@@ -30,8 +30,10 @@
 //     });
 // });
 
+var socket = io('http://localhost:3001');
+
 $(function () {
-    $('#form').on('submit', function (e) {
+    $('form').on('submit', function (e) {
         e.preventDefault();
         var clientName = $('#clientName').val();
         var phone = $('#phone').val();
@@ -65,5 +67,11 @@ $(function () {
                 alert('Error');
             }
         });
+
+        // Socket 
+
+        socket.emit('request', requestObject);
+        return false;
+        // })
     });
 });

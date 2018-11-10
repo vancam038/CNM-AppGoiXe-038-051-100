@@ -1,16 +1,7 @@
-var http = require('http'),
-    express = require('express'),
-    socketIO = require('socket.io');
-
-var app = express();
-var server = http.Server(app);
-var io = socketIO(server);
+var express = require('express');
 
 var requestReceiverRepo = require('../../repos/requestReceiverRepo');
 var router = express.Router();
-
-//
-// load orders by User
 
 router.get('/request', (req, res) => {
     requestReceiverRepo.loadAll()
@@ -24,19 +15,7 @@ router.get('/request', (req, res) => {
 });
 
 router.post('/request', (req, res) => {
-    console.log(req.body);
-    // io.on('connection', socket => {
-    //     console.log('a user connected');
-
-    //     socket.on('disconnect', () => {
-    //         console.log('user disconnected');
-    //     });
-
-    //     socket.on('request', msg => {
-    //         console.log(`message: ${msg}`);
-    //         // io.sockets.emit('chat', msg);
-    //     });
-    // });
+    console.log('body: ' + req.body);
     requestReceiverRepo.add(req.body)
         .then(value => {
             console.log(value);
