@@ -12,9 +12,15 @@ var router = express.Router();
 //
 // load orders by User
 
-router.get('/request', (req,res) => {
-    json = {name: "hế nhô"};
-    res.status(200).json(json);
+router.get('/request', (req, res) => {
+    requestReceiverRepo.loadAll()
+        .then(rows => {
+            res.json(rows);
+        }).catch(err => {
+            console.log(err);
+            res.statusCode = 500;
+            res.end('View error log on console');
+        })
 });
 
 router.post('/request', (req, res) => {
