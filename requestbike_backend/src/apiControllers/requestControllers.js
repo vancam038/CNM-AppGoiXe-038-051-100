@@ -1,10 +1,10 @@
 var express = require('express');
 
-var requestReceiverRepo = require('../repos/requestRepo');
+var requestRepo = require('../repos/requestRepo');
 var router = express.Router();
 
 router.get('/requests', (req, res) => {
-    requestReceiverRepo.loadAll()
+    requestRepo.loadAll()
         .then(rows => {
             res.json(rows);
         }).catch(err => {
@@ -16,7 +16,7 @@ router.get('/requests', (req, res) => {
 
 router.post('/request', (req, res) => {
     console.log('body: ' + req.body);
-    requestReceiverRepo.add(req.body)
+    requestRepo.add(req.body)
         .then(value => {
             console.log(value);
             res.statusCode = 201;
