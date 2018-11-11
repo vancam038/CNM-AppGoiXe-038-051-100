@@ -42,11 +42,13 @@ $(function () {
         var phone = $('#phone').val();
         var address = $('#address').val();
         var note = $('#note').val();
+        var status = "Chưa được định vị"
         var requestObject = {
             clientName,
             phone,
             address,
-            note
+            note,
+            status
         }
         $.ajax({
             url: 'http://localhost:3000/request',
