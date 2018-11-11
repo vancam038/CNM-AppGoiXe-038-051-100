@@ -33,6 +33,9 @@
 var socket = io('http://localhost:3001');
 
 $(function () {
+    // init thì hide alert
+    $('.alert').hide();
+
     $('form').on('submit', function (e) {
         e.preventDefault();
         var clientName = $('#clientName').val();
@@ -56,7 +59,9 @@ $(function () {
             dataType: "json",
             success: function () {
                 // console.log('Success');
-                alert('Submit OK!!!');
+                $('#alert-success').show(200);
+                $('#alert-danger').hide();
+
                 $('#clientName').val('');
                 $('#phone').val('');
                 $('#address').val('');
@@ -74,7 +79,8 @@ $(function () {
             },
             error: function () {
                 // console.log('Error');
-                alert('Error');
+                $('#alert-success').hide();
+                $('#alert-danger').show(200);
             }
         });
 

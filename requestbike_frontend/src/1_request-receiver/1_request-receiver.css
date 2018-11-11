@@ -27,7 +27,7 @@ body {
     position: absolute;
     transform: translate(-50%, -50%);
     box-sizing: border-box;
-    padding: 50px 30px 10px;
+    padding: 50px 30px 0px;
 }
 
 .avatar-container {
@@ -102,3 +102,15 @@ input[type="password"] {
 .loginbox a:hover {
     color: #ffc107;
 }
+
+/* custom bootstrap start */
+.alert {
+    padding: 0.25rem 1.25rem;
+    text-align: center;
+}
+
+.alert-dismissible .close {
+    padding: 0.25rem 1.25rem;
+}
+
+/* custom bootstrap end */
