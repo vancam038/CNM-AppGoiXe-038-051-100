@@ -14,4 +14,11 @@ $(function () {
     // })
 
     // 1_to_2_transfer-req
+    socket.on('1_to_2_transfer-req', reqs => {
+        console.log(reqs);
+        var source = document.getElementById("request-template").innerHTML;
+        var template = Handlebars.compile(source);
+        var html = template(reqs);
+        $('#requests').html(html);
+    })
 });

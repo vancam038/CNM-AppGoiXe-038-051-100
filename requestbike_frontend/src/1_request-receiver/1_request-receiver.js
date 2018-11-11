@@ -64,6 +64,12 @@ $(function () {
 
                 // Socket 
                 // Gui msg cho server: tra list request ve cho #2
+
+                // 1_to_2_transfer-req
+                socket.on('1_to_2_transfer-req', reqs => {
+                    console.log(reqs);
+                })
+
                 socket.emit('1_to_2_transfer-req', "#1 transfer req #2 through socket");
             },
             error: function () {
