@@ -1,9 +1,9 @@
 var express = require('express');
 
-var requestReceiverRepo = require('../../repos/requestReceiverRepo');
+var requestReceiverRepo = require('../repos/requestReceiverRepo');
 var router = express.Router();
 
-router.get('/request', (req, res) => {
+router.get('/requests', (req, res) => {
     requestReceiverRepo.loadAll()
         .then(rows => {
             res.json(rows);

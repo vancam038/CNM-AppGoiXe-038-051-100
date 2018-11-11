@@ -1,5 +1,5 @@
 var express = require('express');
-var productRepo = require('../repos/productRepo');
+var productRepo = require('../../repos/productRepo');
 
 var router = express.Router();
 

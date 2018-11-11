@@ -5,7 +5,7 @@ exports.add = requestEntity => {
 	return db.save(sql);
 }
 
-exports.loadAll = () => {
-	var sql = `select * from request`;
-	return db.load(sql);
-}
+// exports.loadAll = () => {
+// 	var sql = `select * from request`;
+// 	return db.load(sql);
+// }

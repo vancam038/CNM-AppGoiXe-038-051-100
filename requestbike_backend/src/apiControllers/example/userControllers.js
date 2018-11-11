@@ -1,7 +1,7 @@
 var express = require('express');
 
-var userRepo = require('../repos/userRepo');
-var authRepo = require('../repos/authRepo');
+var userRepo = require('../../repos/userRepo');
+var authRepo = require('../../repos/authRepo');
 
 var router = express.Router();
 

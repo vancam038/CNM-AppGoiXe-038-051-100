@@ -7,10 +7,8 @@ var bodyParser = require('body-parser'),
     morgan = require('morgan'),
     cors = require('cors');
 
-var productCtrl = require('./src/apiControllers/productControllers');
-var userCtrl = require('./src/apiControllers/userControllers');
-var orderCtrl = require('./src/apiControllers/orderControllers');
-var requestReceiverCtrl = require('./src/apiControllers/1_request-receiver/requestRecevierControllers');
+var requestReceiverCtrl = require('./src/apiControllers/requestRecevierControllers');
+var locationIndentifierCtrl = require('./src/apiControllers/locationIdentifierControllers');
 
 var verifyAccessToken = require('./src/repos/authRepo').verifyAccessToken;
 
@@ -40,9 +38,7 @@ io.on('connection', socket => {
 });
 
 app.use('/api/requestReceiver/', requestReceiverCtrl);
-app.use('/api/products/', productCtrl);
-app.use('/api/users/', userCtrl);
-app.use('/api/orders/', verifyAccessToken, orderCtrl);
+app.use('/api/locationIndentifier/', locationIndentifierCtrl);
 
 
 var port = process.env.PORT || 3000;
