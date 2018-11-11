@@ -7,10 +7,12 @@ var bodyParser = require('body-parser'),
     morgan = require('morgan'),
     cors = require('cors');
 
+
+// server nodejs START
+
 var requestCtrl = require('./src/apiControllers/requestControllers');
 
 var verifyAccessToken = require('./src/repos/authRepo').verifyAccessToken;
-
 
 app.use(morgan('dev'));
 app.use(bodyParser.json());
@@ -22,6 +24,17 @@ app.get('/', (req, res) => {
         msg: 'hello from nodejs express api'
     })
 });
+
+app.use('/', requestCtrl);
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`RequestBike Express is running on port ${PORT}`);
+})
+
+// server nodejs END
+
+// socket START
 
 io.on('connection', socket => {
     console.log('a user connected');
@@ -37,15 +50,10 @@ io.on('connection', socket => {
     });
 });
 
-app.use('/', requestCtrl);
-
-var port = process.env.PORT || 3000;
-app.listen(port, () => {
-    console.log(`RequestBike Express is running on port ${port}`);
-})
-
 const PORT1 = process.env.PORT || 3001;
 
 server.listen(PORT1, () => {
     console.log(`RequestBike Server Socket listening on: ${PORT1}`);
 });
+
+// socket END
