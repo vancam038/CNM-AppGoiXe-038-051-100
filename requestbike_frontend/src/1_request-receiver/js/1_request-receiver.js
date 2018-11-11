@@ -46,7 +46,7 @@ $(function () {
             note
         }
         $.ajax({
-            url: 'http://localhost:3000/api/requestReceiver/request',
+            url: 'http://localhost:3000/request',
             type: 'POST',
             headers: {
                 "Access-Control-Allow-Origin": "*",
@@ -61,6 +61,10 @@ $(function () {
                 $('#phone').val('');
                 $('#address').val('');
                 $('#note').val('');
+
+                // Socket 
+                // Gui msg cho server: tra list request ve cho #2
+                socket.emit('1_to_2_transfer-req', "#1 transfer req #2 through socket");
             },
             error: function () {
                 // console.log('Error');
@@ -68,10 +72,6 @@ $(function () {
             }
         });
 
-        // Socket 
 
-        socket.emit('request', requestObject);
-        return false;
-        // })
     });
 });

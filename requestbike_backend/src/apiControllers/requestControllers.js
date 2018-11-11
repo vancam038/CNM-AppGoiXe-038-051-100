@@ -1,6 +1,6 @@
 var express = require('express');
 
-var requestReceiverRepo = require('../repos/requestReceiverRepo');
+var requestReceiverRepo = require('../repos/requestRepo');
 var router = express.Router();
 
 router.get('/requests', (req, res) => {

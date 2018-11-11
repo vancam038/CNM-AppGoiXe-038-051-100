@@ -7,8 +7,7 @@ var bodyParser = require('body-parser'),
     morgan = require('morgan'),
     cors = require('cors');
 
-var requestReceiverCtrl = require('./src/apiControllers/requestRecevierControllers');
-var locationIndentifierCtrl = require('./src/apiControllers/locationIdentifierControllers');
+var requestCtrl = require('./src/apiControllers/requestControllers');
 
 var verifyAccessToken = require('./src/repos/authRepo').verifyAccessToken;
 
@@ -31,15 +30,14 @@ io.on('connection', socket => {
         console.log('user disconnected');
     });
 
-    socket.on('request', data => {
+    socket.on('1_to_2_transfer-req', data => {
         console.log(data);
+        // khong co Repo de goi loadAll -> Mang qua router, ma router nao? -> requestctrl
         // io.sockets.emit('chat', msg);
     });
 });
 
-app.use('/api/requestReceiver/', requestReceiverCtrl);
-app.use('/api/locationIndentifier/', locationIndentifierCtrl);
-
+app.use('/', requestCtrl);
 
 var port = process.env.PORT || 3000;
 app.listen(port, () => {

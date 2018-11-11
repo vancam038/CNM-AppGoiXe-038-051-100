@@ -1,6 +1,6 @@
 $(function () {
     $.ajax({
-        url: 'http://localhost:3000/api/requestReceiver/requests',
+        url: 'http://localhost:3000/requests',
         type: 'GET',
         dataType: 'json',
         timeout: 10000
