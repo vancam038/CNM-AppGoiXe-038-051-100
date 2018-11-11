@@ -7,10 +7,15 @@ var bodyParser = require('body-parser'),
     morgan = require('morgan'),
     cors = require('cors');
 
+// Repo START
+var requestRepo = require('./src/repos/requestRepo');
+// Repo END
 
 // server nodejs START
 
+// Controllers START
 var requestCtrl = require('./src/apiControllers/requestControllers');
+// Controllers END
 
 var verifyAccessToken = require('./src/repos/authRepo').verifyAccessToken;
 
@@ -46,7 +51,7 @@ io.on('connection', socket => {
     socket.on('1_to_2_transfer-req', data => {
         console.log(data);
         // khong co Repo de goi loadAll -> Mang qua router, ma router nao? -> requestctrl
-        // io.sockets.emit('chat', msg);
+        io.sockets.emit('1_to_2_transfer-req', requestRepo.loadAll());
     });
 });
 
