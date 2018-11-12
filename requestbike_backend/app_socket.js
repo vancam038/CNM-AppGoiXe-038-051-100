@@ -31,7 +31,6 @@ io.on('connection', socket => {
                 io.sockets.emit('1_to_3_transfer-req', rows);
             }).catch(err => {
                 console.log(err);
-                // nếu thành công thì trả về cho client #3
                 io.sockets.emit('1_to_3_transfer-req', err);
             });
     });

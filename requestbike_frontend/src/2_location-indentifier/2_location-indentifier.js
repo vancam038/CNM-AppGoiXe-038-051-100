@@ -51,6 +51,10 @@ $(function () {
             }
         });
     })
+
+    $('#confirm-geocode').click(() => {
+        confirm('Tọa độ mới đã đúng với địa chỉ khách gửi chưa?');
+    })
 });
 
 function initMap() {

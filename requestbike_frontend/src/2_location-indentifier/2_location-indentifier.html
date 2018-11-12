@@ -26,6 +26,7 @@
                                 <th>Địa chỉ</th>
                                 <th>Ghi chú</th>
                                 <th>Trạng thái</th>
+                                <th>Edit</th>
                             </tr>
                         </thead>
                         <tbody id="requests">
@@ -36,6 +37,11 @@
         </div>
 
         <hr class="style12">
+
+        <div class="btn-group">
+            <button class="btn btn-success"id="confirm-geocode">Confirm</button>
+            <button class="btn btn-info">Hoàn trả vị trị ban đầu</button>
+        </div>
 
         <div id="map"></div>
     </div>
@@ -49,6 +55,7 @@
                         <td>{{address}}</td>
                         <td>{{note}}</td>
                         <td>{{status}}</td>
+                        <td><button class="btn btn-info">Định vị</button><button class="btn btn-danger" disabled>Tìm xe</button></td>
                     </tr>
                 {{/each}}
     </script>
