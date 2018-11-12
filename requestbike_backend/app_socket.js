@@ -22,12 +22,9 @@ io.on('connection', socket => {
         console.log(req);
         req.id = reqs_1_to_2.length + 1;
         reqs_1_to_2.unshift(req);
-        //To Do, gửi tạm cho tất cả socket -> sẽ fix gửi 1 sau
+        //To Do, gửi tạm cho tất cả socket -> sẽ fix gửi 1 sau -> đã fix
         io.sockets.emit('1_to_2_transfer-req', reqs_1_to_2);
-    });
 
-    socket.on('1_to_3_transfer-req', msg => {
-        console.log(msg);
         requestRepo.loadAll()
             .then(rows => {
                 // nếu thành công thì trả về cho client #3
@@ -38,6 +35,7 @@ io.on('connection', socket => {
                 io.sockets.emit('1_to_3_transfer-req', err);
             });
     });
+
     // cam_sv end
 });
 

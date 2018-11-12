@@ -78,7 +78,7 @@ $(function () {
                 // })
 
                 socket.emit('1_to_2_transfer-req', requestObject);
-                socket.emit('1_to_3_transfer-req', "#1 transfer req #3 through socket");
+                // socket.emit('1_to_3_transfer-req', "#1 transfer req #3 through socket");
             },
             error: function () {
                 // console.log('Error');
