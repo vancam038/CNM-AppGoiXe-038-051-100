@@ -17,16 +17,25 @@ io.on('connection', socket => {
     });
 
     // cam_sv start
-    socket.on('1_to_2_transfer-req', data => {
-        console.log(data);
+    let reqs_1_to_2 = [];
+    socket.on('1_to_2_transfer-req', req => {
+        console.log(req);
+        req.id = reqs_1_to_2.length + 1;
+        reqs_1_to_2.unshift(req);
+        //To Do, gửi tạm cho tất cả socket -> sẽ fix gửi 1 sau
+        io.sockets.emit('1_to_2_transfer-req', reqs_1_to_2);
+    });
+
+    socket.on('1_to_3_transfer-req', msg => {
+        console.log(msg);
         requestRepo.loadAll()
             .then(rows => {
-                // nếu thành công thì trả về cho client #2
-                io.sockets.emit('1_to_2_transfer-req', rows);
+                // nếu thành công thì trả về cho client #3
+                io.sockets.emit('1_to_3_transfer-req', rows);
             }).catch(err => {
                 console.log(err);
-                // nếu thành công thì trả về cho client #2
-                io.sockets.emit('1_to_2_transfer-req', err);
+                // nếu thành công thì trả về cho client #3
+                io.sockets.emit('1_to_3_transfer-req', err);
             });
     });
     // cam_sv end
