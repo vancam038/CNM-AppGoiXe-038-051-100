@@ -5,15 +5,109 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Driver</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.css" />
     <link rel="stylesheet" href="4_driver.css">
 </head>
 
 <body>
-    <h1 class='timer' data-seconds-left=10></h1>
+    <!-- Button trigger modal -->
+    <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#requestModalCenter">
+        Launch demo modal
+    </button> -->
+
+    <div class="wrapper">
+        <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01"
+                aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand" href="#">
+                <div class="circular--landscape">
+                    <img src="../../assets/img/driver.png" alt="logo">
+                </div>
+            </a>
+
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+                <!-- <a class="navbar-brand" href="#">Hidden brand</a> -->
+                <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+                    <li class="nav-item dropdown">
+
+                        <div class="btn-group dropDOWN">
+                            <button class="btn btn-lg btn-outline-success custom-btn btn-block dropdown-toggle" type="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Đổi trạng
+                                thái</button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="#">READY</a>
+                                <a class="dropdown-item" href="#">STANDBY</a>
+                                <a class="dropdown-item" href="#">BUSY</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-lg btn-outline-warning custom-btn btn-block" disabled type="button">Bắt
+                            đầu</button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-lg btn-outline-warning custom-btn btn-block" disabled type="button">Kết
+                            thúc</button>
+                    </li>
+                </ul>
+                <!-- <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                </form> -->
+            </div>
+
+        </nav>
+
+        <!-- google map start -->
+        <div id="map"></div>
+        <!-- google map end -->
+
+
+
+
+
+
+
+
+
+        <!-- Modal start -->
+        <div class="modal fade" id="requestModalCenter" tabindex="-1" role="dialog" aria-labelledby="requestModalCenterTitle"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+                <div class="modal-content custom-modal-content">
+                    <div class="modal-header custom-modal-header">
+                        <h5 class="modal-title" id="requestModalLongTitle">Tìm thấy request</h5>
+                        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button> -->
+                    </div>
+                    <div class="modal-body custom-modal-body">
+                        <h1 class='timer' data-seconds-left=10></h1>
+                    </div>
+                    <div class="modal-footer custom-modal-footer">
+                        <button type="button" class="btn btn-success" data-dismiss="modal">Chấp nhận</button>
+                        <button type="button" class="btn btn-dark" data-dismiss="modal">Từ chối</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal end -->
 
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="../../assets/js/jquery-simple-timer/jquery.simple.timer.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.12/handlebars.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.js"></script>
     <script src="./4_driver.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDas6_Z8AZ6sdYJGOucYDWh-MCcoB9jjVE&callback=initMap"
+        async defer></script>
 </body>
 
 </html>

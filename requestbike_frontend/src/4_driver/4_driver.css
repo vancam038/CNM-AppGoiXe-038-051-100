@@ -1,8 +1,11 @@
+/* timer start */
 .jst-hours {
+    display: none;
     float: left;
 }
 
 .jst-minutes {
+    display: none;
     float: left;
 }
 
@@ -17,3 +20,82 @@
 .jst-timeout {
     color: red;
 }
+
+.timer {
+    display: inline-block;
+}
+
+/* timer end */
+
+.wrapper {
+    display: grid;
+    grid-auto-rows: auto 1fr;
+    height: 100%;
+    width: 100%;
+}
+
+/* icon start */
+.circular--landscape {
+    display: inline-block;
+    width: 64px;
+    height: 64px;
+    overflow: hidden;
+    border-radius: 50%;
+    background: #eee;
+}
+
+.circular--landscape img {
+    width: auto;
+    height: 100%;
+}
+
+/* icon end */
+
+/* custom bootstrap start */
+
+/* modal start */
+
+.custom-modal-header {
+    justify-content: center;
+}
+
+.custom-modal-body {
+    text-align: center;
+}
+
+.custom-modal-footer {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* modal end */
+
+/* btn start */
+.custom-btn {
+    margin: .5rem 0rem;
+}
+
+/* btn end */
+
+/* custom bootstrap end */
+
+/* google map start */
+#map {
+    height: 100%;
+    width: 100%;
+}
+
+/* google map end */
+
+/* responsive start */
+@media (min-width: 768px) {
+    .btn-block {
+        width: auto;
+    }
+
+    .custom-btn {
+        margin: .25rem .75rem;
+    }
+}
+
+/* responsive end */

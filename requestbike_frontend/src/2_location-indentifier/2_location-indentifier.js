@@ -63,8 +63,8 @@ function initMap() {
     var myMap, marker;
 
     var geocode = {
-        lat: -25.344,
-        lng: 131.036
+        lat: 10.762622,
+        lng: 106.660172
     };
 
     myMap = new google.maps.Map(document.getElementById('map'), {
