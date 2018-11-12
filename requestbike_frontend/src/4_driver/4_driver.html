@@ -32,16 +32,13 @@
                 <!-- <a class="navbar-brand" href="#">Hidden brand</a> -->
                 <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
                     <li class="nav-item dropdown">
-
-                        <div class="btn-group dropDOWN">
-                            <button class="btn btn-lg btn-outline-success custom-btn btn-block dropdown-toggle" type="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Đổi trạng
-                                thái</button>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item" href="#">READY</a>
-                                <a class="dropdown-item" href="#">STANDBY</a>
-                                <a class="dropdown-item" href="#">BUSY</a>
-                            </div>
+                        <button id="navbarDropdown" class="btn btn-lg btn-outline-success custom-btn btn-block dropdown-toggle"
+                            type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Đổi
+                            trạng thái</button>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="#">READY</a>
+                            <a class="dropdown-item" href="#">STANDBY</a>
+                            <a class="dropdown-item" href="#">BUSY</a>
                         </div>
                     </li>
                     <li class="nav-item">
@@ -60,6 +57,8 @@
             </div>
 
         </nav>
+
+
 
         <!-- google map start -->
         <div id="map"></div>

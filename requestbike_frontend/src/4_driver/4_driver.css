@@ -98,4 +98,10 @@
     }
 }
 
-/* responsive end */
+@media (min-width: 576px) {
+    .navbar-expand-sm .navbar-nav .dropdown-menu {
+        position: absolute;
+        left: 17px;
+    }
+}
+    /* responsive end */
