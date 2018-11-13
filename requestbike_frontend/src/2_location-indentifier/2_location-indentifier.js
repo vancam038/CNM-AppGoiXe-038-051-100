@@ -49,4 +49,39 @@ $(function() {
       }
     });
   });
+
+  document.getElementsByClassName("btn-locate").forEach(btn => {
+    btn.onClick(() => {
+      const reqId = btn.parentNode.parentNode.firstChild.innerHTML;
+      $.get(`http://localhost:3000/getReqCoords/${reqId}`)
+        .then(response => response.json())
+        .then(result => {
+          const { status, coords } = result;
+          if (status === "OK") {
+            drawUserMarker(coords);
+          } else {
+            // message staff request not found
+          }
+        })
+        .catch(err => {
+          // message staff server error
+        });
+    });
+  });
+
+  document.getElementsByClassName("btn-find").forEach(btn => {
+    btn.onClick(() => {
+      const reqId = btn.parentNode.parentNode.firstChild.innerHTML;
+      // disable button while server finding driver
+      btn.setAttribute("disabled", true);
+      // $.get(`http://localhost:3000/getReqCoords/${reqId}`)
+      //   .then(response => response.json())
+      //   .then(result => {
+      //     const { status } = result;
+      //     if (status !== "OK") {
+      //     }
+      //   })
+      //   .catch(err => {});
+    });
+  });
 });

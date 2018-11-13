@@ -1,56 +1,62 @@
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title></title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.css" />
-    <link rel="stylesheet" type="text/css" href="./3_request-management.css">
-</head>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.css"
+    />
+    <link rel="stylesheet" type="text/css" href="./3_request-management.css" />
+    <link rel="stylesheet" href="./google-map/style.css" />
+  </head>
 
-<body>
+  <body>
     <div class="wrapper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-sm-12 col-md-12">
-                    <table id="reqTable" class="table table-hover table-striped">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Họ và tên</th>
-                                <th>Số điện thoại</th>
-                                <th>Địa chỉ</th>
-                                <th>Ghi chú</th>
-                                <th>Trạng thái</th>
-                                <th>Edit</th>
-                            </tr>
-                        </thead>
-                        <tbody id="requests">
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-12 col-md-12">
+            <table id="reqTable" class="table table-hover table-striped">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Họ và tên</th>
+                  <th>Số điện thoại</th>
+                  <th>Địa chỉ</th>
+                  <th>Ghi chú</th>
+                  <th>Trạng thái</th>
+                  <th>Thao tác</th>
+                </tr>
+              </thead>
+              <tbody id="requests"></tbody>
+            </table>
+          </div>
         </div>
+      </div>
 
-        <!-- google map start -->
-        <div id="map"></div>
-        <!-- google map end -->
+      <!-- google map start -->
+      <div id="map-container"><div id="map"></div></div>
+      <!-- google map end -->
     </div>
 
     <script id="request-template" type="text/x-handlebars-template">
-        {{#each this}}
-                    <tr>
-                        <td>{{id}}</td>
-                        <td>{{clientName}}</td>
-                        <td>{{phone}}</td>
-                        <td>{{address}}</td>
-                        <td>{{note}}</td>
-                        <td>{{status}}</td>
-                        <td><button class="btn btn-info">Xem đường đi ngắn nhất</button></td>
-                    </tr>
-                {{/each}}
+      {{#each this}}
+                  <tr>
+                      <td>{{id}}</td>
+                      <td>{{clientName}}</td>
+                      <td>{{phone}}</td>
+                      <td>{{address}}</td>
+                      <td>{{note}}</td>
+                      <td>{{status}}</td>
+                      <td><button class="btn btn-info">Xem đường đi</button></td>
+                  </tr>
+              {{/each}}
     </script>
 
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
@@ -59,10 +65,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.12/handlebars.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.js"></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.js"
+    ></script>
+    <script src="./google-map/script.js"></script>
     <script src="./3_request-management.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDas6_Z8AZ6sdYJGOucYDWh-MCcoB9jjVE&callback=initMap"
-        async defer></script>
-</body>
-
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDas6_Z8AZ6sdYJGOucYDWh-MCcoB9jjVE&callback=initMap"
+      async
+      defer
+    ></script>
+  </body>
 </html>

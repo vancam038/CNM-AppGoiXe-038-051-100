@@ -16,31 +16,34 @@ router.get("/requests", (req, res) => {
     });
 });
 
-router.post("/request", (req, res) => {
-  console.log("body: " + req.body);
-  requestRepo
-    .add(req.body)
-    .then(value => {
-      console.log(value);
-      res.statusCode = 201;
-      res.json(req.body);
-    })
-    .catch(err => {
-      console.log(err);
-      res.statusCode = 500;
-      res.end("View error log on console");
-    });
-});
+// router.post("/request", (req, res) => {
+//   console.log("body: " + req.body);
+//   requestRepo
+//     .add(req.body)
+//     .then(value => {
+//       console.log(value);
+//       res.statusCode = 201;
+//       res.json(req.body);
+//     })
+//     .catch(err => {
+//       console.log(err);
+//       res.statusCode = 500;
+//       res.end("View error log on console");
+//     });
+// });
 
 router.get("/getRequestCoords/:reqId", (req, res) => {
   const reqId = req.params.reqId;
   requestRepo
     .getReqCoords(reqId)
     .then(value => {
-      res.statusCode = 200;
-      console.log(value);
-      res.end();
-      // res.json(value);
+      if (value.length > 0) {
+        res.statusCode = 200;
+        res.json({ status: "OK", coords: value[0] });
+      } else {
+        res.statusCode = 404;
+        res.json({ status: "NOT_FOUND" });
+      }
     })
     .catch(err => {
       console.log(err);
@@ -50,22 +53,23 @@ router.get("/getRequestCoords/:reqId", (req, res) => {
 });
 
 router.put("/request", (req, res) => {
-  const { reqId, newLatLng } = res.body;
-  if (!reqId || !newLatLng) {
+  const { reqId, newLat, newLng } = req.body;
+  if (!reqId || !newLat || !newLng) {
     res.statusCode = 500;
     res.end();
   }
 
   requestRepo
-    .update(newLatLng, reqId)
-    .then(() => {
+    .update(newLat, newLng, reqId)
+    .then(result => {
+      console.log(result);
       res.statusCode = 201;
       res.end();
     })
     .catch(err => {
       console.log(err);
       res.statusCode = 500;
-      res, end("View error log on console");
+      res.end("View error log on console");
     });
 });
 

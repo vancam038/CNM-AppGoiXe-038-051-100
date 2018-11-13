@@ -2,6 +2,7 @@ var express = require("express"),
   app = express(),
   server = require("http").Server(app),
   io = require("socket.io").listen(server);
+const request = require("request-promise");
 
 // Repo START
 var requestRepo = require("./src/repos/requestRepo");
@@ -21,28 +22,52 @@ io.on("connection", socket => {
   socket.on("1_to_2_transfer-req", req => {
     console.log(req);
     // const reqIndex = reqs_1_to_2.length + 1;
-    const _req = { ...req, id: socket.id };
-    console.log("REQ", _req);
+    const { address } = req;
+    const trimmedAddress = encodeURI(address.replace(" ", "+").trim());
+    const opt = {
+      uri: `https://maps.googleapis.com/maps/api/geocode/json?address=${trimmedAddress}&key=AIzaSyDas6_Z8AZ6sdYJGOucYDWh-MCcoB9jjVE`,
+      headers: {
+        "User-Agent": "Request-Promise"
+      },
+      json: true
+    };
+
+    request(opt)
+      .then(res => {
+        const { lat, lng } = res.results[0].geometry.location,
+          { status } = res;
+        if (status !== "OK") {
+          console.log("STATUS: ", status);
+          return new Error("Không xác định được coords");
+        }
+        const _req = { ...req, id: socket.id, lat, lng };
+        requestRepo
+          .add(_req)
+          .then(() => {
+            requestRepo
+              .loadAll()
+              .then(rows => {
+                io.sockets.emit("1_to_2_transfer-req", rows);
+                io.sockets.emit("1_to_3_transfer-req", rows);
+              })
+              .catch(err => {
+                console.log(err);
+                io.sockets.emit("1_to_2_transfer-req", err);
+                io.sockets.emit("1_to_3_transfer-req", err);
+              });
+          })
+          .catch(err => {
+            console.log(err);
+            io.sockets.emit("1_to_2_transfer-req", err);
+          });
+      })
+      .catch(err => {
+        console.log(err);
+        io.sockets.emit("1_to_2_transfer-req", err);
+      });
+
     // reqs_1_to_2.unshift(req);
     //To Do, gửi tạm cho tất cả socket -> sẽ fix gửi 1 sau -> đã fix
-    requestRepo.add(_req);
-    then(() => {
-      requestRepo
-        .loadAll()
-        .then(rows => {
-          io.sockets.emit("1_to_2_transfer-req", rows);
-          io.sockets.emit("1_to_3_transfer-req", rows);
-        })
-        .catch(err => {
-          console.log(err);
-          io.sockets.emit("1_to_2_transfer-req", err);
-          io.sockets.emit("1_to_3_transfer-req", err);
-        });
-    }).catch(err => {
-      console.log(err);
-      io.sockets.emit("1_to_2_transfer-req", err);
-    });
-
     // io.sockets.emit("1_to_2_transfer-req", reqs_1_to_2);
 
     // requestRepo

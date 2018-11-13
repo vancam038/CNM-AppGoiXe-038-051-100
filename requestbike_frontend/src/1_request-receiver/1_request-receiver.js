@@ -30,63 +30,62 @@
 //     });
 // });
 
-var socket = io('http://localhost:3001');
+var socket = io("http://localhost:3001");
 
-$(function () {
-    // init thì hide alert
-    $('.alert').hide();
+$(function() {
+  // init thì hide alert
+  $(".alert").hide();
 
-    $('form').on('submit', function (e) {
-        e.preventDefault();
-        var clientName = $('#clientName').val();
-        var phone = $('#phone').val();
-        var address = $('#address').val();
-        var note = $('#note').val();
-        var status = "Chưa được định vị"
-        var requestObject = {
-            clientName,
-            phone,
-            address,
-            note,
-            status
-        }
-        $.ajax({
-            url: 'http://localhost:3000/request',
-            type: 'POST',
-            headers: {
-                "Access-Control-Allow-Origin": "*",
-                "Content-Type": "application/json"
-            },
-            data: JSON.stringify(requestObject),
-            dataType: "json",
-            success: function () {
-                // console.log('Success');
-                $('#alert-success').show(200);
-                $('#alert-danger').hide();
+  $("form").on("submit", function(e) {
+    e.preventDefault();
+    var clientName = $("#clientName").val();
+    var phone = $("#phone").val();
+    var address = $("#address").val();
+    var note = $("#note").val();
+    var status = "UNIDENTIFIED";
+    var requestObject = {
+      clientName,
+      phone,
+      address,
+      note,
+      status
+    };
+    // $.ajax({
+    //     url: 'http://localhost:3000/request',
+    //     type: 'POST',
+    //     headers: {
+    //         "Access-Control-Allow-Origin": "*",
+    //         "Content-Type": "application/json"
+    //     },
+    //     data: JSON.stringify(requestObject),
+    //     dataType: "json",
+    //     success: function () {
+    //         // console.log('Success');
+    //         $('#alert-success').show(200);
+    //         $('#alert-danger').hide();
 
-                $('#clientName').val('');
-                $('#phone').val('');
-                $('#address').val('');
-                $('#note').val('');
+    //         $('#clientName').val('');
+    //         $('#phone').val('');
+    //         $('#address').val('');
+    //         $('#note').val('');
 
-                // Socket 
-                // Gui msg cho server: tra list request ve cho #2
+    //         // Socket
+    //         // Gui msg cho server: tra list request ve cho #2
 
-                // 1_to_2_transfer-req testing
-                // socket.on('1_to_2_transfer-req', reqs => {
-                //     console.log(reqs);
-                // })
+    //         // 1_to_2_transfer-req testing
+    //         // socket.on('1_to_2_transfer-req', reqs => {
+    //         //     console.log(reqs);
+    //         // })
 
-                socket.emit('1_to_2_transfer-req', requestObject);
-                // socket.emit('1_to_3_transfer-req', "#1 transfer req #3 through socket");
-            },
-            error: function () {
-                // console.log('Error');
-                $('#alert-success').hide();
-                $('#alert-danger').show(200);
-            }
-        });
-
-
-    });
+    //         socket.emit('1_to_2_transfer-req', requestObject);
+    //         // socket.emit('1_to_3_transfer-req', "#1 transfer req #3 through socket");
+    //     },
+    //     error: function () {
+    //         // console.log('Error');
+    //         $('#alert-success').hide();
+    //         $('#alert-danger').show(200);
+    //     }
+    // });
+    socket.emit("1_to_2_transfer-req", requestObject);
+  });
 });

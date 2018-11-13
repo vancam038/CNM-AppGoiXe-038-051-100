@@ -36,7 +36,7 @@
                   <th>Địa chỉ</th>
                   <th>Ghi chú</th>
                   <th>Trạng thái</th>
-                  <th>Edit</th>
+                  <th>Thao tác</th>
                 </tr>
               </thead>
               <tbody id="requests"></tbody>
@@ -44,9 +44,7 @@
           </div>
         </div>
       </div>
-
-      <hr class="style12" />
-
+      <!-- google map start -->
       <div id="map-container">
         <div id="map-dialog"></div>
         <div id="map"></div>
@@ -54,6 +52,7 @@
         <button id="declineChangeUserPosition" class="btn btn-hidden"></button>
         <button id="revertChangeUserPosition" class="btn btn-hidden"></button>
       </div>
+      <!-- google map end -->
     </div>
 
     <script id="request-template" type="text/x-handlebars-template">
@@ -65,7 +64,14 @@
                       <td>{{address}}</td>
                       <td>{{note}}</td>
                       <td>{{status}}</td>
-                      <td><button class="btn btn-info">Định vị</button><button class="btn btn-danger" disabled>Tìm xe</button></td>
+                      <td>
+                        <button class="btn btn-info btn-locate">
+                          Định vị
+                        </button>
+                        <button class="btn btn-danger btn-find" disabled>
+                          Tìm xe
+                        </button>
+                      </td>
                   </tr>
               {{/each}}
     </script>
