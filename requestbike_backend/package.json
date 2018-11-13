@@ -19,6 +19,8 @@
     "morgan": "^1.9.1",
     "mysql": "^2.16.0",
     "rand-token": "^0.4.0",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.2",
     "socket.io": "^2.1.1"
   },
   "devDependencies": {

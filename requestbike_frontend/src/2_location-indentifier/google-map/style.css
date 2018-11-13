@@ -1,0 +1,74 @@
+*,
+body {
+  font-family: "Roboto", Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+#map-container {
+  position: relative;
+  height: 400px;
+  width: 100%;
+}
+
+#map {
+  height: 100%;
+}
+
+#map-dialog {
+  background: white;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  -webkit-box-shadow: 0px 4px 15px 2px rgba(0, 0, 0, 0.34);
+  -moz-box-shadow: 0px 4px 15px 2px rgba(0, 0, 0, 0.34);
+  box-shadow: 0px 4px 15px 2px rgba(0, 0, 0, 0.34);
+  display: none;
+  font-weight: 400;
+  height: 40px;
+  line-height: 40px;
+  max-width: 480px;
+  padding: 4.5px 30px;
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  -webkit-transform: translateX(-50%);
+  -moz-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  -o-transform: translateX(-50%);
+  z-index: 9999;
+}
+
+.infowindow-container {
+  padding: 10px 10px 0;
+}
+
+.infowindow-btn {
+  width: 100%;
+}
+
+.infowindow-btn .btn {
+  width: 31%;
+  border-radius: 5px !important;
+  -webkit-border-radius: 5px !important;
+  -moz-border-radius: 5px !important;
+  -ms-border-radius: 5px !important;
+  -o-border-radius: 5px !important;
+}
+
+.infowindow-btn .btn:hover {
+  outline: none;
+}
+
+#infowindow-address {
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+.btn-hidden {
+  visibility: hidden;
+}
