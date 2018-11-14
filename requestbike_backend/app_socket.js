@@ -3,6 +3,7 @@ var express = require("express"),
   server = require("http").Server(app),
   io = require("socket.io").listen(server);
 const request = require("request-promise");
+const shortid = require("shortid");
 
 // Repo START
 var requestRepo = require("./src/repos/requestRepo");
@@ -18,9 +19,8 @@ io.on("connection", socket => {
   });
 
   // cam_sv start
-  // let reqs_1_to_2 = [];
+  const reqs = [];
   socket.on("1_to_2_transfer-req", req => {
-    console.log(req);
     // const reqIndex = reqs_1_to_2.length + 1;
     const { address } = req;
     const trimmedAddress = encodeURI(address.replace(" ", "+").trim());
@@ -40,14 +40,18 @@ io.on("connection", socket => {
           console.log("STATUS: ", status);
           return new Error("Không xác định được coords");
         }
-        const _req = { ...req, id: socket.id, lat, lng };
+        // const _req = { ...req, id: socket.id, lat, lng };
+        req.id = shortid.generate();
+        req.lat = lat;
+        req.lng = lng;
         requestRepo
-          .add(_req)
+          .add(req)
           .then(() => {
             requestRepo
               .loadAll()
               .then(rows => {
-                io.sockets.emit("1_to_2_transfer-req", rows);
+                reqs.push(req);
+                io.sockets.emit("1_to_2_transfer-req", reqs);
                 io.sockets.emit("1_to_3_transfer-req", rows);
               })
               .catch(err => {

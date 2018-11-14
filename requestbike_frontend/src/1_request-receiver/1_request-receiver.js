@@ -86,6 +86,8 @@ $(function() {
     //         $('#alert-danger').show(200);
     //     }
     // });
+    $("#alert-success").show(200);
+    $("#alert-danger").hide();
     socket.emit("1_to_2_transfer-req", requestObject);
   });
 });

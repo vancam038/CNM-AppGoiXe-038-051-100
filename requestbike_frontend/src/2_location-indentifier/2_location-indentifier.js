@@ -29,7 +29,6 @@ $(function() {
 
   // 1_to_2_transfer-req
   socket.on("1_to_2_transfer-req", reqs => {
-    console.log(reqs);
     if (dataTable) {
       dataTable.destroy();
       dataTable = null;
@@ -41,47 +40,59 @@ $(function() {
 
     dataTable = $("#reqTable").DataTable({
       paging: false,
-      scrollY: 250,
+      scrollY: 350,
       lengthChange: false,
       info: true,
       language: {
         info: "Total: _TOTAL_ requests"
       }
     });
-  });
-
-  document.getElementsByClassName("btn-locate").forEach(btn => {
-    btn.onClick(() => {
-      const reqId = btn.parentNode.parentNode.firstChild.innerHTML;
-      $.get(`http://localhost:3000/getReqCoords/${reqId}`)
-        .then(response => response.json())
-        .then(result => {
-          const { status, coords } = result;
-          if (status === "OK") {
-            drawUserMarker(coords);
-          } else {
-            // message staff request not found
-          }
-        })
-        .catch(err => {
-          // message staff server error
-        });
-    });
-  });
-
-  document.getElementsByClassName("btn-find").forEach(btn => {
-    btn.onClick(() => {
-      const reqId = btn.parentNode.parentNode.firstChild.innerHTML;
-      // disable button while server finding driver
-      btn.setAttribute("disabled", true);
-      // $.get(`http://localhost:3000/getReqCoords/${reqId}`)
-      //   .then(response => response.json())
-      //   .then(result => {
-      //     const { status } = result;
-      //     if (status !== "OK") {
-      //     }
-      //   })
-      //   .catch(err => {});
-    });
+    // createdRow: function(row, data, index) {
+    //   // console.log(row, data, index);
+    //   const btn_locate = $("button.btn-locate", row);
+    //   console.log("btn_locate", btn_locate);
+    //   btn_locate.onClick(() => {
+    //     // const reqId = btn_locate
+    //     //   .parent()
+    //     //   .parent()
+    //     //   .children(":first").innerHTML;
+    //     // console.log(reqId);
+    //     // $.get(`http://localhost:3000/request/coords/${reqId}`)
+    //     //   .then(response => response.json())
+    //     //   .then(result => {
+    //     //     const { status, coords } = result;
+    //     //     if (status === "OK") {
+    //     //       drawUserMarker(coords);
+    //     //     } else {
+    //     //       // message staff request not found
+    //     //     }
+    //     //   })
+    //     //   .catch(err => {
+    //     //     // message staff server error
+    //     //   });
+    //     console.log(index);
+    //   });
+    //   const btn_find = $("button.btn-find", row);
+    //   console.log("btn_find", btn_find);
+    //   btn_find.onClick(() => {
+    //     // const reqId = btn
+    //     //   .parent()
+    //     //   .parent()
+    //     //   .children(":first").innerHTML;
+    //     // console.log(reqId);
+    //     // // disable button while server finding driver
+    //     // btn.attr("disabled", true);
+    //     // // $.get(`http://localhost:3000/getReqCoords/${reqId}`)
+    //     // //   .then(response => response.json())
+    //     // //   .then(result => {
+    //     // //     const { status } = result;
+    //     // //     if (status !== "OK") {
+    //     // //     }
+    //     // //   })
+    //     // //   .catch(err => {});
+    //     console.log(index);
+    //   });
+    // }
+    // });
   });
 });

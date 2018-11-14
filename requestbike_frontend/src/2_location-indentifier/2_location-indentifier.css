@@ -34,5 +34,5 @@ hr.style12 {
 }
 
 .wrapper > .container-fluid > .row {
-  height: calc(100vh - 450px);
+  height: 60vh;
 }
