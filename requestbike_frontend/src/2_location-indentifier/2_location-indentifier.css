@@ -6,23 +6,42 @@ body {
 }
 
 body {
-  overflow: hidden;
+  /* overflow: hidden; */
+
 }
 
 .wrapper {
-  height: 97vh;
-  padding-top: 15px;
+  height: 100%;
+  background-color: #eee;
+}
+
+.content-wrapper {
+  display: grid;
+  height: 100%;
+  grid-template-rows: auto 0.5fr max-content 1fr;
+  grid-gap: 1rem;
+  padding: 1rem;
+
+}
+
+.group-button {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: .5rem;
 }
 
 .wrapper .container-fluid {
-  position: relative;
-  height: 100%;
+  /* position: relative;
+  height: 100%; */
+}
+
+#reqTable {
+  width: 100%;
 }
 
 hr.style12 {
   height: 6px;
-  background: url(http://ibrahimjabbari.com/english/images/hr-12.png) repeat-x 0
-    0;
+  background: url(http://ibrahimjabbari.com/english/images/hr-12.png) repeat-x 0 0;
   border: 0;
 }
 
@@ -33,6 +52,18 @@ hr.style12 {
   justify-content: space-between;
 }
 
-.wrapper > .container-fluid > .row {
+.wrapper>.container-fluid>.row {
   height: 60vh;
+}
+
+.custom-form {
+  background: #fff;
+  border-radius: 8px;
+  padding: 15px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.custom-form .form-group {
+  justify-self: center;
 }

@@ -1,6 +1,6 @@
 var socket = io("http://localhost:3001");
 
-$(function() {
+$(function () {
   let dataTable = null;
   dataTable = $("#reqTable").DataTable({
     paging: false,
@@ -16,7 +16,7 @@ $(function() {
     type: "GET",
     dataType: "json",
     timeout: 10000
-  }).done(function(data) {
+  }).done(function (data) {
     if (dataTable) {
       dataTable.destroy();
       dataTable = null;
@@ -29,15 +29,15 @@ $(function() {
       paging: false,
       scrollY: 350,
       lengthChange: false,
-      info: true,
+      info: false,
       searching: false,
-      language: {
-        info: "Total: _TOTAL_ requests"
-      },
-      createdRow: function(row) {
+      // language: {
+      //   info: "Total: _TOTAL_ requests"
+      // },
+      createdRow: function (row) {
         const btn_locate = $("button.btn-locate", row)[0];
         if (btn_locate)
-          $(btn_locate).click(function() {
+          $(btn_locate).click(function () {
             const tr = $(btn_locate).closest("tr")[0];
             const reqId = $(tr).attr("data-id"),
               lat = $(tr).attr("data-lat"),
@@ -58,7 +58,7 @@ $(function() {
       type: "GET",
       dataType: "json",
       timeout: 10000
-    }).done(function(data) {
+    }).done(function (data) {
       if (dataTable) {
         dataTable.destroy();
         dataTable = null;
@@ -71,15 +71,15 @@ $(function() {
         paging: false,
         scrollY: 350,
         lengthChange: false,
-        info: true,
+        info: false,
         searching: false,
-        language: {
-          info: "Total: _TOTAL_ requests"
-        },
-        createdRow: function(row) {
+        // language: {
+        //   info: "Total: _TOTAL_ requests"
+        // },
+        createdRow: function (row) {
           const btn_locate = $("button.btn-locate", row)[0];
           if (btn_locate)
-            $(btn_locate).click(function() {
+            $(btn_locate).click(function () {
               const tr = $(btn_locate).closest("tr")[0];
               const reqId = $(tr).attr("data-id"),
                 lat = $(tr).attr("data-lat"),
@@ -101,3 +101,22 @@ function sendReqToDriver() {
   socket.emit("2_to_4_send-req-to-driver", "#2 gửi tọa độ req cho #4");
   // cam-sv end
 }
+
+$(document).ready(function () {
+  //=================================================================
+  //click on table body
+  //$("#tableMain tbody tr").click(function () {
+  $('#reqTable tbody').on('click', 'tr', function () {
+    //get row contents into an array
+    var tableData = $(this).children("td").map(function () {
+      return $(this).text();
+    }).get();
+    console.log(tableData);
+    $('#reqId').val(tableData[0]);
+    $('#addr').val(tableData[3]);
+    const lat = $(this).attr("data-lat");
+    const lng = $(this).attr("data-lng");
+    $('#lat').val(lat);
+    $('#lng').val(lng);
+  });
+});
