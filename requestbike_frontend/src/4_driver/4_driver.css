@@ -23,8 +23,7 @@
 
 /* user section start */
 
-.user-section {
-}
+.user-section {}
 
 /* icon start */
 .circular--landscape {
@@ -106,6 +105,7 @@
   z-index: 9999;
 }
 
+
 /* google map end */
 
 /* responsive start */
@@ -129,4 +129,5 @@
     left: 17px;
   }
 }
+
 /* responsive end */
