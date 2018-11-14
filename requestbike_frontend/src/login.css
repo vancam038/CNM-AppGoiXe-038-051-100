@@ -1,7 +1,7 @@
 body {
     margin: 0;
     padding: 0;
-    background: url(../../assets/img/pexels-photo-434450.jpeg);
+    background: url(../assets/img/pexels-photo-434450.jpeg);
     background-size: cover;
     background-position: center;
     font-family: arial, sans-serif;
@@ -78,9 +78,9 @@ input[type="password"] {
     border-bottom: 1px solid #fff; */
     background: transparent;
     outline: none;
-    height: 40px;
+    height: 50px;
     color: #000;
-    font-size: 16px;
+    font-size: 15px;
 }
 
 .loginbox input[type="submit"] {
