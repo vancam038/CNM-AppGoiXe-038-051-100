@@ -1,6 +1,6 @@
 var socket = io("http://localhost:3001");
 
-$(function() {
+$(function () {
   let dataTable = null;
   dataTable = $("#reqTable").DataTable({
     paging: false,
@@ -97,3 +97,9 @@ $(function() {
     });
   });
 });
+
+function sendReqToDriver() {
+  // cam-sv start
+  socket.emit("2_to_4_send-req-to-driver", "#2 gửi tọa độ req cho #4");
+  // cam-sv end
+}

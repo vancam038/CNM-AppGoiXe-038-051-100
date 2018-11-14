@@ -1,12 +1,14 @@
+var socket = io("http://localhost:3001");
+
 $(function () {
-    $('.timer').startTimer();
+
 })
 
 $(function () {
     $("#requestModalCenter").modal({
-        backdrop: "static"
+        backdrop: "static",
         // mặc định khi init, sẽ show modal. Nếu ko mún show thì chỉnh thành true
-        // ,show: false
+        show: false
     });
 })
 
@@ -51,11 +53,52 @@ function changeStatus(status) {
         case 'STANDBY':
             $('#navbarDropdown').html('STANDBY');
             $('#navbarDropdown').removeClass('btn-outline-success btn-outline-danger').addClass('btn-outline-warning');
+            //socket start
+            //socket end
             break;
             //etc... 
         case 'BUSY':
             $('#navbarDropdown').html('BUSY');
             $('#navbarDropdown').removeClass('btn-outline-success btn-outline-warning').addClass('btn-outline-danger');
+            //socket start
+            //socket end
             break;
     }
 }
+
+//socket start
+
+//listen start
+$(function () {
+
+    // gửi trạng thái lên cho server
+    // socket.emit("4_to_2_???", requestObject);
+
+    // lắng nghe yêu cầu từ phía #2
+    var timer = new Timer();
+    socket.on("2_to_4_send-req-to-driver", (msg) => {
+        console.log(msg);
+        // start đồng hồ
+
+        if (timer.isRunning() == false) {
+            timer.start({
+                countdown: true,
+                startValues: {
+                    seconds: 10
+                }
+            });
+            $('#countdownExample #timer-value').html(timer.getTimeValues().seconds);
+            timer.addEventListener('secondsUpdated', function (e) {
+                $('#countdownExample #timer-value').html(timer.getTimeValues().seconds);
+            });
+            timer.addEventListener('targetAchieved', function (e) {
+                $('#countdownExample #timer-value').html('Không phản hồi').addClass('timer-timeout');
+                $("#requestModalCenter").modal('hide');
+            });
+
+            // hiện modal accept
+            $("#requestModalCenter").modal('show');
+        }
+    })
+})
+//socket end

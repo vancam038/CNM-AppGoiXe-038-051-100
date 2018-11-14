@@ -1,28 +1,11 @@
 /* timer start */
-.jst-hours {
-    display: none;
-    float: left;
+#timer-value {
+    font-size: 2rem;
+    font-weight: bold;
 }
 
-.jst-minutes {
-    display: none;
-    float: left;
-}
-
-.jst-seconds {
-    float: left;
-}
-
-.jst-clearDiv {
-    clear: both;
-}
-
-.jst-timeout {
+.timer-timeout {
     color: red;
-}
-
-.timer {
-    display: inline-block;
 }
 
 /* timer end */

@@ -35,6 +35,15 @@ io.on("connection", socket => {
     console.log(newLatLng);
   });
   // duy-th end
+
+  // cam-sv start
+  socket.on("2_to_4_send-req-to-driver", msg => {
+    console.log(msg);
+    io.sockets.emit("2_to_4_send-req-to-driver", "#4 nhận req từ #2");
+  });
+  // cam-sv end
+
+  // socket END
 });
 
 const PORT1 = process.env.PORT || 3001;
@@ -42,5 +51,3 @@ const PORT1 = process.env.PORT || 3001;
 server.listen(PORT1, () => {
   console.log(`RequestBike Server Socket listening on: ${PORT1}`);
 });
-
-// socket END
