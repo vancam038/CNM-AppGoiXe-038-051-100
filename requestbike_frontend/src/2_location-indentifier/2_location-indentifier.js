@@ -45,54 +45,55 @@ $(function() {
       info: true,
       language: {
         info: "Total: _TOTAL_ requests"
+      },
+      createdRow: function(row, data, index) {
+        // console.log(row, data, index);
+        const btn_locate = $("button.btn-locate", row)[0];
+        if (btn_locate)
+          $(btn_locate).click(function() {
+            const tr = $(btn_locate).closest("tr")[0];
+            const reqId = $(tr).attr("data-id"),
+              lat = $(tr).attr("data-lat"),
+              lng = $(tr).attr("data-lng");
+            if (reqId === undefined || lat === undefined || lng === undefined)
+              return;
+            prevLatLng = new google.maps.LatLng(lat, lng);
+            handleQueryGeolocationFinish(prevLatLng);
+            // $.get(`http://localhost:3000/request/coords/${reqId}`)
+            //   .then(response => response.json())
+            //   .then(result => {
+            //     const { status, coords } = result;
+            //     if (status === "OK") {
+            //       drawUserMarker(coords);
+            //     } else {
+            //       // message staff request not found
+            //     }
+            //   })
+            //   .catch(err => {
+            //     // message staff server error
+            //   });
+          });
+        // const btn_find = $("button.btn-find", row);
+        // console.log("btn_find", btn_find);
+        // btn_find.onClick(() => {
+        // const reqId = btn
+        //   .parent()
+        //   .parent()
+        //   .children(":first").innerHTML;
+        // console.log(reqId);
+        // // disable button while server finding driver
+        // btn.attr("disabled", true);
+        // // $.get(`http://localhost:3000/getReqCoords/${reqId}`)
+        // //   .then(response => response.json())
+        // //   .then(result => {
+        // //     const { status } = result;
+        // //     if (status !== "OK") {
+        // //     }
+        // //   })
+        // //   .catch(err => {});
+        // console.log(index);
+        // });
       }
     });
-    // createdRow: function(row, data, index) {
-    //   // console.log(row, data, index);
-    //   const btn_locate = $("button.btn-locate", row);
-    //   console.log("btn_locate", btn_locate);
-    //   btn_locate.onClick(() => {
-    //     // const reqId = btn_locate
-    //     //   .parent()
-    //     //   .parent()
-    //     //   .children(":first").innerHTML;
-    //     // console.log(reqId);
-    //     // $.get(`http://localhost:3000/request/coords/${reqId}`)
-    //     //   .then(response => response.json())
-    //     //   .then(result => {
-    //     //     const { status, coords } = result;
-    //     //     if (status === "OK") {
-    //     //       drawUserMarker(coords);
-    //     //     } else {
-    //     //       // message staff request not found
-    //     //     }
-    //     //   })
-    //     //   .catch(err => {
-    //     //     // message staff server error
-    //     //   });
-    //     console.log(index);
-    //   });
-    //   const btn_find = $("button.btn-find", row);
-    //   console.log("btn_find", btn_find);
-    //   btn_find.onClick(() => {
-    //     // const reqId = btn
-    //     //   .parent()
-    //     //   .parent()
-    //     //   .children(":first").innerHTML;
-    //     // console.log(reqId);
-    //     // // disable button while server finding driver
-    //     // btn.attr("disabled", true);
-    //     // // $.get(`http://localhost:3000/getReqCoords/${reqId}`)
-    //     // //   .then(response => response.json())
-    //     // //   .then(result => {
-    //     // //     const { status } = result;
-    //     // //     if (status !== "OK") {
-    //     // //     }
-    //     // //   })
-    //     // //   .catch(err => {});
-    //     console.log(index);
-    //   });
-    // }
-    // });
   });
 });

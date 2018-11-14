@@ -41,7 +41,7 @@ function moveUserMarkerMouseUp() {
       const { results, status } = data;
       if (status !== "OK") return;
       // confirm the new position
-      const content = `
+      const infoWindowContent = `
         <div class="infowindow-container">
           <p id="infowindow-address">${results[0].formatted_address}</p>
           <p>Điều chỉnh vị trí hành khách đến vị trí này?</p>
@@ -60,21 +60,63 @@ function moveUserMarkerMouseUp() {
             </button>
           </div>
         </div>`;
-      infoWindow = new google.maps.InfoWindow({ content });
+      infoWindow = new google.maps.InfoWindow({ content: infoWindowContent });
       infoWindow.open(map, userMarker);
     }
   );
 }
 
-function handleQueryGeolocationFinish(pos) {
-  // extract position
-  const { latitude, longitude } = pos.coords;
-  const userLatLng = new google.maps.LatLng(latitude, longitude);
+function handleQueryGeolocationFinish(coords) {
   // add marker indicating user position
-  drawUserMarker(userLatLng);
+  drawUserMarker(coords);
   // re-config the map
   map.setZoom(DEFAULT_ZOOM_LEVEL);
-  map.panTo(userLatLng);
+  map.panTo(coords);
+  // pop up confirm
+  $.get(
+    `https://maps.googleapis.com/maps/api/geocode/json?latlng=${coords.lat()},${coords.lng()}&location_type=ROOFTOP&result_type=street_address&key=AIzaSyDas6_Z8AZ6sdYJGOucYDWh-MCcoB9jjVE`,
+    function(data) {
+      // extract data
+      const { results, status } = data;
+      // confirm the new position
+      let infoWindowContent = "";
+      if (status === "OK") {
+        infoWindowContent = `
+        <div class="infowindow-container">
+          <p id="infowindow-address">${results[0].formatted_address}</p>
+          <p>Vị trí hành khách chính xác?</p>
+          <div class="infowindow-btn btn-group">
+            <button class="btn btn-success" style="width: 49%"
+              onClick="document.getElementById('acceptChangeUserPosition').click()">
+              Có
+            </button>
+            <button class="btn btn-cancel" style="width: 49%" 
+              onClick="document.getElementById('declineChangeUserPosition').click()">
+              Điều chỉnh tiếp
+            </button>
+          </div>
+        </div>`;
+      } else if (status === "ZERO_RESULTS") {
+        infoWindowContent = `
+        <div class="infowindow-container">
+          <p>Vị trí hành khách nhập không có kết quả chính xác. Điều chỉnh?</p>
+          <div class="infowindow-btn btn-group">
+            <button class="btn btn-success" style="width: 49%"
+              onClick="document.getElementById('acceptChangeUserPosition').click()">
+              Có
+            </button>
+            <button class="btn btn-cancel" style="width: 49%"
+              onClick="document.getElementById('declineChangeUserPosition').click()">
+              Không
+            </button>
+          </div>
+        </div>`;
+      }
+
+      infoWindow = new google.maps.InfoWindow({ content: infoWindowContent });
+      infoWindow.open(map, userMarker);
+    }
+  );
 }
 
 // handle buttons clicked in info window
@@ -104,7 +146,7 @@ if (document.getElementById("revertChangeUserPosition"))
     function(e) {
       infoWindow.close();
       // move the marker back
-      drawUserMarker(prevLatLng);
+      handleQueryGeolocationFinish(prevLatLng);
     },
     false
   );
