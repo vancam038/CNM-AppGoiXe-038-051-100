@@ -18,7 +18,7 @@ io.on("connection", socket => {
     console.log("user disconnected");
   });
 
-  // cam_sv start
+  // cam-sv start
   const reqs = [];
   socket.on("1_to_2_transfer-req", req => {
     // const reqIndex = reqs_1_to_2.length + 1;
@@ -86,7 +86,7 @@ io.on("connection", socket => {
     //   });
   });
 
-  // cam_sv end
+  // cam-sv end
 
   // duy-th start
   /* STAFF UPDATE PASSENGER POSITION
@@ -101,6 +101,8 @@ io.on("connection", socket => {
     console.log(newLatLng);
   });
   // duy-th end
+
+
 });
 
 const PORT1 = process.env.PORT || 3001;

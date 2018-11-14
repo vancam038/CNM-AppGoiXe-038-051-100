@@ -1,18 +1,28 @@
-$(function () {
-    $('.timer').startTimer();
-})
+var socket = io('http://localhost:3001');
+
+// timer start
+
+// $(function () {
+// $('.timer').startTimer();
+// })
+
+// timer end
+
+//modal start
 
 $(function () {
     $("#requestModalCenter").modal({
-        backdrop: "static"
+        backdrop: "static",
         // mặc định khi init, sẽ show modal. Nếu ko mún show thì chỉnh thành true
-        // ,show: false
+        show: false
     });
 })
 
-function initMap() {
+// modal end
 
-    /// google map start
+// google map start
+
+function initMap() {
     var myMap, marker;
 
     var geocode = {
@@ -38,24 +48,8 @@ function initMap() {
             }
         }
     });
-
-    // google map end
 };
+// google map end
 
-function changeStatus(status) {
-    switch (status) {
-        case 'READY':
-            $('#navbarDropdown').html('READY');
-            $('#navbarDropdown').removeClass('btn-outline-danger btn-outline-warning').addClass('btn-outline-success');
-            break;
-        case 'STANDBY':
-            $('#navbarDropdown').html('STANDBY');
-            $('#navbarDropdown').removeClass('btn-outline-success btn-outline-danger').addClass('btn-outline-warning');
-            break;
-            //etc... 
-        case 'BUSY':
-            $('#navbarDropdown').html('BUSY');
-            $('#navbarDropdown').removeClass('btn-outline-success btn-outline-warning').addClass('btn-outline-danger');
-            break;
-    }
-}
+
+

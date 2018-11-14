@@ -1,6 +1,6 @@
 var socket = io("http://localhost:3001");
 
-$(function() {
+$(function () {
   let dataTable = null;
   dataTable = $("#reqTable").DataTable({
     paging: false,
@@ -95,4 +95,9 @@ $(function() {
     // }
     // });
   });
+
+
+
+
 });
+
