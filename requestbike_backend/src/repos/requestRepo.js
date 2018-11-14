@@ -24,7 +24,7 @@ exports.loadAll = () => {
 };
 
 // duy-th start
-exports.update = (newLat, newLng, reqId) => {
+exports.updateCoords = (newLat, newLng, reqId) => {
   const sql =
     "update `request` set `lat` = " +
     `'${newLat}', ` +
@@ -35,7 +35,7 @@ exports.update = (newLat, newLng, reqId) => {
   return db.save(sql);
 };
 
-exports.getReqCoords = reqId => {
+exports.getCoords = reqId => {
   const sql =
     "select `lat`, `lng` from `request` where `id` = " + `'${reqId}';`;
   return db.load(sql);

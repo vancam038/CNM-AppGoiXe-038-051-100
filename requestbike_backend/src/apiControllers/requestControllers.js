@@ -32,10 +32,10 @@ router.get("/requests", (req, res) => {
 //     });
 // });
 
-router.get("/getRequestCoords/:reqId", (req, res) => {
+router.get("/request/coords/:reqId", (req, res) => {
   const reqId = req.params.reqId;
   requestRepo
-    .getReqCoords(reqId)
+    .getCoords(reqId)
     .then(value => {
       if (value.length > 0) {
         res.statusCode = 200;
@@ -52,7 +52,7 @@ router.get("/getRequestCoords/:reqId", (req, res) => {
     });
 });
 
-router.put("/request", (req, res) => {
+router.put("/request/coords", (req, res) => {
   const { reqId, newLat, newLng } = req.body;
   if (!reqId || !newLat || !newLng) {
     res.statusCode = 500;
@@ -60,7 +60,7 @@ router.put("/request", (req, res) => {
   }
 
   requestRepo
-    .update(newLat, newLng, reqId)
+    .updateCoords(newLat, newLng, reqId)
     .then(result => {
       console.log(result);
       res.statusCode = 201;
