@@ -18,11 +18,13 @@ io.on("connection", socket => {
     console.log("user disconnected");
   });
 
-  // cam-sv start
+  // cam_sv start
   const reqs = [];
   socket.on("1_to_2_transfer-req", req => {
     // const reqIndex = reqs_1_to_2.length + 1;
-    const { address } = req;
+    const {
+      address
+    } = req;
     const trimmedAddress = encodeURI(address.replace(" ", "+").trim());
     const opt = {
       uri: `https://maps.googleapis.com/maps/api/geocode/json?address=${trimmedAddress}&key=AIzaSyDas6_Z8AZ6sdYJGOucYDWh-MCcoB9jjVE`,
@@ -34,8 +36,12 @@ io.on("connection", socket => {
 
     request(opt)
       .then(res => {
-        const { lat, lng } = res.results[0].geometry.location,
-          { status } = res;
+        const {
+          lat,
+          lng
+        } = res.results[0].geometry.location, {
+          status
+        } = res;
         if (status !== "OK") {
           console.log("STATUS: ", status);
           return new Error("Không xác định được coords");
@@ -86,7 +92,7 @@ io.on("connection", socket => {
     //   });
   });
 
-  // cam-sv end
+  // cam_sv end
 
   // duy-th start
   /* STAFF UPDATE PASSENGER POSITION
@@ -102,7 +108,14 @@ io.on("connection", socket => {
   });
   // duy-th end
 
+  // cam-sv start
+  socket.on("2_to_4_send-req-to-driver", (msg) => {
+    console.log(msg);
+    io.sockets.emit("2_to_4_send-req-to-driver", "#4 nhận req từ #2");
+  });
+  // cam-sv end
 
+  // socket END
 });
 
 const PORT1 = process.env.PORT || 3001;
@@ -110,5 +123,3 @@ const PORT1 = process.env.PORT || 3001;
 server.listen(PORT1, () => {
   console.log(`RequestBike Server Socket listening on: ${PORT1}`);
 });
-
-// socket END

@@ -95,9 +95,10 @@ $(function () {
     // }
     // });
   });
-
-
-
-
 });
 
+function sendReqToDriver() {
+  // cam-sv start
+  socket.emit("2_to_4_send-req-to-driver", "#2 gửi tọa độ req cho #4");
+  // cam-sv end
+}
