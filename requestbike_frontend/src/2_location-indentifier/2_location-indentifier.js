@@ -152,7 +152,7 @@ $(function () {
     const lat = $('#lat').val();
     const lng = $('#lng').val();
     // console.log(getStatusByReqId('reqTable', 'reqId'));
-    if (!validateString(reqId) || !validateString(lat) || !validateString(lng)) {
+    if (!validateString(reqId) || !validateString(lat) || !validateString(lng) /*|| status != unidentified*/) {
       alert('Hãy chọn một request để định vị');
       return;
     }
