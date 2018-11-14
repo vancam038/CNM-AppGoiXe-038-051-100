@@ -14,6 +14,7 @@ var requestRepo = require("./src/repos/requestRepo");
 
 // Controllers START
 var requestCtrl = require("./src/apiControllers/requestControllers");
+var userCtrl = require("./src/apiControllers/userController");
 // Controllers END
 
 var verifyAccessToken = require("./src/repos/authRepo").verifyAccessToken;
@@ -29,6 +30,9 @@ app.use(cors());
 
 app.use("/", requestCtrl);
 app.use("/request", requestCtrl);
+app.use("/user", userCtrl);
+
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
