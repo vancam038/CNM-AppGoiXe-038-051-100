@@ -41,13 +41,6 @@
 /* user section start */
 
 .user-section {
-    display: flex; 
-    align-items: center;
-}
-
-.user-section .username {
-    color: #fff;
-    margin: 0 .5rem;
 }
 
 /* icon start */
@@ -116,7 +109,7 @@
     }
 
     .user-section {
-        flex-direction: row-reverse;
+        align-items: center;
     }
 }
 

@@ -41,3 +41,21 @@ function initMap() {
 
     // google map end
 };
+
+function changeStatus(status) {
+    switch (status) {
+        case 'READY':
+            $('#navbarDropdown').html('READY');
+            $('#navbarDropdown').removeClass('btn-outline-danger btn-outline-warning').addClass('btn-outline-success');
+            break;
+        case 'STANDBY':
+            $('#navbarDropdown').html('STANDBY');
+            $('#navbarDropdown').removeClass('btn-outline-success btn-outline-danger').addClass('btn-outline-warning');
+            break;
+            //etc... 
+        case 'BUSY':
+            $('#navbarDropdown').html('BUSY');
+            $('#navbarDropdown').removeClass('btn-outline-success btn-outline-warning').addClass('btn-outline-danger');
+            break;
+    }
+}

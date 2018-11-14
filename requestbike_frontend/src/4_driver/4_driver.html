@@ -27,54 +27,40 @@
             </a>
 
             <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-                <!-- <a class="navbar-brand" href="#">Hidden brand</a> -->
                 <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-
-                    <li class="nav-item dropdown">
-                        <button id="navbarDropdown" class="btn btn-lg btn-outline-success custom-btn btn-block dropdown-toggle"
-                            type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Đổi
-                            trạng thái</button>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">READY</a>
-                            <a class="dropdown-item" href="#">STANDBY</a>
-                            <a class="dropdown-item" href="#">BUSY</a>
-                        </div>
-                    </li>
                     <li class="nav-item">
-                        <button class="btn btn-lg btn-outline-warning custom-btn btn-block" disabled type="button">Bắt
+                        <button class="btn btn-lg btn-outline-light custom-btn btn-block" disabled type="button">Bắt
                             đầu</button>
                     </li>
                     <li class="nav-item">
-                        <button class="btn btn-lg btn-outline-warning custom-btn btn-block" disabled type="button">Kết
+                        <button class="btn btn-lg btn-outline-light custom-btn btn-block" disabled type="button">Kết
                             thúc</button>
                     </li>
                 </ul>
-                <!-- <form class="form-inline my-2 my-lg-0">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                </form> -->
-                <div class="user-section">
-                    <div class="circular--landscape">
-                        <img src="../../assets/img/driver.png" alt="logo">
-                    </div>
-                    <span class="username">Wolverine</span>
-                </div>
+
+                <ul class="navbar-nav user-section mt-2 mt-lg-0">
+                    <li class="nav-item dropdown">
+                        <button id="navbarDropdown" class="btn btn-lg btn-outline-warning custom-btn btn-block dropdown-toggle"
+                            type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">STANDBY</button>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="#" onclick="changeStatus('READY')">READY</a>
+                            <a class="dropdown-item" href="#" onclick="changeStatus('STANDBY')">STANDBY</a>
+                            <a class="dropdown-item" href="#" onclick="changeStatus('BUSY')">BUSY</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <div class="circular--landscape">
+                            <img src="../../assets/img/driver.png" alt="logo">
+                        </div>
+                    </li>
+                </ul>
             </div>
 
         </nav>
 
-
-
         <!-- google map start -->
         <div id="map"></div>
         <!-- google map end -->
-
-
-
-
-
-
-
 
 
         <!-- Modal start -->
