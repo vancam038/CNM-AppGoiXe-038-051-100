@@ -47,7 +47,7 @@
 
   <script id="request-template" type="text/x-handlebars-template">
     {{#each this}}
-                  <tr>
+                  <tr data-id="{{id}}" data-lat="{{lat}}" data-lng="{{lng}}">
                       <td>{{id}}</td>
                       <td>{{clientName}}</td>
                       <td>{{phone}}</td>
