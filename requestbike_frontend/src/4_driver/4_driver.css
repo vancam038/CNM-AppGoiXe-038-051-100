@@ -27,11 +27,27 @@
 
 /* timer end */
 
+/* container start */
+
 .wrapper {
     display: grid;
     grid-auto-rows: auto 1fr;
     height: 100%;
     width: 100%;
+}
+
+/* container end */
+
+/* user section start */
+
+.user-section {
+    display: flex; 
+    align-items: center;
+}
+
+.user-section .username {
+    color: #fff;
+    margin: 0 .5rem;
 }
 
 /* icon start */
@@ -50,6 +66,8 @@
 }
 
 /* icon end */
+
+/* user section end */
 
 /* custom bootstrap start */
 
@@ -95,6 +113,10 @@
 
     .custom-btn {
         margin: .25rem .75rem;
+    }
+
+    .user-section {
+        flex-direction: row-reverse;
     }
 }
 
