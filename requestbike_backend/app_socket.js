@@ -2,8 +2,6 @@ var express = require("express"),
   app = express(),
   server = require("http").Server(app),
   io = require("socket.io").listen(server);
-const request = require("request-promise");
-const shortid = require("shortid");
 
 // Repo START
 var requestRepo = require("./src/repos/requestRepo");
@@ -19,73 +17,9 @@ io.on("connection", socket => {
   });
 
   // cam_sv start
-  const reqs = [];
-  socket.on("1_to_2_transfer-req", req => {
-    // const reqIndex = reqs_1_to_2.length + 1;
-    const { address } = req;
-    const trimmedAddress = encodeURI(address.replace(" ", "+").trim());
-    const opt = {
-      uri: `https://maps.googleapis.com/maps/api/geocode/json?address=${trimmedAddress}&key=AIzaSyDas6_Z8AZ6sdYJGOucYDWh-MCcoB9jjVE`,
-      headers: {
-        "User-Agent": "Request-Promise"
-      },
-      json: true
-    };
-
-    request(opt)
-      .then(res => {
-        const { lat, lng } = res.results[0].geometry.location,
-          { status } = res;
-        if (status !== "OK") {
-          console.log("STATUS: ", status);
-          return new Error("Không xác định được coords");
-        }
-        // const _req = { ...req, id: socket.id, lat, lng };
-        req.id = shortid.generate();
-        req.lat = lat;
-        req.lng = lng;
-        requestRepo
-          .add(req)
-          .then(() => {
-            requestRepo
-              .loadAll()
-              .then(rows => {
-                reqs.push(req);
-                io.sockets.emit("1_to_2_transfer-req", reqs);
-                io.sockets.emit("1_to_3_transfer-req", rows);
-              })
-              .catch(err => {
-                console.log(err);
-                io.sockets.emit("1_to_2_transfer-req", err);
-                io.sockets.emit("1_to_3_transfer-req", err);
-              });
-          })
-          .catch(err => {
-            console.log(err);
-            io.sockets.emit("1_to_2_transfer-req", err);
-          });
-      })
-      .catch(err => {
-        console.log(err);
-        io.sockets.emit("1_to_2_transfer-req", err);
-      });
-
-    // reqs_1_to_2.unshift(req);
-    //To Do, gửi tạm cho tất cả socket -> sẽ fix gửi 1 sau -> đã fix
-    // io.sockets.emit("1_to_2_transfer-req", reqs_1_to_2);
-
-    // requestRepo
-    //   .loadAll()
-    //   .then(rows => {
-    //     // nếu thành công thì trả về cho client #3
-    //     io.sockets.emit("1_to_3_transfer-req", rows);
-    //   })
-    //   .catch(err => {
-    //     console.log(err);
-    //     io.sockets.emit("1_to_3_transfer-req", err);
-    //   });
+  socket.on("1_to_2_transfer-req", () => {
+    socket.broadcast.emit("new_request_added");
   });
-
   // cam_sv end
 
   // duy-th start

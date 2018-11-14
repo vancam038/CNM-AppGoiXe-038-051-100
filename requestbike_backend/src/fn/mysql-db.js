@@ -40,17 +40,3 @@ exports.save = sql => {
   });
 };
 
-exports.update = sql => {
-  return new Promise((resolve, reject) => {
-    var cn = createConnection();
-    cn.connect();
-    cn.query(sql, err => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve();
-      }
-      cn.end();
-    });
-  });
-};

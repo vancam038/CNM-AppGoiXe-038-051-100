@@ -1,4 +1,6 @@
 var express = require("express");
+const request = require("request-promise");
+const shortid = require("shortid");
 
 var requestRepo = require("../repos/requestRepo");
 var router = express.Router();
@@ -16,21 +18,45 @@ router.get("/requests", (req, res) => {
     });
 });
 
-// router.post("/request", (req, res) => {
-//   console.log("body: " + req.body);
-//   requestRepo
-//     .add(req.body)
-//     .then(value => {
-//       console.log(value);
-//       res.statusCode = 201;
-//       res.json(req.body);
-//     })
-//     .catch(err => {
-//       console.log(err);
-//       res.statusCode = 500;
-//       res.end("View error log on console");
-//     });
-// });
+router.post("/request", (req, res) => {
+  const _req = req.body;
+  const { address } = _req;
+  const trimmedAddress = encodeURI(address.replace(" ", "+").trim());
+  const opt = {
+    uri: `https://maps.googleapis.com/maps/api/geocode/json?address=${trimmedAddress}&key=AIzaSyDas6_Z8AZ6sdYJGOucYDWh-MCcoB9jjVE`,
+    headers: {
+      "User-Agent": "Request-Promise"
+    },
+    json: true
+  };
+
+  request(opt).then(resp => {
+    const { lat, lng } = resp.results[0].geometry.location,
+      { status } = resp;
+    if (status !== "OK") {
+      console.log("STATUS: ", status);
+      res.statusCode = 500;
+      res.json({
+        status: "ZERO_RESULTS",
+        message: "Không xác định được coords"
+      });
+    }
+    _req.id = shortid.generate();
+    _req.lat = lat;
+    _req.lng = lng;
+    requestRepo
+      .add(_req)
+      .then(() => {
+        res.statusCode = 201;
+        res.json(req.body);
+      })
+      .catch(err => {
+        console.log(err);
+        res.statusCode = 500;
+        res.json({ status: "UNKNOWN_ERROR", message: err });
+      });
+  });
+});
 
 router.get("/request/coords/:reqId", (req, res) => {
   const reqId = req.params.reqId;
@@ -48,7 +74,7 @@ router.get("/request/coords/:reqId", (req, res) => {
     .catch(err => {
       console.log(err);
       res.statusCode = 500;
-      res, end("View error log on console");
+      res.json({ status: "UNKNOWN_ERROR", message: err });
     });
 });
 
