@@ -38,8 +38,7 @@ io.on("connection", socket => {
 
   // cam-sv start
   socket.on("2_to_4_send-req-to-driver", msg => {
-    console.log(msg);
-    io.sockets.emit("2_to_4_send-req-to-driver", "#4 nhận req từ #2");
+    io.sockets.emit("2_to_4_send-req-to-driver", msg);
   });
   // cam-sv end
 

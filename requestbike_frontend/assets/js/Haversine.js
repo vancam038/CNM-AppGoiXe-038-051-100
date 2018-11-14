@@ -18,5 +18,3 @@ function Haversine(_prevLatLng, _newLatLng) {
 
   return Math.abs((d = R * c));
 }
-
-exports.Haversine = Haversine;
