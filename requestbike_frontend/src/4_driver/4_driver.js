@@ -31,7 +31,7 @@ function initMap() {
         map: myMap,
         animation: google.maps.Animation.BOUNCE,
         icon: {
-            url: '../../assets/img/man.png',
+            url: '../../assets/img/driver.png',
             scaledSize: {
                 width: 50,
                 height: 50
