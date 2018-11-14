@@ -18,7 +18,7 @@ $(function () {});
 $(function () {
     $("#requestModalCenter").modal({
         backdrop: "static",
-        // mặc định khi init, sẽ show modal. Nếu ko mún show thì chỉnh thành true
+        // mặc định khi init, sẽ show modal. Nếu ko mún show thì chỉnh thành false
         show: false
     });
 });
@@ -52,7 +52,7 @@ function drawDriverMarker(latLng) {
         map,
         icon: "../../assets/img/driver.png",
         draggable: true,
-        animation: google.maps.Animation.DROP
+        animation: google.maps.Animation.BOUNCE
     });
     // (re-)add event listeners
     driverMarker.addListener("mouseup", moveDriverMarkerMouseUp);
@@ -239,8 +239,9 @@ function drawPassengerMarker(latLng) {
         position: latLng,
         map,
         icon: "../../assets/img/man.png",
-        draggable: false,
-        animation: google.maps.Animation.DROP
+        animation: google.maps.Animation.DROP,
+        draggable: false
+        
     });
 }
 
@@ -312,7 +313,7 @@ $(function () {
                     .addClass("timer-timeout");
                 setTimeout(function () {
                     $("#requestModalCenter").modal("hide");
-                }, 1500);
+                }, 500);
             });
 
             // hiện modal accept

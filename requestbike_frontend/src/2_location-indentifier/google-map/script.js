@@ -36,9 +36,12 @@ function moveUserMarkerMouseUp() {
     },${
       newLagLng.lng
     }&location_type=ROOFTOP&result_type=street_address&key=AIzaSyDas6_Z8AZ6sdYJGOucYDWh-MCcoB9jjVE`,
-    function(data) {
+    function (data) {
       // extract data
-      const { results, status } = data;
+      const {
+        results,
+        status
+      } = data;
       if (status !== "OK") return;
       // confirm the new position
       const infoWindowContent = `
@@ -60,7 +63,9 @@ function moveUserMarkerMouseUp() {
             </button>
           </div>
         </div>`;
-      infoWindow = new google.maps.InfoWindow({ content: infoWindowContent });
+      infoWindow = new google.maps.InfoWindow({
+        content: infoWindowContent
+      });
       infoWindow.open(map, userMarker);
     }
   );
@@ -75,9 +80,12 @@ function handleQueryGeolocationFinish(coords) {
   // pop up confirm
   $.get(
     `https://maps.googleapis.com/maps/api/geocode/json?latlng=${coords.lat()},${coords.lng()}&location_type=ROOFTOP&result_type=street_address&key=AIzaSyDas6_Z8AZ6sdYJGOucYDWh-MCcoB9jjVE`,
-    function(data) {
+    function (data) {
       // extract data
-      const { results, status } = data;
+      const {
+        results,
+        status
+      } = data;
       // confirm the new position
       let infoWindowContent = "";
       if (status === "OK") {
@@ -113,7 +121,9 @@ function handleQueryGeolocationFinish(coords) {
         </div>`;
       }
 
-      infoWindow = new google.maps.InfoWindow({ content: infoWindowContent });
+      infoWindow = new google.maps.InfoWindow({
+        content: infoWindowContent
+      });
       infoWindow.open(map, userMarker);
     }
   );
@@ -123,10 +133,16 @@ function handleQueryGeolocationFinish(coords) {
 if (document.getElementById("acceptChangeUserPosition"))
   document.getElementById("acceptChangeUserPosition").addEventListener(
     "click",
-    function(e) {
+    function (e) {
       infoWindow.close();
       // send message to server
       socket.emit("");
+      // nếu như confirm đúng ròi thì mở nút tìm xe
+      $('.btn-find').prop('disabled', false);
+      // // tìm thằng tr cập nhật lại status của nó ở cả 2 phía client lẫn database
+      setStatusByReqId('reqTable', 'reqId', 'IDENTIFIED')
+
+
     },
     false
   );
@@ -134,7 +150,7 @@ if (document.getElementById("acceptChangeUserPosition"))
 if (document.getElementById("declineChangeUserPosition"))
   document.getElementById("declineChangeUserPosition").addEventListener(
     "click",
-    function(e) {
+    function (e) {
       infoWindow.close();
     },
     false
@@ -143,7 +159,7 @@ if (document.getElementById("declineChangeUserPosition"))
 if (document.getElementById("revertChangeUserPosition"))
   document.getElementById("revertChangeUserPosition").addEventListener(
     "click",
-    function(e) {
+    function (e) {
       infoWindow.close();
       // move the marker back
       handleQueryGeolocationFinish(prevLatLng);

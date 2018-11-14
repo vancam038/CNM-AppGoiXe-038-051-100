@@ -5,11 +5,6 @@ body {
   padding: 0;
 }
 
-body {
-  /* overflow: hidden; */
-
-}
-
 .wrapper {
   height: 100%;
   background-color: #eee;
@@ -25,14 +20,16 @@ body {
 }
 
 .group-button {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-gap: .5rem;
+  display: flex;
+  justify-content: center;
+  background: #fff;
+  border-radius: 8px;
+  padding: 5px;
 }
 
-.wrapper .container-fluid {
-  /* position: relative;
-  height: 100%; */
+.group-button .btn {
+  margin: 0px 1rem;
+  flex-basis: 10%;
 }
 
 #reqTable {
@@ -61,9 +58,15 @@ hr.style12 {
   border-radius: 8px;
   padding: 15px;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, auto);
 }
 
 .custom-form .form-group {
   justify-self: center;
 }
+
+/* status color start */
+.identified {
+  color: green;
+}
+/* status color end */

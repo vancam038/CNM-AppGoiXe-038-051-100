@@ -51,7 +51,6 @@
               <th>Địa chỉ</th>
               <th>Ghi chú</th>
               <th>Trạng thái</th>
-              <th>Thao tác</th>
             </tr>
           </thead>
           <tbody id="requests"></tbody>
@@ -60,25 +59,24 @@
       <form class="form-inline custom-form" role="form">
         <div class="form-group">
           <label for="email2" class="mr-sm-2">Request ID:</label>
-          <input id="reqId" type="text" class="form-control mr-sm-2" id="email2" placeholder="">
+          <input id="reqId" type="text" class="form-control mr-sm-2" id="email2" placeholder="" disabled>
         </div>
         <div class="form-group">
           <label for="pwd2" class="mr-sm-2">Địa chỉ gốc:</label>
-          <input id="addr" type="text" class="form-control  mr-sm-2" id="pwd2" placeholder="">
+          <input id="addr" type="text" class="form-control  mr-sm-2" id="pwd2" placeholder="" disabled>
         </div>
         <div class="form-group">
           <label for="pwd2" class="mr-sm-2">Lat:</label>
-          <input id="lat" type="text" class="form-control  mr-sm-2" id="pwd2" placeholder="">
+          <input id="lat" type="text" class="form-control  mr-sm-2" id="pwd2" placeholder="" disabled>
         </div>
         <div class="form-group">
           <label for="pwd2" class="mr-sm-2">Lng:</label>
-          <input id="lng" type="text" class="form-control mr-sm-2" id="pwd2" placeholder="">
+          <input id="lng" type="text" class="form-control mr-sm-2" id="pwd2" placeholder="" disabled>
         </div>
       </form>
       <div class="group-button" role="group">
         <button class="btn btn-primary btn-locate">Định vị</button>
-        <button type="button" class="btn btn-success">Confirm</button>
-        <button class="btn btn-danger btn-find" onclick="sendReqToDriver();this.disabled=true;">Tìm xe</button>
+        <button class="btn btn-danger btn-find" onclick="this.disabled=true;" disabled>Tìm xe</button>
       </div>
 
       <!-- google map start -->
@@ -102,14 +100,6 @@
                         <td>{{address}}</td>
                         <td>{{note}}</td>
                         <td>{{status}}</td>
-                        <td>
-                            <button class="btn btn-info btn-locate">
-                              Định vị
-                            </button>
-                            <button class="btn btn-danger btn-find"  onclick="sendReqToDriver();this.disabled=true;">
-                              Tìm xe
-                            </button>
-                        </td>
                     </tr>
                 {{/each}}
     </script>
@@ -121,6 +111,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
   <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
   <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.js"></script>
+  <script src="../../assets/js/common.js"></script>
   <script src="./google-map/script.js"></script>
   <script src="./2_location-indentifier.js"></script>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDas6_Z8AZ6sdYJGOucYDWh-MCcoB9jjVE&callback=initMap"
