@@ -40,4 +40,9 @@ exports.getCoords = reqId => {
     "select `lat`, `lng` from `request` where `id` = " + `'${reqId}';`;
   return db.load(sql);
 };
+
+exports.loadUnidentified = () => {
+  const sql = "select * from request where status = 'UNIDENTIFIED';";
+  return db.load(sql);
+};
 // duy-th end

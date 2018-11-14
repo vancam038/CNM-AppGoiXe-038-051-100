@@ -9,6 +9,7 @@ router.get("/requests", (req, res) => {
   requestRepo
     .loadAll()
     .then(rows => {
+      res.statusCode = 200;
       res.json(rows);
     })
     .catch(err => {
@@ -16,6 +17,29 @@ router.get("/requests", (req, res) => {
       res.statusCode = 500;
       res.end("View error log on console");
     });
+});
+
+router.get("/request/:status", (req, res) => {
+  const reqStatus = req.params.status.trim().toLowerCase();
+  switch (reqStatus) {
+    case "unidentified":
+      requestRepo
+        .loadUnidentified()
+        .then(rows => {
+          res.statusCode = 200;
+          res.json(rows);
+        })
+        .catch(err => {
+          console.log(err);
+          res.statusCode = 500;
+          res.end("View error log on console");
+        });
+      break;
+    default:
+      res.statusCode = 404;
+      res.json({ status: "INVALID_REQUEST_TYPE" });
+      break;
+  }
 });
 
 router.post("/request", (req, res) => {
@@ -37,8 +61,7 @@ router.post("/request", (req, res) => {
       console.log("STATUS: ", status);
       res.statusCode = 500;
       res.json({
-        status: "ZERO_RESULTS",
-        message: "Không xác định được coords"
+        status: "ZERO_RESULTS"
       });
     }
     _req.id = shortid.generate();
