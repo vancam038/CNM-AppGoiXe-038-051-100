@@ -1,0 +1,58 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ĐĂNG NHẬP</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/all.css"> <!-- Font awesome -->
+    <link rel="stylesheet" type="text/css" href="./login.css">
+</head>
+
+<body>
+
+    <div class="wrapper">
+        <div class="loginbox">
+            <div class="avatar-container">
+                <img src="../assets/img/avatar.png" class="avatar">
+            </div>
+
+            <div id="alert-success" class="alert alert-success">
+                <strong>Success!</strong>
+            </div>
+
+            <div id="alert-danger" class="alert alert-danger">
+                <strong>Error!</strong>
+            </div>
+            <!-- <h1>#1 - Request Receiver</h1>
+             -->
+            <form class="needs-validation" id="form">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fas fa-user"></i></span>
+                    </div>
+                    <input class="form-control" type="text" name="username" id="userInput" placeholder="Tên đăng nhập"
+                        required>
+                </div>
+                <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-key"></i></span>
+                        </div>
+                        <input class="form-control" type="password" name="pwd" id="pwdInput" placeholder="Mật khẩu" required>
+                    </div>
+                <!-- ------------------------------------------------ -->
+                <input type="submit" name="" value="ĐĂNG NHẬP">
+            </form>
+        </div>
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+    <script src="./login.js"></script>
+</body>
+
+</html>

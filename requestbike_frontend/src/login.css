@@ -1,0 +1,124 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: url(../assets/img/pexels-photo-434450.jpeg);
+    background-size: cover;
+    background-position: center;
+    font-family: arial, sans-serif;
+}
+.staff-zone{
+    position: absolute; 
+    right:10; 
+    top:10;
+}
+.staff-zone .btn{
+    border-radius: 20px;
+}
+
+.wrapper {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loginbox {
+    width: 400px;
+    height: max-content;
+    background: #f5f6fa;
+    color: #000;
+    border: 1px solid;
+    opacity: .92;
+    top: 50%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    box-sizing: border-box;
+    padding: 50px 30px 0px;
+}
+
+.avatar-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    position: absolute;
+    top: -50px;
+    left: calc(50% - 50px);
+}
+
+h1 {
+    margin: 0;
+    padding: 0 0 20px;
+    text-align: center;
+    font-size: 22px;
+}
+
+.loginbox p {
+    margin: 0;
+    padding: 0;
+    font-weight: bold;
+}
+
+.loginbox input {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.loginbox input[type="text"],
+input[type="password"] {
+    /* border: none;
+    border-bottom: 1px solid #fff; */
+    background: transparent;
+    outline: none;
+    height: 50px;
+    color: #000;
+    font-size: 15px;
+}
+
+.loginbox input[type="submit"] {
+    border: none;
+    outline: none;
+    height: 40px;
+    background: #FB3735;
+    color: #fff;
+    font-size: 18px;
+    border-radius: 20px;
+    margin-top: 20px;
+}
+
+.loginbox input[type="submit"]:hover {
+    cursor: pointer;
+    background: #ffc107;
+    color: #000;
+}
+
+.loginbox a {
+    text-decoration: none;
+    font-size: 12px;
+    line-height: 20px;
+    color: darkgrey;
+}
+
+.loginbox a:hover {
+    color: #ffc107;
+}
+
+/* custom bootstrap start */
+.alert {
+    padding: 0.25rem 1.25rem;
+    text-align: center;
+}
+
+.alert-dismissible .close {
+    padding: 0.25rem 1.25rem;
+}
+
+/* custom bootstrap end */
