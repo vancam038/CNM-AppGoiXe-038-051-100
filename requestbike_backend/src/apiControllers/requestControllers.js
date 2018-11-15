@@ -32,7 +32,10 @@ router.get("/requests/:status", (req, res) => {
         .loadUnidentified()
         .then(rows => {
           res.statusCode = 200;
-          res.json(rows);
+          // res.json(rows);
+          res.send(_.sortBy(JSON.parse(JSON.stringify(rows)), [function (o) {
+            return o.date_submitted;
+          }]).reverse());
         })
         .catch(err => {
           console.log(err);
