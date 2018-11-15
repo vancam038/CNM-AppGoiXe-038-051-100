@@ -38,18 +38,6 @@ $(function () {
   });
 });
 
-// function sendReqToDriver(btn) {
-//   console.log(btn);
-//   const tr = $(btn).closest("tr")[0];
-//   const reqId = $(tr).attr("data-id"),
-//     lat = $(tr).attr("data-lat"),
-//     lng = $(tr).attr("data-lng");
-//   if (reqId === undefined || lat === undefined || lng === undefined) return;
-//   // cam-sv start
-//   socket.emit("2_to_4_send-req-to-driver", JSON.stringify({ reqId, lat, lng }));
-//   // cam-sv end
-// }
-
 $(function () {
   //=================================================================
   //click on table body
@@ -59,7 +47,6 @@ $(function () {
     var tableData = $(this).children("td").map(function () {
       return $(this).text();
     }).get();
-    console.log(tableData);
     $('#reqId').val(tableData[0]);
     $('#addr').val(tableData[3]);
     $('#status').val(tableData[5]);
@@ -74,7 +61,6 @@ $(function () {
     const lat = $('#lat').val();
     const lng = $('#lng').val();
     const status = $('#status').val();
-    // console.log(getStatusByReqId('reqTable', 'reqId'));
     if (!validateString(reqId) || !validateString(lat) || !validateString(lng) || status !== 'UNIDENTIFIED') {
       alert('Hãy chọn một request để định vị');
       return;

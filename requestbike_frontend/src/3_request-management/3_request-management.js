@@ -45,7 +45,6 @@ $(function () {
     var tableData = $(this).children("td").map(function () {
       return $(this).text();
     }).get();
-    console.log(tableData);
     $('#reqId').val(tableData[0]);
     $('#addr').val(tableData[3]);
     $('#status').val(tableData[5]);
