@@ -34,6 +34,7 @@ $(function () {
       var template = Handlebars.compile(source);
       var html = template(data);
       $("#requests").html(html);
+      keepSelectedRow();
     });
   });
 });
@@ -42,6 +43,8 @@ $(function () {
   //=================================================================
   //click on table body
   $('#reqTable tbody').on('click', 'tr', function () {
+    $('#reqTable tbody tr').removeClass('selected');
+    $(this).addClass('selected');
     var tableData = $(this).children("td").map(function () {
       return $(this).text();
     }).get();
@@ -52,7 +55,6 @@ $(function () {
     const lng = $(this).attr("data-lng");
     $('#lat').val(lat);
     $('#lng').val(lng);
-    _.sortBy
   });
 
   $(".btn-locate").click(function () {
@@ -101,6 +103,16 @@ $(function () {
       var template = Handlebars.compile(source);
       var html = template(data);
       $("#requests").html(html);
+      keepSelectedRow();
     });
   })
 })
+
+function keepSelectedRow() {
+  $('#reqTable tr').each(function () {
+    if ($(this).children('td:first').html() === $('#reqId').val()) {
+      $('#reqTable tr').removeClass('selected');
+      $(this).addClass('selected');
+    }
+  })
+}

@@ -34,6 +34,7 @@ $(function () {
       var template = Handlebars.compile(source);
       var html = template(data);
       $("#requests").html(html);
+      keepSelectedRow();
     });
   });
 });
@@ -41,9 +42,9 @@ $(function () {
 $(function () {
   //=================================================================
   //click on table body
-  //$("#tableMain tbody tr").click(function () {
   $('#reqTable tbody').on('click', 'tr', function () {
-    //get row contents into an array
+    $('#reqTable tbody tr').removeClass('selected');
+    $(this).addClass('selected');
     var tableData = $(this).children("td").map(function () {
       return $(this).text();
     }).get();
@@ -91,3 +92,11 @@ $(function () {
 
 });
 
+function keepSelectedRow() {
+  $('#reqTable tr').each(function () {
+    if ($(this).children('td:first').html() === $('#reqId').val()) {
+      $('#reqTable tr').removeClass('selected');
+      $(this).addClass('selected');
+    }
+  })
+}

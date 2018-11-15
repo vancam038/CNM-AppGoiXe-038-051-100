@@ -52,13 +52,36 @@
                 <th>Ghi chú</th>
                 <th>Trạng thái</th>
                 <th>Thời điểm đặt</th>
-                <th>Thao tác</th>
               </tr>
             </thead>
             <tbody id="requests"></tbody>
           </table>
         </div>
-       
+
+        <form class="form-inline custom-form" role="form">
+          <div class="form-group">
+            <label for="email2" class="mr-sm-2">Request ID:</label>
+            <input id="reqId" type="text" class="form-control mr-sm-2" id="email2" placeholder="" disabled>
+          </div>
+          <div class="form-group">
+            <label for="pwd2" class="mr-sm-2">Địa chỉ gốc:</label>
+            <input id="addr" type="text" class="form-control  mr-sm-2" id="pwd2" placeholder="" disabled>
+          </div>
+          <div class="form-group">
+            <label for="pwd2" class="mr-sm-2">Lat:</label>
+            <input id="lat" type="text" class="form-control  mr-sm-2" id="pwd2" placeholder="" disabled>
+          </div>
+          <div class="form-group">
+            <label for="pwd2" class="mr-sm-2">Lng:</label>
+            <input id="lng" type="text" class="form-control mr-sm-2" id="pwd2" placeholder="" disabled>
+          </div>
+          <div class="form-group" hidden>
+            <label for="pwd2" class="mr-sm-2">Lng:</label>
+            <input id="status" type="text" class="form-control mr-sm-2" id="pwd2" placeholder="" disabled>
+          </div>
+          <button class="btn btn-primary">Xem đường đi</button>
+        </form>
+
         <!-- google map start -->
         <!-- <div id="map-container">
         <div id="map-dialog"></div> -->
@@ -90,13 +113,6 @@
                         <td>{{note}}</td>
                         <td class={{status}}>{{status}}</td>
                         <td>{{date_submitted}}</td>
-                        <td style="text-align: center">
-                          {{#if true}}
-                          <button class="btn btn-primary" >Xem đường đi</button>
-                          {{else}}
-                          <button class="btn btn-primary" disable>Xem đường đi</button>
-                          {{/if}}
-                        </td>
                     </tr>
                 {{/each}}
     </script>
