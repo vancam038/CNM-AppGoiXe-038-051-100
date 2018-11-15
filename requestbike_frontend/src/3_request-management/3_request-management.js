@@ -89,3 +89,18 @@ $(function () {
   });
 
 });
+
+$(function () {
+  socket.on("2_to_3_reload-table", () => {
+    $.ajax({
+      url: "http://localhost:3000/requests",
+      type: "GET",
+      dataType: "json"
+    }).done(function (data) {
+      var source = document.getElementById("request-template").innerHTML;
+      var template = Handlebars.compile(source);
+      var html = template(data);
+      $("#requests").html(html);
+    });
+  })
+})

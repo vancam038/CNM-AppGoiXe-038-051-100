@@ -40,6 +40,10 @@ io.on("connection", socket => {
   socket.on("2_to_4_send-req-to-driver", msg => {
     io.sockets.emit("2_to_4_send-req-to-driver", msg);
   });
+
+  socket.on("2_to_3_reload-table", () => {
+    io.sockets.emit("2_to_3_reload-table");
+  });
   // cam-sv end
 
   // socket END

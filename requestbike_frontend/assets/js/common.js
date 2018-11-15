@@ -10,8 +10,10 @@ function setStatusByReqId(tableId, idReq, status) {
         };
 
         if (reqId_table === reqId) {
-            // tạm thời set cứng html -> đúng ra là phải query từ db để ghi đè lên lại
+            // tạm thời set cứng html -> đúng ra là phải query từ db để ghi đè lên lại -> đã xử lý
             // $(this).find("td:last").html(status);
+
+            // Đầu tiên, cập nhật status của nó dưới db
             $.ajax({
                 url: "http://localhost:3000/request/status",
                 type: "PATCH",
@@ -22,6 +24,7 @@ function setStatusByReqId(tableId, idReq, status) {
                 data: JSON.stringify(reqObject),
                 dataType: "json",
             }).done(function (data) {
+                // sau khi cập nhật thành công thì reload lại table (query db để ghi đè lên lại)
                 $.ajax({
                     url: "http://localhost:3000/requests",
                     type: "GET",
@@ -31,6 +34,8 @@ function setStatusByReqId(tableId, idReq, status) {
                     var template = Handlebars.compile(source);
                     var html = template(data);
                     $("#requests").html(html);
+                    // đồng thời emit cho app#3 biết, để cùng realtime
+                    socket.emit("2_to_3_reload-table");
                 });
             });
             return true;
