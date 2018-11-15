@@ -1,3 +1,4 @@
+/* container start */
 *,
 body {
   font-family: "Roboto", Arial, Helvetica, sans-serif;
@@ -6,22 +7,71 @@ body {
 }
 
 .wrapper {
-  height: 97vh;
-  padding-top: 15px;
+  height: max-content;
+  background-color: #F5F6F7;
 }
 
-.wrapper .container-fluid {
-  position: relative;
+.content-wrapper-inner {
+  display: grid;
   height: 100%;
+  grid-gap: 1rem;
+  padding: 1rem;
 }
 
-hr.style12 {
-  height: 6px;
-  background: url(http://ibrahimjabbari.com/english/images/hr-12.png) repeat-x 0
-    0;
-  border: 0;
+.group-button {
+  display: flex;
+  justify-content: center;
+  background: #fff;
+  border-radius: 8px;
+  padding: .5rem;
+  border: 1px solid #888;
 }
 
-.wrapper > .container-fluid > .row {
-  height: 60vh;
+/* container end */
+
+.btn-group {
+  width: 100%;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* form inline custom start */
+
+.custom-form {
+  background: #fff;
+  border-radius: 8px;
+  padding: 15px;
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  border: 1px solid #888;
+}
+
+.custom-form .form-group {
+  justify-self: center;
+}
+
+.group-button .btn {
+  margin: 0px 1rem;
+  flex-basis: 10%;
+}
+
+/* form inline custom end */
+
+/* status color start */
+.identified {
+  color: green;
+}
+
+.unidentified {
+  color: red;
+}
+
+/* status color end */
+
+.table-container {
+  height: 260px;
+  overflow: auto;
+  background-color: #eee;
+  position: relative;
 }

@@ -43,12 +43,15 @@ $(function() {
     const address = $("#address").val();
     const note = $("#note").val();
     const status = "UNIDENTIFIED";
+    const date_submitted = moment().format('YYYY-MM-DD HH:mm');
+    console.log(date_submitted);
     const requestObject = {
       clientName,
       phone,
       address,
       note,
-      status
+      status,
+      date_submitted
     };
 
     $.ajax({

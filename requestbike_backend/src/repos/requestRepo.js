@@ -1,11 +1,13 @@
 var db = require("../fn/mysql-db");
 
+
 exports.add = requestEntity => {
   const {
     id,
     clientName,
     phone,
     address,
+    date_submitted,
     note,
     status: statusReq,
     lat,
@@ -13,8 +15,8 @@ exports.add = requestEntity => {
   } = requestEntity;
 
   const sql =
-    "insert into `request`(`id`, `clientName`, `phone`, `address`, `note`, `status`, `lat`, `lng`)" +
-    `values('${id}','${clientName}','${phone}','${address}','${note}','${statusReq}',${lat},${lng});`;
+    "insert into `request`(`id`, `clientName`, `phone`, `address`, `date_submitted`, `note`, `status`, `lat`, `lng`)" +
+    `values('${id}','${clientName}','${phone}','${address}', '${date_submitted}','${note}','${statusReq}',${lat},${lng});`;
   return db.save(sql);
 };
 
@@ -46,3 +48,11 @@ exports.loadUnidentified = () => {
   return db.load(sql);
 };
 // duy-th end
+
+// cam-sv start
+exports.updateStatus = (newStatus, reqId) => {
+  const sql =
+    "update request set status = " + `'${newStatus}'` + " where id=" + `'${reqId}';`;
+  return db.save(sql);
+};
+// cam-sv end
