@@ -1,10 +1,10 @@
 body {
     margin: 0;
     padding: 0;
-    background: url(../../assets/img/pexels-photo-434450.jpeg);
+    background: url(../../assets/img/pic1.jpg);
     background-size: cover;
     background-position: center;
-    font-family: arial, sans-serif;
+    font-family: "Roboto", Arial, Helvetica, sans-serif;
 }
 .staff-zone{
     position: absolute; 
@@ -144,8 +144,8 @@ input[type="password"] {
     font-weight: bold;
     border-radius: 40px;
     opacity: 0.8;
-    -webkit-transition: width 500ms, border-radius 500ms, opacity 500ms; /* Safari */
-    transition: width 500ms, border-radius 500ms, opacity 500ms;
+    -webkit-transition: width 200ms, border-radius 200ms, opacity 200ms; /* Safari */
+    transition: width 200ms, border-radius 200ms, opacity 200ms;
 }
 
 .role-option img{
