@@ -23,10 +23,3 @@ exports.login = loginEntity => {
 	var sql = `select * from users where f_username = '${loginEntity.username}' and f_password = '${md5_pwd}' and f_type = '${loginEntity.type}'`;
 	return db.load(sql);
 }
-
-
-
-
-
-
-

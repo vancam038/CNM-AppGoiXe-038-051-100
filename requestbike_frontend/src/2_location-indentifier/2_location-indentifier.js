@@ -14,6 +14,11 @@ $(function () {
   $.ajax({
     url: "http://localhost:3000/requests/unidentified",
     type: "GET",
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json"
+      // ,"x-access-token": localStorage.getItem('token')
+    },
     dataType: "json",
     timeout: 10000
   }).done(function (data) {

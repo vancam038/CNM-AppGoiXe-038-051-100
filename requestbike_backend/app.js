@@ -6,9 +6,6 @@ var bodyParser = require("body-parser"),
   morgan = require("morgan"),
   cors = require("cors");
 
-// Repo START
-var requestRepo = require("./src/repos/requestRepo");
-// Repo END
 
 // server nodejs START
 
@@ -28,9 +25,11 @@ app.use(
 );
 app.use(cors());
 
-app.use("/", requestCtrl);
-app.use("/request", requestCtrl);
 app.use("/user", userCtrl);
+// for test purpose
+app.use("/", requestCtrl);
+// JWT cho api
+// app.use("/", verifyAccessToken, requestCtrl);
 
 
 

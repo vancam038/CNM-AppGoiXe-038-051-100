@@ -32,6 +32,7 @@ $(function () {
             dataType:'json',
             success: function(data){
                 console.log(data);
+                localStorage.setItem('token', data.access_token);
             },
             error:function(){
                 console.log('Login Fail');
