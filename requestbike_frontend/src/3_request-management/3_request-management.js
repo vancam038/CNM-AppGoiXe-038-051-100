@@ -57,17 +57,10 @@ $(function () {
     $('#lng').val(lng);
   });
 
-  $(".btn-locate").click(function () {
-    const reqId = $('#reqId').val();
-    const lat = $('#lat').val();
-    const lng = $('#lng').val();
-    const status = $('#status').val();
-    if (!validateString(reqId) || !validateString(lat) || !validateString(lng) || status !== 'UNIDENTIFIED') {
-      alert('Hãy chọn một request để định vị');
-      return;
-    }
-    prevLatLng = new google.maps.LatLng(lat, lng);
-    handleQueryGeolocationFinish(prevLatLng);
+  $(".btn-path").click(function (e) {
+    e.preventDefault();
+    console.log("Đã bắt");
+    
   });
 
   $(".btn-find").click(function () {

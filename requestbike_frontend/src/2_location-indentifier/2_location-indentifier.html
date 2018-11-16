@@ -67,22 +67,20 @@
             <input id="addr" type="text" class="form-control  mr-sm-2" id="pwd2" placeholder="" disabled>
           </div>
           <div class="form-group">
-            <label for="pwd2" class="mr-sm-2">Lat:</label>
-            <input id="lat" type="text" class="form-control  mr-sm-2" id="pwd2" placeholder="" disabled>
+            <label for="pwd2" class="mr-sm-2">Ghi chú:</label>
+            <input id="note" type="text" class="form-control  mr-sm-2" id="pwd2" placeholder="" disabled>
           </div>
-          <div class="form-group">
-            <label for="pwd2" class="mr-sm-2">Lng:</label>
-            <input id="lng" type="text" class="form-control mr-sm-2" id="pwd2" placeholder="" disabled>
+          <div class="group-button">
+            <button class="btn btn-primary btn-locate">Định vị</button>
+            <button class="btn btn-danger btn-find" onclick="this.disabled=true;" disabled>Tìm xe</button>
           </div>
           <div class="form-group" hidden>
-            <label for="pwd2" class="mr-sm-2">Lng:</label>
             <input id="status" type="text" class="form-control mr-sm-2" id="pwd2" placeholder="" disabled>
+            <input id="lat" type="text" class="form-control  mr-sm-2" id="pwd2" placeholder="" disabled>
+            <input id="lng" type="text" class="form-control mr-sm-2" id="pwd2" placeholder="" disabled>
           </div>
         </form>
-        <div class="group-button" role="group">
-          <button class="btn btn-primary btn-locate">Định vị</button>
-          <button class="btn btn-danger btn-find" onclick="this.disabled=true;" disabled>Tìm xe</button>
-        </div>
+
 
         <!-- google map start -->
         <!-- <div id="map-container">

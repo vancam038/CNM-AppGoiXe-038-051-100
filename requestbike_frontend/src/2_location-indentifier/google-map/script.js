@@ -26,7 +26,7 @@ function drawUserMarker(latLng) {
   userMarker.addListener("mousedown", moveUserMarkerMouseDown);
 }
 
-function moveUserMarkerMouseUp() {
+function moveUserMarkerMouseDown() {
   infoWindow.close();
 }
 

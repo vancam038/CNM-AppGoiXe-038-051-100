@@ -55,6 +55,7 @@ $(function () {
     }).get();
     $('#reqId').val(tableData[0]);
     $('#addr').val(tableData[3]);
+    $('#note').val(tableData[4])
     $('#status').val(tableData[5]);
     const lat = $(this).attr("data-lat");
     const lng = $(this).attr("data-lng");
@@ -62,7 +63,8 @@ $(function () {
     $('#lng').val(lng);
   });
 
-  $(".btn-locate").click(function () {
+  $(".btn-locate").click(function (e) {
+    e.preventDefault();
     const reqId = $('#reqId').val();
     const lat = $('#lat').val();
     const lng = $('#lng').val();
@@ -75,7 +77,8 @@ $(function () {
     handleQueryGeolocationFinish(prevLatLng);
   });
 
-  $(".btn-find").click(function () {
+  $(".btn-find").click(function (e) {
+    e.preventDefault();
     const reqId = $('#reqId').val();
     const lat = $('#lat').val();
     const lng = $('#lng').val();

@@ -19,12 +19,8 @@ body {
 }
 
 .group-button {
-  display: flex;
-  justify-content: center;
-  background: #fff;
-  border-radius: 8px;
-  padding: .5rem;
-  border: 1px solid #888;
+  display: grid;
+  grid-template-columns: repeat(2, auto);
 }
 
 /* container end */
