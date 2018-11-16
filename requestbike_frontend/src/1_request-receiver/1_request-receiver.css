@@ -44,6 +44,7 @@ body {
     position: absolute;
     top: -50px;
     left: calc(50% - 50px);
+    background: #007acc54;
 }
 
 h1 {
@@ -114,3 +115,20 @@ input[type="password"] {
 }
 
 /* custom bootstrap end */
+
+/* icon start */
+.circular--landscape {
+    display: inline-block;
+    width: 64px;
+    height: 64px;
+    overflow: hidden;
+    border-radius: 50%;
+    background: #fff;
+}
+
+.circular--landscape img {
+    width: auto;
+    height: 100%;
+}
+
+/* icon end */

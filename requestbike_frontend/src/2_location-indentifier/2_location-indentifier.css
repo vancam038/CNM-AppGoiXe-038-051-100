@@ -67,7 +67,7 @@ body {
   color: red;
 }
 
-.selected{
+.selected {
   background: #ffeaa7 !important;
   font-weight: 900;
 }
@@ -80,3 +80,20 @@ body {
   background-color: #eee;
   position: relative;
 }
+
+/* icon start */
+.circular--landscape {
+  display: inline-block;
+  width: 64px;
+  height: 64px;
+  overflow: hidden;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.circular--landscape img {
+  width: auto;
+  height: 100%;
+}
+
+/* icon end */
