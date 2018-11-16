@@ -13,17 +13,12 @@
 <body>
 
     <div class="wrapper">
+        <div id="alert-danger" class="alert alert-danger">
+            <strong>Lỗi đăng nhập!</strong>
+        </div>
         <div class="loginbox">
             <div class="avatar-container">
                 <img src="../../assets/img/avatar.png" class="avatar">
-            </div>
-
-            <div id="alert-success" class="alert alert-success">
-                <strong>Success!</strong>
-            </div>
-
-            <div id="alert-danger" class="alert alert-danger">
-                <strong>Error!</strong>
             </div>
             <!-- <h1>#1 - Request Receiver</h1>
              -->
@@ -35,22 +30,25 @@
                 <div class="role-option">
                     <img src="../../assets/img/customer.png">
                     <div>Khách</div>
+                    <div class="indicator"></div>
                 </div>
                 <div class="role-option">
                     <img src="../../assets/img/driverIcon.png">
                     <div>Tài xế</div>
+                    <div class="indicator"></div>
                 </div>
                 <div class="role-option">
                     <img src="../../assets/img/identifier.png">
                     <div>Điều phối</div>
+                    <div class="indicator"></div>
                 </div>
                 <div class="role-option">
                     <img src="../../assets/img/manager.png">
                     <div>Quản lý</div>
+                    <div class="indicator"></div>
                 </div>
             </div>
-
-            <form class="needs-validation" id="form" hidden>
+            <form class="needs-validation" id="form">
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-user"></i></span>

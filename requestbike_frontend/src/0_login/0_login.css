@@ -29,7 +29,7 @@ body {
     background: #f5f6fa;
     color: #000;
     border: 1px solid;
-    opacity: .92;
+    opacity: .95;
     top: 50%;
     left: 50%;
     position: absolute;
@@ -113,19 +113,24 @@ input[type="password"] {
 
 /* custom bootstrap start */
 .alert {
+    display: none;
     padding: 0.25rem 1.25rem;
     text-align: center;
+    margin:0;
+    position:absolute;
+    top:5px;
 }
 
 .alert-dismissible .close {
     padding: 0.25rem 1.25rem;
 }
+
 .rolePicker {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    margin: 40px  0 20px 0 ;
+    margin: 40px  0 40px 0 ;
 }
 .role-option{
     height:150px;
@@ -167,9 +172,47 @@ input[type="password"] {
 .role-option:nth-child(4){
     background-color: #ff8f00;
 }
+.role-inactive{
+    opacity: 0.5;
+}
+.role-active{
+    width:120px;
+    border-radius: 0;
+    cursor: pointer;
+    opacity: 1;
+}
+.indicator {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    position: absolute;
+    top: calc(50% - 2px);
+    border-style: solid;
+    border-width: 20px 60px 0 60px;
+}
+.role-active .indicator{
+    opacity: 1;
+}
+.role-inactive .indicator{
+    opacity: 0;
+}
+
+.role-active:nth-child(1) .indicator{
+    border-color: #51A5EF transparent transparent transparent;
+}
+.role-active:nth-child(2) .indicator{
+    border-color: #E04E39 transparent transparent transparent;
+}
+.role-active:nth-child(3) .indicator{
+    border-color: #7FBA25 transparent transparent transparent;
+}
+.role-active:nth-child(4) .indicator{
+    border-color: #ff8f00 transparent transparent transparent;
+
+}
 
 .guideContent {
-    position: absolute;
+    font-weight: bold;
 }
 
 .guideBox {
@@ -177,14 +220,27 @@ input[type="password"] {
     background-color: black;
     position: absolute;
     top: 58px;
-    width: 160px;
-    left: calc(50% - 80px);
-    height: 28px;
+    width: 170px;
+    left: calc(50% - 85px);
+    height: 30px;
     color: white;
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 14px;
+    border-radius: 15px;
 }
 
+#form{
+    opacity: 0;
+    height:0;
+    -webkit-transition: height 500ms;
+    -moz-transition: height 500ms;
+    -ms-transition: height 500ms;
+    -o-transition: height 500ms;
+    transition: height 500ms;
+}
+#form.active{
+    opacity: 1;
+    height: 100%;
+}
 /* custom bootstrap end */
