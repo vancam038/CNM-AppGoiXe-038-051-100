@@ -12,6 +12,7 @@ function drawUserMarker(latLng) {
   if (userMarker) {
     userMarker.setMap(null);
     google.maps.event.clearListeners(userMarker, "mouseup");
+    google.maps.event.clearListeners(userMarker, "mousedown");
   }
   // draw new marker
   userMarker = new google.maps.Marker({
@@ -22,6 +23,11 @@ function drawUserMarker(latLng) {
   });
   // (re-)add event listeners
   userMarker.addListener("mouseup", moveUserMarkerMouseUp);
+  userMarker.addListener("mousedown", moveUserMarkerMouseDown);
+}
+
+function moveUserMarkerMouseUp() {
+  infoWindow.close();
 }
 
 function moveUserMarkerMouseUp() {
