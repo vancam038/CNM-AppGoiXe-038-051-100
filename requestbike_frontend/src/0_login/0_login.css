@@ -24,7 +24,7 @@ body {
 }
 
 .loginbox {
-    width: 400px;
+    width: 480px;
     height: max-content;
     background: #f5f6fa;
     color: #000;
@@ -119,6 +119,72 @@ input[type="password"] {
 
 .alert-dismissible .close {
     padding: 0.25rem 1.25rem;
+}
+.rolePicker {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 40px  0 20px 0 ;
+}
+.role-option{
+    height:150px;
+    width:94px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items:center;
+    padding:20px 0;
+    color:white;
+    font-weight: bold;
+    border-radius: 40px;
+    opacity: 0.8;
+    -webkit-transition: width 500ms, border-radius 500ms, opacity 500ms; /* Safari */
+    transition: width 500ms, border-radius 500ms, opacity 500ms;
+}
+
+.role-option img{
+    height: 70px;
+    /*border-radius: 50%;*/
+    filter: invert(90%);
+}
+.role-option:hover{
+    width:120px;
+    border-radius: 0;
+    cursor: pointer;
+    opacity: 1;
+}
+
+.role-option:nth-child(1){
+    background-color: #51A5EF;
+}
+.role-option:nth-child(2){
+    background-color: #E04E39;
+}
+.role-option:nth-child(3){
+    background-color: #7FBA25;
+}
+.role-option:nth-child(4){
+    background-color: #ff8f00;
+}
+
+.guideContent {
+    position: absolute;
+}
+
+.guideBox {
+    background-color: #f5f6fa;
+    background-color: black;
+    position: absolute;
+    top: 58px;
+    width: 160px;
+    left: calc(50% - 80px);
+    height: 28px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 14px;
 }
 
 /* custom bootstrap end */
