@@ -81,6 +81,10 @@ body {
   position: relative;
 }
 
+#reqTable {
+  margin-bottom: 0;
+}
+
 /* icon start */
 .circular--landscape {
   display: inline-block;
