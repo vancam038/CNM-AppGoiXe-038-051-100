@@ -2,6 +2,8 @@ $(function () {
     var type = null;
     $('.role-option').on('click', function(){
         var index = $(this).index();
+        // Cộng 1 để giống với số của phân hệ
+        index = index + 1;
         console.log('selected: ' + index);
         type = index;
         $('.role-option').not(this).each(function(){
