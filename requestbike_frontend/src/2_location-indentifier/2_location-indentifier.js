@@ -69,8 +69,11 @@ $(function () {
     const lat = $('#lat').val();
     const lng = $('#lng').val();
     const status = $('#status').val();
-    if (!validateString(reqId) || !validateString(lat) || !validateString(lng) || status !== 'UNIDENTIFIED') {
+    if (!validateString(reqId) || !validateString(lat) || !validateString(lng)) {
       alert('Hãy chọn một request để định vị');
+      return;
+    } else if (status !== 'UNIDENTIFIED') {
+      alert('Hãy chọn request chưa được định vị');
       return;
     }
     prevLatLng = new google.maps.LatLng(lat, lng);

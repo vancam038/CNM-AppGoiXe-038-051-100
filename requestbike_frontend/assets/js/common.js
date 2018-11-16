@@ -8,11 +8,7 @@ function setStatusByReqId(tableId, idReq, status) {
             reqId,
             status
         };
-
         if (reqId_table === reqId) {
-            // tạm thời set cứng html -> đúng ra là phải query từ db để ghi đè lên lại -> đã xử lý
-            // $(this).find("td:last").html(status);
-
             // Đầu tiên, cập nhật status của nó dưới db
             $.ajax({
                 url: "http://localhost:3000/request/status",
