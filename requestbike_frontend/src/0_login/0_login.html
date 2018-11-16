@@ -13,8 +13,11 @@
 <body>
 
     <div class="wrapper">
-        <div id="alert-danger" class="alert alert-danger">
+        <div id="alert-danger" class="alert alert-danger alert-dismissible fade show">
             <strong>Lỗi đăng nhập!</strong>
+        </div>
+        <div class="alert alert-success alert-dismissible fade show" id="alert-success">
+            <strong>Đăng nhập thành công...</strong>
         </div>
         <div class="loginbox">
             <div class="avatar-container">
@@ -70,6 +73,7 @@
 
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
