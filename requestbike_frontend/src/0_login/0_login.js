@@ -3,7 +3,7 @@ $(function () {
     $('.role-option').on('click', function(){
         var index = $(this).index();
         console.log('selected: ' + index);
-        type = index+1;
+        type = index;
         $('.role-option').not(this).each(function(){
             $(this).removeClass('role-active');
             $(this).addClass('role-inactive');
