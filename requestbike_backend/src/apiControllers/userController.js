@@ -31,15 +31,11 @@ router.post('/login', (req, res) => {
 				authRepo.updateRefreshToken(userEntity.f_id, rfToken)
 					.then(value => {
 						res.json({
-							//auth: true,
-							// user: {
-							// 	"id":userEntity.f_id,
-							// 	"name":userEntity.f_name,
-							// 	"phone":userEntity.f_phone,
-							// 	"type":userEntity.f_type
-                            // },
+                            auth:true,
 							access_token: acToken,
-							refresh_token: rfToken
+							refresh_token: rfToken,
+							expires_in: authRepo.LIFETIME(),
+                            type: userEntity.f_type
 						})
 					})
 					.catch(err => {
