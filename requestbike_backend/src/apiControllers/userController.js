@@ -21,11 +21,6 @@ router.post('/', (req, res) => {
 
 
 router.post('/login', (req, res) => {
-	// req.body = {
-	// 	user: 'nndkhoa',
-	// 	pwd: 'nndkhoa'
-	// }
-
 	userRepo.login(req.body)
 		.then(rows => {
 			if (rows.length > 0) {
@@ -36,8 +31,13 @@ router.post('/login', (req, res) => {
 				authRepo.updateRefreshToken(userEntity.f_id, rfToken)
 					.then(value => {
 						res.json({
-							auth: true,
-							user: userEntity,
+							//auth: true,
+							// user: {
+							// 	"id":userEntity.f_id,
+							// 	"name":userEntity.f_name,
+							// 	"phone":userEntity.f_phone,
+							// 	"type":userEntity.f_type
+                            // },
 							access_token: acToken,
 							refresh_token: rfToken
 						})
