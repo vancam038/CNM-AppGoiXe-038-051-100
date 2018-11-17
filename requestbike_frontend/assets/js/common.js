@@ -21,8 +21,9 @@ function setStatusByReqId(tableId, idReq, status) {
                 dataType: "json",
             }).done(function (data) {
                 // sau khi cập nhật thành công thì reload lại table (query db để ghi đè lên lại)
+                // App#2 cũng phải tự realtime vs chính nó (nhiều app#2)
                 $.ajax({
-                    url: "http://localhost:3000/requests",
+                    url: "http://localhost:3000/requests/unidentified+identified",
                     type: "GET",
                     dataType: "json"
                 }).done(function (data) {
@@ -44,4 +45,13 @@ function validateString(data) {
         return false;
     }
     return true;
+}
+
+function resetInput() {
+    $('#reqId').val("");
+    $('#addr').val("");
+    $('#note').val("")
+    $('#status').val("");
+    $('#lat').val("");
+    $('#lng').val("");
 }

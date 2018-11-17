@@ -43,8 +43,15 @@ exports.getCoords = reqId => {
   return db.load(sql);
 };
 
-exports.loadUnidentified = () => {
-  const sql = "select * from request where status = 'UNIDENTIFIED';";
+exports.loadReqByStatus = (status) => {
+  const sql = "select * from request where status = " + `'${status}'`;
+  return db.load(sql);
+};
+
+exports.loadUnidenAndIden = () => {
+  const status1 = 'UNIDENTIFIED';
+  const status2 = 'IDENTIFIED';
+  const sql = "select * from request where status = " + `'${status1}'` + "or status = " + `'${status2}'`;
   return db.load(sql);
 };
 // duy-th end

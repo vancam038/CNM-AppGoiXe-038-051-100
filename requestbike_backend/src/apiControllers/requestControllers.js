@@ -26,13 +26,13 @@ router.get("/requests", (req, res) => {
 
 router.get("/requests/:status", (req, res) => {
   const reqStatus = req.params.status.trim().toLowerCase();
+
   switch (reqStatus) {
-    case "unidentified":
+    case "unidentified+identified":
       requestRepo
-        .loadUnidentified()
+        .loadUnidenAndIden()
         .then(rows => {
           res.statusCode = 200;
-          // res.json(rows);
           res.send(_.sortBy(JSON.parse(JSON.stringify(rows)), [function (o) {
             return o.date_submitted;
           }]).reverse());
@@ -44,10 +44,19 @@ router.get("/requests/:status", (req, res) => {
         });
       break;
     default:
-      res.statusCode = 404;
-      res.json({
-        status: "INVALID_REQUEST_TYPE"
-      });
+      requestRepo
+        .loadReqByStatus(reqStatus)
+        .then(rows => {
+          res.statusCode = 200;
+          res.send(_.sortBy(JSON.parse(JSON.stringify(rows)), [function (o) {
+            return o.date_submitted;
+          }]).reverse());
+        })
+        .catch(err => {
+          console.log(err);
+          res.statusCode = 500;
+          res.end("View error log on console");
+        });
       break;
   }
 });

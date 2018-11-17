@@ -146,7 +146,8 @@ if (document.getElementById("acceptChangeUserPosition"))
       // nếu như confirm đúng ròi thì mở nút tìm xe
       $('.btn-find').prop('disabled', false);
       // // tìm thằng tr cập nhật lại status của nó ở cả 2 phía client lẫn database
-      setStatusByReqId('reqTable', 'reqId', 'IDENTIFIED')
+      setStatusByReqId('reqTable', 'reqId', 'IDENTIFIED');
+      resetInput();
 
 
     },

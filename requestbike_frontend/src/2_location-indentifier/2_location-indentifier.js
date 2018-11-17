@@ -12,7 +12,7 @@ $(function () {
 
 $(function () {
   $.ajax({
-    url: "http://localhost:3000/requests/unidentified",
+    url: "http://localhost:3000/requests/unidentified+identified",
     type: "GET",
     headers: {
       "Access-Control-Allow-Origin": "*",
@@ -30,7 +30,7 @@ $(function () {
 
   socket.on("new_request_added", () => {
     $.ajax({
-      url: "http://localhost:3000/requests/unidentified",
+      url: "http://localhost:3000/requests/unidentified+identified",
       type: "GET",
       dataType: "json",
       timeout: 10000
@@ -61,6 +61,18 @@ $(function () {
     const lng = $(this).attr("data-lng");
     $('#lat').val(lat);
     $('#lng').val(lng);
+
+    $('.btn-locate').prop('disabled', false);
+    $('.btn-find').prop('disabled', false);
+
+    // xét status: 
+    if (tableData[5] === 'UNIDENTIFIED') {
+      $('.btn-locate').prop('hidden', false);
+      $('.btn-find').prop('hidden', true);
+    } else {
+      $('.btn-locate').prop('hidden', true);
+      $('.btn-find').prop('hidden', false);
+    }
   });
 
   $(".btn-locate").click(function (e) {
@@ -71,9 +83,6 @@ $(function () {
     const status = $('#status').val();
     if (!validateString(reqId) || !validateString(lat) || !validateString(lng)) {
       alert('Hãy chọn một request để định vị');
-      return;
-    } else if (status !== 'UNIDENTIFIED') {
-      alert('Hãy chọn request chưa được định vị');
       return;
     }
     prevLatLng = new google.maps.LatLng(lat, lng);
