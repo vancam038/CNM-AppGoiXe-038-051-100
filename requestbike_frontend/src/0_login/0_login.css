@@ -1,3 +1,17 @@
+*{
+    margin:0;
+    padding:0;
+}
+
+.rolebox {
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.rolebox {}
 body {
     margin: 0;
     padding: 0;
@@ -7,8 +21,8 @@ body {
     font-family: "Roboto", Arial, Helvetica, sans-serif;
 }
 .staff-zone{
-    position: absolute; 
-    right:10; 
+    position: absolute;
+    right:10;
     top:10;
 }
 .staff-zone .btn{
@@ -138,7 +152,7 @@ input[type="password"] {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    align-items:center;
+    align-items: center;
     padding:20px 0;
     color:white;
     font-weight: bold;
@@ -186,12 +200,15 @@ input[type="password"] {
     width: 0;
     height: 0;
     position: absolute;
-    top: calc(50% - 2px);
+    top: 261px;
     border-style: solid;
     border-width: 20px 60px 0 60px;
 }
 .role-active .indicator{
     opacity: 1;
+}
+
+.role {
 }
 .role-inactive .indicator{
     opacity: 0;
