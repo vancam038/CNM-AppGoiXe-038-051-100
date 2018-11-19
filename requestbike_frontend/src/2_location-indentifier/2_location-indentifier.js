@@ -145,22 +145,27 @@ function setStatusByReqId(tableId, idReq, status) {
       }).done(function () {
         // sau khi cập nhật thành công thì reload lại table (query db để ghi đè lên lại)
         // App#2 cũng phải tự realtime vs chính nó (nhiều app#2)
-        socket.on("2_to_2_reload_table")
         $.ajax({
           url: "http://localhost:3000/requests/unidentified+identified",
           type: "GET",
           dataType: "json"
         }).done(function (data) {
-          var source = document.getElementById("request-template").innerHTML;
-          var template = Handlebars.compile(source);
-          var html = template(data);
-          $("#requests").html(html);
           // đồng thời emit cho app#3 biết, để cùng realtime
           socket.emit("2_to_3_reload-table");
+          // reload app#2
+          socket.emit("2_to_2_reload-table", data);
         });
-
-        socket.emit("2_to_2_reload-table");
       });
     }
   });
 }
+
+$(function () {
+  // lắng nghe realtime của app#2
+  socket.on("2_to_2_reload-table", (data) => {
+    var source = document.getElementById("request-template").innerHTML;
+    var template = Handlebars.compile(source);
+    var html = template(data);
+    $("#requests").html(html);
+  })
+})
