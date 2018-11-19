@@ -1,6 +1,3 @@
-// declare constants
-const INIT_ZOOM_LEVEL = 6,
-  DEFAULT_ZOOM_LEVEL = 20;
 // DECLARE VARIABLES AND FUNCTIONS ============================================
 let map = null,
   userMarker = null,

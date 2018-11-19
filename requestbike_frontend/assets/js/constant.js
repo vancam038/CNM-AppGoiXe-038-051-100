@@ -9,3 +9,7 @@ const REQ_STATUS_FINISHED = 'FINISHED'; // đã hoàn thành
 const DRIVER_STATUS_READY = 'READY'; // sẵn sàn nhận req
 const DRIVER_STATUS_STANDBY = 'STANDBY'; // offline
 const DRIVER_STATUS_BUSY = 'BUSY'; // đang đi đón khách, đang chở khách
+
+// GOOGLE MAP CONSTANT
+const INIT_ZOOM_LEVEL = 12;
+const DEFAULT_ZOOM_LEVEL = 18;

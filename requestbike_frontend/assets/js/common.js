@@ -14,6 +14,11 @@ function resetInput() {
     $('#lng').val("");
 }
 
+function resetMap(userMarker) {
+    userMarker.setMap(null);
+    initMap();
+}
+
 function showSuccessMsg(msg) {
     alertify.set('notifier', 'position', 'bottom-right');
     alertify.success(msg);
