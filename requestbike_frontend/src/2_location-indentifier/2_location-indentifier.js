@@ -66,7 +66,7 @@ $(function () {
     $('#btn-find').prop('disabled', false);
 
     // xét status: 
-    if (tableData[5] === 'UNIDENTIFIED') {
+    if (tableData[5] === REQ_STATUS_UNIDENTIFIED) {
       $('#btn-locate').prop('hidden', false);
       $('#btn-find').prop('hidden', true);
     } else {

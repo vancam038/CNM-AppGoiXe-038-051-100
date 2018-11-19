@@ -10,14 +10,14 @@ $(function () {
 
 function changeStatus(status) {
     switch (status) {
-        case "READY":
-            $("#navbarDropdown").html("READY");
+        case DRIVER_STATUS_READY:
+            $("#navbarDropdown").html(DRIVER_STATUS_READY);
             $("#navbarDropdown")
                 .removeClass("btn-outline-danger btn-outline-warning")
                 .addClass("btn-outline-success");
             break;
-        case "STANDBY":
-            $("#navbarDropdown").html("STANDBY");
+        case DRIVER_STATUS_STANDBY:
+            $("#navbarDropdown").html(DRIVER_STATUS_STANDBY);
             $("#navbarDropdown")
                 .removeClass("btn-outline-success btn-outline-danger")
                 .addClass("btn-outline-warning");
@@ -25,8 +25,8 @@ function changeStatus(status) {
             //socket end
             break;
             //etc...
-        case "BUSY":
-            $("#navbarDropdown").html("BUSY");
+        case DRIVER_STATUS_BUSY:
+            $("#navbarDropdown").html(DRIVER_STATUS_BUSY);
             $("#navbarDropdown")
                 .removeClass("btn-outline-success btn-outline-warning")
                 .addClass("btn-outline-danger");
@@ -37,7 +37,7 @@ function changeStatus(status) {
 }
 
 function updateReqStatus(reqId) {
-    const status = "ACCEPTED";
+    const status = REQ_STATUS_ACCEPTED;
     const reqObject = {
         reqId,
         status
@@ -54,7 +54,6 @@ function updateReqStatus(reqId) {
         data: JSON.stringify(reqObject),
         dataType: "json",
     }).done(function () {
-        // sẽ làm gì đây
         // emit cho 3 thôi là đã có xe nhận -> hãy reload table lại đi
         socket.emit("4_to_3_reload-table");
     });

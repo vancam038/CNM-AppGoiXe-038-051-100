@@ -1,35 +1,3 @@
-// $(function () {
-//     $('#form').on('submit', function (e) {
-//         e.preventDefault();
-//         var clientName = $('#clientName').val();
-//         var phone = $('#phone').val();
-//         var address = $('#address').val();
-//         var note = $('#note').val();
-//         var requestObject = {
-//             clientName,
-//             phone,
-//             address,
-//             note
-//         }
-//         $.ajax({
-//             url: 'http://localhost:3000/api/requestReceiver/request',
-//             type: 'GET',
-//             headers: {
-//                 "Access-Control-Allow-Origin": "*",
-//                 "Content-Type": "application/json"
-//             },
-//             // data: JSON.stringify(requestObject),
-//             // dataType: "json",
-//             success: function (data) {
-//                 console.log(data);
-//             },
-//             error: function () {
-//                 console.log('error');
-//             }
-//         });
-//     });
-// });
-
 var socket = io("http://localhost:3001");
 
 $(function () {
@@ -42,7 +10,7 @@ $(function () {
     const phone = $("#phone").val();
     const address = $("#address").val();
     const note = $("#note").val();
-    const status = "UNIDENTIFIED";
+    const status = REQ_STATUS_UNIDENTIFIED;
     const date_submitted = moment().format('YYYY-MM-DD HH:mm');
     console.log(date_submitted);
     const requestObject = {
