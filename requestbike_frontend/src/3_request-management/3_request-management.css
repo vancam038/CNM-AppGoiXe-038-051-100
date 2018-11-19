@@ -63,6 +63,10 @@ body {
   color: red;
 }
 
+.accepted {
+  color: blue;
+}
+
 .selected {
   background: #ffeaa7 !important;
   font-weight: 900;

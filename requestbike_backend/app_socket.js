@@ -49,6 +49,11 @@ io.on("connection", socket => {
     // trả về realtime record
     io.sockets.emit("2_to_2_reload-table", data);
   });
+
+  socket.on("4_to_3_reload-table", () => {
+    // trả về realtime record
+    io.sockets.emit("4_to_3_reload-table");
+  });
   // cam-sv end
 
   // socket END

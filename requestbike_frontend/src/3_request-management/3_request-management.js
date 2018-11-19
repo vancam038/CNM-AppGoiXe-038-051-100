@@ -58,36 +58,28 @@ $(function () {
     $('#lng').val(lng);
   });
 
-  $(".btn-path").click(function (e) {
+  $("#btn-path").click(function (e) {
     e.preventDefault();
-    console.log("Đã bắt");
-    
+    //TODO
   });
-
-  $(".btn-find").click(function () {
-    const reqId = $('#reqId').val();
-    const lat = $('#lat').val();
-    const lng = $('#lng').val();
-    if (!validateString(reqId) || !validateString(lat) || !validateString(lng)) {
-      alert('Hãy chọn một request để định vị');
-      return;
-    }
-    // cam-sv start
-    socket.emit(
-      "2_to_4_send-req-to-driver",
-      JSON.stringify({
-        reqId,
-        lat,
-        lng
-      })
-    );
-    // cam-sv end
-  });
-
 });
 
 $(function () {
   socket.on("2_to_3_reload-table", () => {
+    $.ajax({
+      url: "http://localhost:3000/requests",
+      type: "GET",
+      dataType: "json"
+    }).done(function (data) {
+      var source = document.getElementById("request-template").innerHTML;
+      var template = Handlebars.compile(source);
+      var html = template(data);
+      $("#requests").html(html);
+      keepSelectedRow();
+    });
+  });
+
+  socket.on("4_to_3_reload-table", () => {
     $.ajax({
       url: "http://localhost:3000/requests",
       type: "GET",

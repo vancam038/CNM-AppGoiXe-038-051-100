@@ -62,20 +62,20 @@ $(function () {
     $('#lat').val(lat);
     $('#lng').val(lng);
 
-    $('.btn-locate').prop('disabled', false);
-    $('.btn-find').prop('disabled', false);
+    $('#btn-locate').prop('disabled', false);
+    $('#btn-find').prop('disabled', false);
 
     // xét status: 
     if (tableData[5] === 'UNIDENTIFIED') {
-      $('.btn-locate').prop('hidden', false);
-      $('.btn-find').prop('hidden', true);
+      $('#btn-locate').prop('hidden', false);
+      $('#btn-find').prop('hidden', true);
     } else {
-      $('.btn-locate').prop('hidden', true);
-      $('.btn-find').prop('hidden', false);
+      $('#btn-locate').prop('hidden', true);
+      $('#btn-find').prop('hidden', false);
     }
   });
 
-  $(".btn-locate").click(function (e) {
+  $("#btn-locate").click(function (e) {
     e.preventDefault();
     const reqId = $('#reqId').val();
     const lat = $('#lat').val();
@@ -89,7 +89,7 @@ $(function () {
     handleQueryGeolocationFinish(prevLatLng);
   });
 
-  $(".btn-find").click(function (e) {
+  $("#btn-find").click(function (e) {
     e.preventDefault();
     const reqId = $('#reqId').val();
     const lat = $('#lat').val();
