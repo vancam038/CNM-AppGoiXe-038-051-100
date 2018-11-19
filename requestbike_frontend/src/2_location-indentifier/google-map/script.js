@@ -143,11 +143,13 @@ if (document.getElementById("acceptChangeUserPosition"))
       infoWindow.close();
       // send message to server
       socket.emit("");
-      // nếu như confirm đúng ròi thì mở nút tìm xe
-      $('.btn-find').prop('disabled', false);
+      // nếu như confirm đúng ròi thì tắt nút định vị
+      $('#btn-locate').prop('disabled', true);
       // tìm thằng tr cập nhật lại status của nó ở cả 2 phía client lẫn database
       setStatusByReqId('reqTable', 'reqId', 'IDENTIFIED');
+      // reset lại các input
       resetInput();
+      // hiện msg thành công
       showSuccessMsg('Định vị thành công');
     },
     false

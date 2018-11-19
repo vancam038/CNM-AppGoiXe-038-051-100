@@ -84,7 +84,7 @@ $(function () {
     const lng = $('#lng').val();
     const status = $('#status').val();
     if (!validateString(reqId) || !validateString(lat) || !validateString(lng)) {
-      alert('Hãy chọn một request để định vị');
+      showErrorMsg('Hãy chọn một request');
       return;
     }
     prevLatLng = new google.maps.LatLng(lat, lng);
