@@ -6,11 +6,12 @@ var db = require('../fn/mysql-db');
 
 const SECRET = 'ABCDEF';
 const AC_LIFETIME = 600; // seconds
-
+exports.LIFETIME = () => {
+    return AC_LIFETIME;
+};
 exports.generateAccessToken = userEntity => {
     var payload = {
-        user: userEntity,
-        info: 'more info'
+        user: userEntity
     }
 
     var token = jwt.sign(payload, SECRET, {
