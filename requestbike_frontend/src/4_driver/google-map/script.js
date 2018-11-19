@@ -234,7 +234,7 @@ function initMap() {
     // initialize the map
     map = new google.maps.Map(targetDivMap, {
         zoom: INIT_ZOOM_LEVEL,
-        center: new google.maps.LatLng(21.028511, 105.804817) // HaNoi
+        center: new google.maps.LatLng(10.762622, 106.660172) // HCM
     });
     // query user geolocation
     if (navigator.geolocation) {

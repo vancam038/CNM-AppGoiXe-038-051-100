@@ -72,6 +72,8 @@ $(function () {
     } else {
       $('#btn-locate').prop('hidden', true);
       $('#btn-find').prop('hidden', false);
+      prevLatLng = new google.maps.LatLng(lat, lng);
+      showIdentifiedReq(prevLatLng);
     }
   });
 

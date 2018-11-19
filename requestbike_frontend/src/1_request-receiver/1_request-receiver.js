@@ -32,11 +32,11 @@
 
 var socket = io("http://localhost:3001");
 
-$(function() {
+$(function () {
   // init thì hide alert
   $(".alert").hide();
 
-  $("form").on("submit", function(e) {
+  $("form").on("submit", function (e) {
     e.preventDefault();
     const clientName = $("#clientName").val();
     const phone = $("#phone").val();
@@ -63,9 +63,12 @@ $(function() {
       },
       data: JSON.stringify(requestObject),
       dataType: "json",
-      success: function() {
+      success: function () {
         $("#alert-success").show(200);
         $("#alert-danger").hide();
+        setTimeout(function () {
+          $("#alert-success").hide(200);
+        }, 3000);
 
         $("#clientName").val("");
         $("#phone").val("");
@@ -76,9 +79,13 @@ $(function() {
         socket.emit("1_to_2_transfer-req");
         // socket.emit('1_to_3_transfer-req', "#1 transfer req #3 through socket");
       },
-      error: function() {
+      error: function () {
         $("#alert-success").hide();
         $("#alert-danger").show(200);
+        setTimeout(function () {
+          $("#alert-danger").hide(200);
+        }, 3000);
+
       }
     });
     // $("#alert-success").show(200);

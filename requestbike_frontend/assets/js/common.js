@@ -13,3 +13,13 @@ function resetInput() {
     $('#lat').val("");
     $('#lng').val("");
 }
+
+function showSuccessMsg(msg) {
+    alertify.set('notifier', 'position', 'bottom-right');
+    alertify.success(msg);
+}
+
+function showErrorMsg(msg) {
+    alertify.set('notifier', 'position', 'bottom-right');
+    alertify.error(msg);
+}

@@ -7,7 +7,7 @@ let map = null,
   infoWindow = null,
   prevLatLng = null; // ! get this by selected row
 
-function drawUserMarker(latLng) {
+function drawUserMarker(latLng, dragVal) {
   // remove map attached and listeners
   if (userMarker) {
     userMarker.setMap(null);
@@ -18,7 +18,7 @@ function drawUserMarker(latLng) {
   userMarker = new google.maps.Marker({
     position: latLng,
     map,
-    draggable: true,
+    draggable: dragVal,
     animation: google.maps.Animation.DROP
   });
   // (re-)add event listeners
@@ -79,7 +79,7 @@ function moveUserMarkerMouseUp() {
 
 function handleQueryGeolocationFinish(coords) {
   // add marker indicating user position
-  drawUserMarker(coords);
+  drawUserMarker(coords, true);
   // re-config the map
   map.setZoom(DEFAULT_ZOOM_LEVEL);
   map.panTo(coords);
@@ -148,6 +148,7 @@ if (document.getElementById("acceptChangeUserPosition"))
       // tìm thằng tr cập nhật lại status của nó ở cả 2 phía client lẫn database
       setStatusByReqId('reqTable', 'reqId', 'IDENTIFIED');
       resetInput();
+      showSuccessMsg('Định vị thành công');
     },
     false
   );
@@ -182,6 +183,45 @@ function initMap() {
   // initialize the map
   map = new google.maps.Map(targetDivMap, {
     zoom: INIT_ZOOM_LEVEL,
-    center: new google.maps.LatLng(21.028511, 105.804817) // HaNoi
+    center: new google.maps.LatLng(10.762622, 106.660172) // HCM
   });
+}
+
+function showIdentifiedReq(coords) {
+  // add marker indicating user position
+  drawUserMarker(coords, false);
+  google.maps.event.clearListeners(userMarker, "mouseup");
+  google.maps.event.clearListeners(userMarker, "mousedown");
+  // re-config the map
+  map.setZoom(DEFAULT_ZOOM_LEVEL);
+  map.panTo(coords);
+  // pop up confirm
+  $.get(
+    `https://maps.googleapis.com/maps/api/geocode/json?latlng=${coords.lat()},${coords.lng()}&location_type=ROOFTOP&result_type=street_address&key=AIzaSyDas6_Z8AZ6sdYJGOucYDWh-MCcoB9jjVE`,
+    function (data) {
+      // extract data
+      const {
+        results,
+        status
+      } = data;
+      // confirm the new position
+      let infoWindowContent = "";
+      if (status === "OK") {
+        infoWindowContent = `
+        <div class="infowindow-container">
+          <p id="infowindow-address">${results[0].formatted_address}</p>
+        </div>`;
+      } else if (status === "ZERO_RESULTS") {
+        infoWindowContent = `
+        <div class="infowindow-container">
+          <p>Vị trí hành khách không tồn tại</p>
+        </div>`;
+      }
+
+      infoWindow = new google.maps.InfoWindow({
+        content: infoWindowContent
+      });
+      infoWindow.open(map, userMarker);
+    }
+  );
 }
