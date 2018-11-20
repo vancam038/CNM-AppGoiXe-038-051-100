@@ -93,8 +93,6 @@ function drawPathDriverToPassenger(driverLatLng, passengerLatLng) {
                     visible: false
                 }
             });
-            console.log(result);
-
         }
     })
 }

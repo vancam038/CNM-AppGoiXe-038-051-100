@@ -1,4 +1,5 @@
 var socket = io("http://localhost:3001");
+let infoWindow = null;
 
 $(function () {
     $("#requestModalCenter").modal({
@@ -71,7 +72,8 @@ $(function () {
         const {
             reqId,
             lat,
-            lng
+            lng,
+            addr
         } = JSON.parse(msg);
         if (reqId === undefined || lat === undefined || lng === undefined) return;
 
@@ -88,10 +90,19 @@ $(function () {
                 $("#countdownExample #timer-value").html(timer.getTimeValues().seconds);
                 // khi click button chấp nhận
                 $('#btn-accept').click(() => {
+	                // đóng infoWindow trước đó
+	                if(infoWindow) infoWindow.close();
+	                // đóng passengerMarker trước đó
+	                if(passengerMarker) passengerMarker.setMap(null);
                     updateReqStatus(reqId);
                     passengerLatLng = new google.maps.LatLng(lat, lng);
                     drawPassengerMarker(passengerLatLng);
                     drawPathDriverToPassenger(prevLatLng, passengerLatLng);
+	                // show thông tin hành khách
+	                infoWindow = new google.maps.InfoWindow({
+		                content: `<b>${addr}</b>`
+	                });
+	                infoWindow.open(map, passengerMarker);
                 })
 
                 $('#btn-reject').click(() => {

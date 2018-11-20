@@ -96,6 +96,7 @@ $(function () {
     const reqId = $('#reqId').val();
     const lat = $('#lat').val();
     const lng = $('#lng').val();
+    const addr = $('#addr').val();
     if (!validateString(reqId) || !validateString(lat) || !validateString(lng)) {
       alert('Hãy chọn một request để định vị');
       return;
@@ -106,7 +107,8 @@ $(function () {
       JSON.stringify({
         reqId,
         lat,
-        lng
+        lng,
+        addr
       })
     );
     // cam-sv end
