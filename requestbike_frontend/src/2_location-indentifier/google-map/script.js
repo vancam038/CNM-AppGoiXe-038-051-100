@@ -142,13 +142,28 @@ if (document.getElementById("acceptChangeUserPosition"))
       socket.emit("");
       // nếu như confirm đúng ròi thì tắt nút định vị
       $('#btn-locate').prop('disabled', true);
-      // tìm thằng tr cập nhật lại status của nó ở cả 2 phía client lẫn database
-      setStatusByReqId('reqTable', 'reqId', 'IDENTIFIED');
-      // reset lại các input
-      resetInput();
-      // hiện msg thành công
-      showSuccessMsg('Định vị thành công');
-      resetMap(userMarker, map);
+      // cập nhật lat và lng mới trong db
+      const reqId = $("#reqId").val();
+	  const reqObject = { reqId, newLat: userMarker.getPosition().lat(),
+          newLng: userMarker.getPosition().lng() }
+      $.ajax({
+        url: "http://localhost:3000/request/coords",
+        type: "PATCH",
+	    headers: {
+		  "Access-Control-Allow-Origin": "*",
+		  "Content-Type": "application/json"
+	    },
+	    data: JSON.stringify(reqObject),
+	    dataType: "json"
+      }).done(function () {
+	    // tìm thằng tr cập nhật lại status của nó ở cả 2 phía client lẫn database
+	    setStatusByReqId('reqTable', 'reqId', 'IDENTIFIED');
+	    // reset lại các input
+	    resetInput();
+	    // hiện msg thành công
+	    showSuccessMsg('Định vị thành công');
+	    resetMap(userMarker, map);
+      })
     },
     false
   );
