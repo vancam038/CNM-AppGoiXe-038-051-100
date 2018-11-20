@@ -32,14 +32,28 @@ $(function () {
     };
 
     /////////////
+    let redirect = function(permission){
+        // window.open('../1_request-receiver/1_request-receiver.html','_blank');
+        switch(permission){
+            case 1:
+                openInNewTab('../1_request-receiver/1_request-receiver.html');
+                break;
+            case 2:
+                openInNewTab('../2_location-indentifier/2_location-indentifier.html');
+                break;
+            case 3:
+                openInNewTab('../3_request-management/3_request-management.html');
+                break;
+            case 4:
+                openInNewTab('../4_driver/4_driver.html');
+                break;
+        }
+    };
+    let openInNewTab = function(url) {
+        $("<a>").attr("href", url).attr("target", "_self")[0].click();
+    };
     $('.role-option').on('click', function(){
-        let redirect = function(permission){
-            // window.open('../1_request-receiver/1_request-receiver.html','_blank');
-            openInNewTab('../1_request-receiver/1_request-receiver.html');
-        };
-        let openInNewTab = function(url) {
-            $("<a>").attr("href", url).attr("target", "_blank")[0].click();
-        };
+
         //
         var index = $(this).index();
         // Cộng 1 để giống với số của phân hệ
@@ -75,15 +89,23 @@ $(function () {
             success: function(data){
                 console.log(data);
                 if(data.auth) {
-                    localStorage.setItem('token', data.access_token);
-                    console.log("Login Success!");
+                    //localStorage.setItem('token', data.access_token);
+                    //TEST_SET_COOKIE
+                    // let cookie = {
+                    //     "x-access-token": data.access_token,
+                    //     "ref-token": data.refresh_token
+                    // };
+                    // let cookieStr = JSON.stringify(cookie);
+                    // //$.cookie("com.requestbike-ss.app", JSON.stringify(cookie));
+                    // setCookie("com.requestbike-ss.app",cookieStr,data.expires);
+                    //END_TEST_SET_COOKIE
+
                     $('#alert-success').show();
                     //chuyen huong trang theo loai tai khoan
-                    redirect(data.type);
-                    (function(){
-                        console.log('OK');
 
-                    })();
+                    // setTimeout(function(){
+                    //     redirect(data.type);
+                    // },1500);
                 }else{
                     console.log("Login Failed!");
                     $('#alert-danger').show();
@@ -96,4 +118,8 @@ $(function () {
             }
         })
     });
+});
+//Check for cookies availability
+$(function(){
+    //
 });
