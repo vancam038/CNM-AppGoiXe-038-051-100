@@ -89,23 +89,14 @@ $(function () {
             success: function(data){
                 console.log(data);
                 if(data.auth) {
-                    //localStorage.setItem('token', data.access_token);
-                    //TEST_SET_COOKIE
-                    // let cookie = {
-                    //     "x-access-token": data.access_token,
-                    //     "ref-token": data.refresh_token
-                    // };
-                    // let cookieStr = JSON.stringify(cookie);
-                    // //$.cookie("com.requestbike-ss.app", JSON.stringify(cookie));
-                    // setCookie("com.requestbike-ss.app",cookieStr,data.expires);
-                    //END_TEST_SET_COOKIE
-
+                    localStorage.setItem('token', data.access_token);
+                    localStorage.setItem('refToken',data.rfToken);
                     $('#alert-success').show();
                     //chuyen huong trang theo loai tai khoan
 
-                    // setTimeout(function(){
-                    //     redirect(data.type);
-                    // },1500);
+                    setTimeout(function(){
+                        redirect(data.type);
+                    },1500);
                 }else{
                     console.log("Login Failed!");
                     $('#alert-danger').show();

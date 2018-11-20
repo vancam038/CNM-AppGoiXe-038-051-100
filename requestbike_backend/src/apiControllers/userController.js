@@ -31,15 +31,10 @@ router.post('/login', (req, res) => {
 
 				authRepo.updateRefreshToken(userEntity.f_id, rfToken)
 					.then(value => {
-						res.cookie('com.requestbike-ss.app',{
-                            access_token: acToken,
-                            refresh_token: rfToken
-						},{
-							httpOnly:true,
-							expires: new Date(Date.now()  + config.COOKIE_LIFETIME*1000)
-						});
 						res.json({
                             auth:true,
+                            access_token: acToken,
+                            refresh_token: rfToken,
                             type: userEntity.f_type
 						})
 					})
