@@ -23,7 +23,6 @@ $(function () {
         console.log('No connection!');
         $('#alert-danger').show();
     };
-
     let setCookie = function(name,value,expTime){
         var d = new Date();
         d.setTime(d.getTime() + (expTime*1000)); //in miliseconds
@@ -31,8 +30,17 @@ $(function () {
         // document.cookie = `${name}=${value};exprires=${expires};path=/`;
         $.cookie(`${name}=${value};exprires=${expires};path=/`);
     };
+
     /////////////
     $('.role-option').on('click', function(){
+        let redirect = function(permission){
+            // window.open('../1_request-receiver/1_request-receiver.html','_blank');
+            openInNewTab('../1_request-receiver/1_request-receiver.html');
+        };
+        let openInNewTab = function(url) {
+            $("<a>").attr("href", url).attr("target", "_blank")[0].click();
+        };
+        //
         var index = $(this).index();
         // Cộng 1 để giống với số của phân hệ
         index = index + 1;
@@ -66,10 +74,24 @@ $(function () {
             dataType:'json',
             success: function(data){
                 console.log(data);
-                localStorage.setItem('token', data.access_token);
+                if(data.auth) {
+                    localStorage.setItem('token', data.access_token);
+                    console.log("Login Success!");
+                    $('#alert-success').show();
+                    //chuyen huong trang theo loai tai khoan
+                    redirect(data.type);
+                    (function(){
+                        console.log('OK');
+
+                    })();
+                }else{
+                    console.log("Login Failed!");
+                    $('#alert-danger').show();
+                }
             },
             error:function(){
-                console.log('Login Fail');
+                console.log(data);
+                console.log('Login Failed!');
                 $('#alert-danger').show();
             }
         })
