@@ -5,21 +5,21 @@ var moment = require('moment');
 var db = require('../fn/mysql-db');
 
 const SECRET = 'ABCDEF';
-const AC_LIFETIME = 600; // seconds
+const AC_LIFETIME = 60; // seconds
 exports.LIFETIME = () => {
     return AC_LIFETIME;
 };
 exports.generateAccessToken = userEntity => {
     var payload = {
         user: userEntity
-    }
+    };
 
     var token = jwt.sign(payload, SECRET, {
         expiresIn: AC_LIFETIME
     });
 
     return token;
-}
+};
 
 exports.verifyAccessToken = (req, res, next) => {
     var token = req.headers['x-access-token'];
@@ -64,4 +64,17 @@ exports.updateRefreshToken = (userId, rfToken) => {
             .then(value => resolve(value))
             .catch(err => reject(err));
     });
-}
+};
+exports.verifyRefreshToken = (userId, rfToken) => {
+  return new Promise((resolve, reject) =>{
+     var sql = `select * from userRefTokenExt where f_refToken = '${rfToken}'`;
+     db.load(sql)
+         .then(rows => {
+             if(rows.length > 0){
+                 console.log(rows[0]);
+             }else{
+                 console.log('No refToken was found!');
+             }
+         });
+  });
+};
