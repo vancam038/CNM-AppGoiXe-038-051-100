@@ -1,0 +1,1 @@
+exports.COOKIE_LIFETIME = 600;
