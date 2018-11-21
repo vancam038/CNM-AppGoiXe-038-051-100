@@ -6,6 +6,7 @@ var authRepo = require('../repos/authRepo');
 
 var router = express.Router();
 
+router.post('/',())
 router.post('/', (req, res) => {
 	userRepo.add(req.body)
 		.then(value => {
@@ -20,7 +21,11 @@ router.post('/', (req, res) => {
 		})
 });
 
-
+router.post('/me',(req, res) => {
+	let payload = req.token_payload;
+	console.log(req.token_payload);
+	res.json(payload);
+});
 router.post('/login', (req, res) => {
 	userRepo.login(req.body)
 		.then(rows => {

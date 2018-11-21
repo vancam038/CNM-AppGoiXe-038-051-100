@@ -1,5 +1,22 @@
 var socket = io("http://localhost:3001");
-
+$(function(){
+  $.ajax({
+      url:"http://localhost:3000/user/me",
+      type:"POST",
+      headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json",
+          "x-access-token":`${localStorage.token}`
+      },
+      dataType: 'json',
+      success:function(data, status, jqXHR){
+        console.log(data);
+      },
+      error:function(e){
+        console.log(e);
+      }
+  })
+});
 $(function () {
   // init thì hide aler
   $("form").on("submit", function (e) {

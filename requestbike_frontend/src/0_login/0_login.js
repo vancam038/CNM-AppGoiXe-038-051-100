@@ -52,9 +52,8 @@ $(function () {
     let openInNewTab = function(url) {
         $("<a>").attr("href", url).attr("target", "_self")[0].click();
     };
+    //handle effect
     $('.role-option').on('click', function(){
-
-        //
         var index = $(this).index();
         // Cộng 1 để giống với số của phân hệ
         index = index + 1;
@@ -109,8 +108,4 @@ $(function () {
             }
         })
     });
-});
-//Check for cookies availability
-$(function(){
-    //
 });
