@@ -55,8 +55,10 @@ function updateReqStatus(reqId) {
         data: JSON.stringify(reqObject),
         dataType: "json",
     }).done(function () {
-        // emit cho 3 thôi là đã có xe nhận -> hãy reload table lại đi
+        // emit cho 3 là đã có xe nhận -> reload lại table
         socket.emit("4_to_3_reload-table");
+        // emit cho 2 là đã có xe nhận -> reload lại table -> mất req identified
+        socket.emit("4_to_2_reload-table");
     });
 }
 //socket start
@@ -90,19 +92,19 @@ $(function () {
                 $("#countdownExample #timer-value").html(timer.getTimeValues().seconds);
                 // khi click button chấp nhận
                 $('#btn-accept').click(() => {
-	                // đóng infoWindow trước đó
-	                if(infoWindow) infoWindow.close();
-	                // đóng passengerMarker trước đó
-	                if(passengerMarker) passengerMarker.setMap(null);
+                    // đóng infoWindow trước đó
+                    if (infoWindow) infoWindow.close();
+                    // đóng passengerMarker trước đó
+                    if (passengerMarker) passengerMarker.setMap(null);
                     updateReqStatus(reqId);
                     passengerLatLng = new google.maps.LatLng(lat, lng);
                     drawPassengerMarker(passengerLatLng);
                     drawPathDriverToPassenger(prevLatLng, passengerLatLng);
-	                // show thông tin hành khách
-	                infoWindow = new google.maps.InfoWindow({
-		                content: `<b>${addr}</b>`
-	                });
-	                infoWindow.open(map, passengerMarker);
+                    // show thông tin hành khách
+                    infoWindow = new google.maps.InfoWindow({
+                        content: `<b>${addr}</b>`
+                    });
+                    infoWindow.open(map, passengerMarker);
                 })
 
                 $('#btn-reject').click(() => {

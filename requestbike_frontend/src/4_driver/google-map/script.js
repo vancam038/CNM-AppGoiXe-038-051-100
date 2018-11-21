@@ -41,7 +41,7 @@ function drawDriverMarker(latLng) {
     });
     // (re-)add event listeners
     driverMarker.addListener("mouseup", moveDriverMarkerMouseUp);
-    driverMarker.addListener("mousedown", moveDriverMarkerMouseUpMouseDown);
+    driverMarker.addListener("mousedown", moveDriverMarkerMouseDown);
 }
 
 function drawDriverCircle(opts) {
@@ -110,7 +110,7 @@ function showDialog(content = "Something happened") {
 
 let timer = null;
 // change circle colors to notify if user had move marker too far
-function moveDriverMarkerMouseUpMouseDown() {
+function moveDriverMarkerMouseDown() {
     let isOutCircle = false;
 
     timer = setInterval(function () {
@@ -197,11 +197,12 @@ function handleQueryGeolocationFinish(pos) {
         latitude,
         longitude
     } = pos.coords;
-    const userLatLng = new google.maps.LatLng(latitude, longitude);
+    const initialDriverPos = new google.maps.LatLng(latitude, longitude);
     // add marker indicating user position
-    drawDriverMarker(userLatLng);
+    drawDriverMarker(initialDriverPos);
     // save the initial position for later use
-    prevLatLng = new google.maps.LatLng(latitude, longitude);
+    // prevLatLng = new google.maps.LatLng(latitude, longitude);
+    prevLatLng = initialDriverPos;
     // draw circle
     drawDriverCircle({
         strokeColor: "#4286f4",
@@ -209,11 +210,11 @@ function handleQueryGeolocationFinish(pos) {
         strokeWeight: 2,
         fillColor: "#93bcff",
         fillOpacity: 0.2,
-        center: userLatLng
+        center: initialDriverPos
     });
     // re-config the map
     map.setZoom(DEFAULT_ZOOM_LEVEL);
-    map.panTo(userLatLng);
+    map.panTo(initialDriverPos);
     // set the map to use TrafficLayer
     // ? should turn this layer on before the journey started
     // const trafficLayer = new google.maps.TrafficLayer();
