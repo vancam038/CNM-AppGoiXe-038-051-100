@@ -1,7 +1,6 @@
 var express = require("express");
 const request = require("request-promise");
 const shortid = require("shortid");
-var moment = require('moment');
 var _ = require('lodash');
 
 var requestRepo = require("../repos/requestRepo");

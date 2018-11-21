@@ -1,5 +1,5 @@
 var express = require('express');
-
+var uid = require('rand-token').uid;
 var config = require('../config/config');
 var userRepo = require('../repos/userRepo');
 var authRepo = require('../repos/authRepo');
@@ -7,11 +7,32 @@ var authRepo = require('../repos/authRepo');
 var router = express.Router();
 
 router.post('/', (req, res) => {
-	userRepo.add(req.body)
+	var id = uid(10);
+	userRepo.add(req.body, id)
 		.then(value => {
 			console.log(value);
 			res.statusCode = 201;
 			res.json(req.body);
+
+			// nếu type = 4 <=> người dùng là driver
+			// add tiếp vào table driver
+			if (req.body.Type == 4) {
+				const driverId = id;
+				const driverName = req.body.Name;
+				const driverPhone = req.body.Phone;
+				const driverStatus = "STANDBY";
+				const driverObject = {
+					driverId,
+					driverName,
+					driverStatus,
+					driverPhone
+				}
+				userRepo.addDriver(driverObject)
+					.then(console.log("added new driver"))
+					.catch(err => {
+						console.log(err);
+					})
+			}
 		})
 		.catch(err => {
 			console.log(err);
@@ -32,10 +53,10 @@ router.post('/login', (req, res) => {
 				authRepo.updateRefreshToken(userEntity.f_id, rfToken)
 					.then(value => {
 						res.json({
-                            auth:true,
-                            access_token: acToken,
-                            refresh_token: rfToken,
-                            type: userEntity.f_type
+							auth: true,
+							access_token: acToken,
+							refresh_token: rfToken,
+							type: userEntity.f_type
 						})
 					})
 					.catch(err => {
