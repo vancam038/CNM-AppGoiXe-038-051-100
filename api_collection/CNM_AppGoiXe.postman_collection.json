@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "82d8e218-e133-482e-8ea5-4ae254c44d71",
+		"_postman_id": "d98e0659-41e0-4862-8c60-c8d43390eb19",
 		"name": "CNM_AppGoiXe",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -13,13 +13,12 @@
 					{
 						"key": "Content-Type",
 						"name": "Content-Type",
-						"value": "application/json",
-						"disabled": false
+						"value": "application/json"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"username\":\"dtvien\",\n\t\"pwd\":\"bike123\",\n\t\"type\":\"1\"\n}"
+					"raw": "{\n\t\"username\":\"taixe\",\n\t\"pwd\":\"123\",\n\t\"type\":\"4\"\n}"
 				},
 				"url": {
 					"raw": "localhost:3000/user/login",
@@ -47,7 +46,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"Username\": \"taixe\",\n    \"Password\": \"bike123\",\n    \"Name\": \"TaiXe\",\n    \"Phone\": \"0123456789\",\n    \"Type\": \"4\"\n}"
+					"raw": "{\n    \"Username\": \"taixe\",\n    \"Password\": \"123\",\n    \"Name\": \"TaiXe\",\n    \"Phone\": \"0123456789\",\n    \"Type\": \"4\"\n}"
 				},
 				"url": {
 					"raw": "localhost:3000/user/",
