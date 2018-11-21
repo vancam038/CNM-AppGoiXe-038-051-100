@@ -5,7 +5,7 @@ var moment = require('moment');
 var db = require('../fn/mysql-db');
 
 const SECRET = 'ABCDEF';
-const AC_LIFETIME = 60; // seconds
+const AC_LIFETIME = 10; // seconds
 exports.LIFETIME = () => {
     return AC_LIFETIME;
 };
@@ -29,11 +29,17 @@ exports.verifyAccessToken = (req, res, next) => {
         jwt.verify(token, SECRET, (err, payload) => {
             if (err) {
                 res.statusCode = 401;
-                res.json({
-                    msg: 'INVALID TOKEN',
-                    error: err
-                })
+                if(err.name === 'TokenExpiredError'){
+                    res.json({
+                        msg: 'TOKEN_EXPIRED'
+                    })
+                }else{
+                    res.json({
+                        msg:'INVALID_TOKEN'
+                    })
+                }
             } else {
+                console.log(payload);
                 req.token_payload = payload;
                 next();
             }

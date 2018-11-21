@@ -1,5 +1,6 @@
 var express = require('express');
 
+var config = require('../config/config');
 var userRepo = require('../repos/userRepo');
 var authRepo = require('../repos/authRepo');
 
@@ -32,9 +33,8 @@ router.post('/login', (req, res) => {
 					.then(value => {
 						res.json({
                             auth:true,
-							access_token: acToken,
-							refresh_token: rfToken,
-							expires_in: authRepo.LIFETIME(),
+                            access_token: acToken,
+                            refresh_token: rfToken,
                             type: userEntity.f_type
 						})
 					})

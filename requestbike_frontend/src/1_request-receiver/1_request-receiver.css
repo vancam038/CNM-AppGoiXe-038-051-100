@@ -108,6 +108,7 @@ input[type="password"] {
 .alert {
     padding: 0.25rem 1.25rem;
     text-align: center;
+    display: none;
 }
 
 .alert-dismissible .close {

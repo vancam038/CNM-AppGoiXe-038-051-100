@@ -1,9 +1,7 @@
 var socket = io("http://localhost:3001");
 
 $(function () {
-  // init thì hide alert
-  $(".alert").hide();
-
+  // init thì hide aler
   $("form").on("submit", function (e) {
     e.preventDefault();
     const clientName = $("#clientName").val();
