@@ -19,7 +19,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"username\":\"tuankk\",\n\t\"pwd\":\"123456\"\n}"
+					"raw": "{\n\t\"username\":\"dtvien\",\n\t\"pwd\":\"bike123\",\n\t\"type\":\"1\"\n}"
 				},
 				"url": {
 					"raw": "localhost:3000/user/login",
@@ -47,7 +47,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"Username\": \"tuannq\",\n    \"Password\": \"123456\",\n    \"Name\": \"ABC\",\n    \"Phone\": \"0123456789\",\n    \"Type\": \"0\"\n}"
+					"raw": "{\n    \"Username\": \"taixe\",\n    \"Password\": \"bike123\",\n    \"Name\": \"TaiXe\",\n    \"Phone\": \"0123456789\",\n    \"Type\": \"4\"\n}"
 				},
 				"url": {
 					"raw": "localhost:3000/user/",
