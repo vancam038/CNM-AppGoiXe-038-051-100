@@ -63,20 +63,6 @@ function drawDriverCircle(opts) {
 }
 
 function drawPathDriverToPassenger(driverLatLng, passengerLatLng) {
-    // if (pathLine) {
-    //     pathLine.setMap(null);
-    // }
-
-    // pathLine = new google.maps.Polyline({
-    //     path: [driverLatLng, passengerLatLng],
-    //     geodesic: true,
-    //     strokeColor: "#FF0000",
-    //     strokeOpacity: 1.0,
-    //     strokeWeight: 2
-    // });
-
-    // pathLine.setMap(map);
-
     var directionsService = new google.maps.DirectionsService;
     const DirectionsRequest = {
         origin: driverLatLng,
@@ -166,28 +152,19 @@ function moveDriverMarkerMouseUp() {
             strokeWeight: 2,
             fillColor: "#93bcff",
             fillOpacity: 0.2,
-            center: _prevLatLng
+            center: prevLatLng
         });
         // draw new path
-    } else {
-        const {
-            lat,
-            lng
-        } = getNewDriverMarkerLatLng();
-        drawPathDriverToPassenger(
-            new google.maps.LatLng(lat, lng),
-            passengerLatLng
-        );
-        // prevLatLng = new google.maps.LatLng(_newLagLng.lat, _newLagLng.lng);
-        // draw new circle
-        // drawDriverCircle({
-        //   strokeColor: "#4286f4",
-        //   stokeOpacity: 0.8,
-        //   strokeWeight: 2,
-        //   fillColor: "#93bcff",
-        //   fillOpacity: 0.2,
-        //   center: prevLatLng
-        // });
+    } else { // do nothing
+
+        // const {
+        //     lat,
+        //     lng
+        // } = getNewDriverMarkerLatLng();
+        // drawPathDriverToPassenger(
+        //     new google.maps.LatLng(lat, lng),
+        //     passengerLatLng
+        // );
     }
 }
 
