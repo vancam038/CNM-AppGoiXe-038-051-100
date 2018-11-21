@@ -156,15 +156,7 @@ function moveDriverMarkerMouseUp() {
         });
         // draw new path
     } else { // do nothing
-
-        // const {
-        //     lat,
-        //     lng
-        // } = getNewDriverMarkerLatLng();
-        // drawPathDriverToPassenger(
-        //     new google.maps.LatLng(lat, lng),
-        //     passengerLatLng
-        // );
+        
     }
 }
 
