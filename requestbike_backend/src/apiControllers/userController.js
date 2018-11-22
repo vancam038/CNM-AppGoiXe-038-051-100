@@ -12,5 +12,13 @@ router.post('/me',(req, res) => {
 	res.json(payload);
 });
 
+router.post('/id',(req, res)=>{
+	let payload = req.token_payload;
+	console.log(payload);
+	res.json({
+		id: payload.user.f_id
+	});
+})
+
 
 module.exports = router;

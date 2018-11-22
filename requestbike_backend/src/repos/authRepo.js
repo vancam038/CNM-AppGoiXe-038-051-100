@@ -6,7 +6,7 @@ var uid = require('rand-token').uid;
 var db = require('../fn/mysql-db');
 
 const SECRET = 'ABCDEF';
-const AC_LIFETIME = 10; // seconds
+const AC_LIFETIME = 600; // seconds
 exports.LIFETIME = () => {
     return AC_LIFETIME;
 };
