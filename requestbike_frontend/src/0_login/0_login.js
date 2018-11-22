@@ -77,7 +77,7 @@ $(function () {
             type
         };
         $.ajax({
-            url:'http://localhost:3000/user/login',
+            url:'http://localhost:3000/auth/login',
             type:'POST',
             headers:{
                 "Access-Control-Allow-Origin": "*",
@@ -95,7 +95,7 @@ $(function () {
 
                     setTimeout(function(){
                         redirect(data.type);
-                    },1500);
+                    },1000);
                 }else{
                     console.log("Login Failed!");
                     $('#alert-danger').show();
