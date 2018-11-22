@@ -10,6 +10,7 @@ var bodyParser = require("body-parser"),
 // server nodejs START
 
 // Controllers START
+var authCtrl = require('./src/apiControllers/authController');
 var requestCtrl = require("./src/apiControllers/requestControllers");
 var userCtrl = require("./src/apiControllers/userController");
 // Controllers END
@@ -25,9 +26,10 @@ app.use(
 );
 app.use(cors());
 
-app.use("/user", userCtrl);
+app.use('/auth',authCtrl);
+app.use("/user", verifyAccessToken, userCtrl);
 // for test purpose
-app.use("/", requestCtrl);
+app.use("/", verifyAccessToken, requestCtrl);
 // JWT cho api
 // app.use("/", verifyAccessToken, requestCtrl);
 
