@@ -171,5 +171,20 @@ $(function () {
     var template = Handlebars.compile(source);
     var html = template(data);
     $("#requests").html(html);
+  });
+
+  // lắng nghe realtime từ app#4
+  socket.on("4_to_2_reload-table", () => {
+    $.ajax({
+      url: "http://localhost:3000/requests/unidentified+identified",
+      type: "GET",
+      dataType: "json"
+    }).done(function (data) {
+      var source = document.getElementById("request-template").innerHTML;
+      var template = Handlebars.compile(source);
+      var html = template(data);
+      $("#requests").html(html);
+      keepSelectedRow();
+    });
   })
 })

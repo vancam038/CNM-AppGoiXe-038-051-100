@@ -41,7 +41,7 @@ function drawDriverMarker(latLng) {
     });
     // (re-)add event listeners
     driverMarker.addListener("mouseup", moveDriverMarkerMouseUp);
-    driverMarker.addListener("mousedown", moveDriverMarkerMouseUpMouseDown);
+    driverMarker.addListener("mousedown", moveDriverMarkerMouseDown);
 }
 
 function drawDriverCircle(opts) {
@@ -63,20 +63,6 @@ function drawDriverCircle(opts) {
 }
 
 function drawPathDriverToPassenger(driverLatLng, passengerLatLng) {
-    // if (pathLine) {
-    //     pathLine.setMap(null);
-    // }
-
-    // pathLine = new google.maps.Polyline({
-    //     path: [driverLatLng, passengerLatLng],
-    //     geodesic: true,
-    //     strokeColor: "#FF0000",
-    //     strokeOpacity: 1.0,
-    //     strokeWeight: 2
-    // });
-
-    // pathLine.setMap(map);
-
     var directionsService = new google.maps.DirectionsService;
     const DirectionsRequest = {
         origin: driverLatLng,
@@ -110,7 +96,7 @@ function showDialog(content = "Something happened") {
 
 let timer = null;
 // change circle colors to notify if user had move marker too far
-function moveDriverMarkerMouseUpMouseDown() {
+function moveDriverMarkerMouseDown() {
     let isOutCircle = false;
 
     timer = setInterval(function () {
@@ -166,28 +152,11 @@ function moveDriverMarkerMouseUp() {
             strokeWeight: 2,
             fillColor: "#93bcff",
             fillOpacity: 0.2,
-            center: _prevLatLng
+            center: prevLatLng
         });
         // draw new path
-    } else {
-        const {
-            lat,
-            lng
-        } = getNewDriverMarkerLatLng();
-        drawPathDriverToPassenger(
-            new google.maps.LatLng(lat, lng),
-            passengerLatLng
-        );
-        // prevLatLng = new google.maps.LatLng(_newLagLng.lat, _newLagLng.lng);
-        // draw new circle
-        // drawDriverCircle({
-        //   strokeColor: "#4286f4",
-        //   stokeOpacity: 0.8,
-        //   strokeWeight: 2,
-        //   fillColor: "#93bcff",
-        //   fillOpacity: 0.2,
-        //   center: prevLatLng
-        // });
+    } else { // do nothing
+        
     }
 }
 
@@ -197,11 +166,12 @@ function handleQueryGeolocationFinish(pos) {
         latitude,
         longitude
     } = pos.coords;
-    const userLatLng = new google.maps.LatLng(latitude, longitude);
+    const initialDriverPos = new google.maps.LatLng(latitude, longitude);
     // add marker indicating user position
-    drawDriverMarker(userLatLng);
+    drawDriverMarker(initialDriverPos);
     // save the initial position for later use
-    prevLatLng = new google.maps.LatLng(latitude, longitude);
+    // prevLatLng = new google.maps.LatLng(latitude, longitude);
+    prevLatLng = initialDriverPos;
     // draw circle
     drawDriverCircle({
         strokeColor: "#4286f4",
@@ -209,11 +179,11 @@ function handleQueryGeolocationFinish(pos) {
         strokeWeight: 2,
         fillColor: "#93bcff",
         fillOpacity: 0.2,
-        center: userLatLng
+        center: initialDriverPos
     });
     // re-config the map
     map.setZoom(DEFAULT_ZOOM_LEVEL);
-    map.panTo(userLatLng);
+    map.panTo(initialDriverPos);
     // set the map to use TrafficLayer
     // ? should turn this layer on before the journey started
     // const trafficLayer = new google.maps.TrafficLayer();
