@@ -8,6 +8,9 @@ let map = null,
   pathLine = null,
   prevLatLng = null;
 
+// vẽ route
+var directionsDisplay;
+
 /// google map start ==========================================================
 
 function getNewDriverMarkerLatLng() {
@@ -65,9 +68,10 @@ function drawDriverCircle(opts) {
 function drawPathDriverToPassenger(driverLatLng, passengerLatLng) {
 
   var directionsService = new google.maps.DirectionsService();
-  var directionsDisplay = new google.maps.DirectionsRenderer({
+  directionsDisplay = new google.maps.DirectionsRenderer({
     suppressMarkers: true
   });
+
   const DirectionsRequest = {
     origin: driverLatLng,
     destination: passengerLatLng,
@@ -100,6 +104,10 @@ function moveDriverMarkerMouseDown() {
   timer = setInterval(function () {
     const _newLagLng = getNewDriverMarkerLatLng(),
       _prevLatLng = getPrevDriverMarkerLatLng();
+    console.log(_prevLatLng);
+    console.log(_newLagLng);
+
+
     if (Haversine(_prevLatLng, _newLagLng) > 100) {
       if (isOutCircle === false) {
         isOutCircle = true;
@@ -135,7 +143,8 @@ function moveDriverMarkerMouseUp() {
   clearInterval(timer);
   const _newLagLng = getNewDriverMarkerLatLng(),
     _prevLatLng = getPrevDriverMarkerLatLng();
-
+  console.log(_prevLatLng);
+  console.log(_newLagLng);
   if (Haversine(_prevLatLng, _newLagLng) > 100) {
     // show alert
     showDialog("Vị trị mới không cách vị trí gốc quá 100m");
@@ -213,6 +222,32 @@ function drawPassengerMarker(latLng) {
     animation: google.maps.Animation.BOUNCE,
     draggable: false
   });
+}
+
+function resetDriverMap(reqStatus) {
+  // xóa route
+  directionsDisplay.setMap(null);
+  // xóa circle
+  if (circle) {
+    circle.setMap(null);
+  }
+  // Nếu trạng thái req là Kết Thúc
+  if (reqStatus === REQ_STATUS_FINISHED) {
+    // chuyển lại thành marker driver
+    drawDriverMarker(getNewDriverMarkerLatLng());
+    // vẽ lại cirle
+    drawDriverCircle({
+      strokeColor: "#4286f4",
+      stokeOpacity: 0.8,
+      strokeWeight: 2,
+      fillColor: "#93bcff",
+      fillOpacity: 0.2,
+      center: getNewDriverMarkerLatLng()
+    });
+
+    // Cập nhật lại preLatLng tới vị trí mới
+    prevLatLng = new google.maps.LatLng(getNewDriverMarkerLatLng());
+  }
 }
 
 // google map end =============================================================

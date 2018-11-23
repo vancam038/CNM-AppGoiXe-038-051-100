@@ -102,7 +102,7 @@ function updateMap(lat, lng, addr) {
 
   passengerLatLng = new google.maps.LatLng(lat, lng);
   drawPassengerMarker(passengerLatLng);
-  drawPathDriverToPassenger(prevLatLng, passengerLatLng);
+  drawPathDriverToPassenger(getNewDriverMarkerLatLng(), passengerLatLng);
   console.log(passengerLatLng);
 
   // show thông tin hành khách
@@ -121,7 +121,6 @@ $(function () {
 
   // lắng nghe yêu cầu từ phía #2
   var timer = new Timer();
-  var accepted = false;
   socket.on("2_to_4_send-req-to-driver", msg => {
     const {
       reqId,
@@ -257,15 +256,15 @@ $(function () {
                       ? data.results[0].formatted_address
                       : ""
                   }</p>
-                  <p>Di chuyển đến vị trí này?</p>
+                  <p>Đây có phải là vị trí đã thương lượng với khách hay không?</p>
                   <div class="infowindow-btn btn-group">
                     <button class="btn btn-success" 
                       onClick="document.getElementById('acceptDestination').click()">
-                      Có
+                      Yes
                     </button>
-                    <button class="btn btn-cancel" 
+                    <button class="btn btn-basic btn-cancel" 
                       onClick="document.getElementById('declineDestination').click()">
-                      Tiếp tục di chuyển
+                      No, Tiếp tục di chuyển
                     </button>
                   </div>
                 </div>`
@@ -274,6 +273,10 @@ $(function () {
         }
       );
     });
+
+    // reset Driver map
+    resetDriverMap();
+
   });
 
   // khi click button Kết Thúc
@@ -287,14 +290,18 @@ $(function () {
     // chuyển thành READY
     changeStatus(DRIVER_STATUS_READY);
     // reset map
-    // initMap();
-    resetMap(driverMarker);
+    resetDriverMap(REQ_STATUS_FINISHED);
   });
 });
 
 $(function () {
   $("#acceptDestination").click(function () {
     infoWindow.close();
+    google.maps.event.clearListeners(driverMarker, "mouseup");
+    google.maps.event.clearListeners(driverMarker, "mousedown");
+    // driverMarker sẽ ko thể drag nữa
+    driverMarker.setDraggable(false);
+    
     // Nếu là yes -> đã tới địa điểm thương lượng -> thì mới mở nút Kết thúc lên để end chuyến đi
     // mở nút Kết Thúc lên
     $("#btn-finish").prop("disabled", false); // chỉ khi ấn nút Yes của infoWindow thì mới mở lên});
