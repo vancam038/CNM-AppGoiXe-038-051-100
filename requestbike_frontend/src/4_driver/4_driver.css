@@ -23,7 +23,8 @@
 
 /* user section start */
 
-.user-section {}
+.user-section {
+}
 
 /* icon start */
 .circular--landscape {
@@ -105,6 +106,30 @@
   z-index: 9999;
 }
 
+.infowindow-container {
+  padding: 10px 10px 0;
+}
+
+.infowindow-btn {
+  width: 100%;
+}
+
+.infowindow-btn .btn {
+  width: 49%;
+  border-radius: 5px !important;
+  -webkit-border-radius: 5px !important;
+  -moz-border-radius: 5px !important;
+  -ms-border-radius: 5px !important;
+  -o-border-radius: 5px !important;
+}
+
+.infowindow-btn .btn:first-of-type {
+  margin-right: 1.5%;
+}
+
+.infowindow-btn .btn:hover {
+  outline: none;
+}
 
 /* google map end */
 
