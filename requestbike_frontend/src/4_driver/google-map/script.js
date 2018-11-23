@@ -63,22 +63,20 @@ function drawDriverCircle(opts) {
 }
 
 function drawPathDriverToPassenger(driverLatLng, passengerLatLng) {
+
   var directionsService = new google.maps.DirectionsService();
+  var directionsDisplay = new google.maps.DirectionsRenderer({
+    suppressMarkers: true
+  });
   const DirectionsRequest = {
     origin: driverLatLng,
     destination: passengerLatLng,
     travelMode: "DRIVING"
   };
-  directionsService.route(DirectionsRequest, function(result, status) {
+  directionsService.route(DirectionsRequest, function (result, status) {
     if (status == "OK") {
-      //todo
-      directionsDisplay = new google.maps.DirectionsRenderer({
-        directions: result,
-        map: map,
-        markerOptions: {
-          visible: false
-        }
-      });
+      directionsDisplay.setMap(map);
+      directionsDisplay.setDirections(result);
     }
   });
 }
@@ -99,7 +97,7 @@ let timer = null;
 function moveDriverMarkerMouseDown() {
   let isOutCircle = false;
 
-  timer = setInterval(function() {
+  timer = setInterval(function () {
     const _newLagLng = getNewDriverMarkerLatLng(),
       _prevLatLng = getPrevDriverMarkerLatLng();
     if (Haversine(_prevLatLng, _newLagLng) > 100) {
@@ -162,7 +160,10 @@ function moveDriverMarkerMouseUp() {
 
 function handleQueryGeolocationFinish(pos) {
   // extract position
-  const { latitude, longitude } = pos.coords;
+  const {
+    latitude,
+    longitude
+  } = pos.coords;
   const initialDriverPos = new google.maps.LatLng(latitude, longitude);
   // add marker indicating user position
   drawDriverMarker(initialDriverPos);
