@@ -149,6 +149,8 @@ $(function () {
 
                     // TODO: GỌI ajax cập nhật tọa độ driver phụ trách request đó
 
+                    // Mở button Đón khách lên
+                    $('#btn-take').prop("disabled", false);
                 })
 
                 $('#btn-reject').click(() => {
@@ -174,3 +176,52 @@ $(function () {
     });
 });
 //socket end
+
+$(function () {
+    // khi click button Đón Khách
+    $('#btn-take').click(() => {
+        // tự disable chính mình
+        $('#btn-take').prop("disabled", true);
+        // mở nút Bắt đầu lên
+        $('#btn-start').prop("disabled", false);
+        // chuyển trạng thái thành BUSY
+        changeStatus(DRIVER_STATUS_BUSY);
+        // disable lun trạng thái, ko cho sửa
+        $("#navbarDropdown").prop("disabled", true);
+
+        // TODO: xử lý marker driver nhảy vị trí tới marker khách
+
+        // TODO: lúc này số lượng marker giảm còn 1 marker -> đổi marker thành chiếc xe đèo khách -> moving.png
+
+
+    })
+
+    // khi click button Bắt Đầu
+    $('#btn-start').click(() => {
+        // tự disable chính mình
+        $('#btn-start').prop("disabled", true);
+
+        // Ấn bắt đầu thì sẽ làm gì????
+        // TODO: chọn địa điểm tới tùy ý 
+        // -> bằng cách kéo thả marker trên map rồi confirm yes/no bằng infoWindow -> giống App#2
+
+        
+        // Nếu là yes -> đã tới địa điểm thương lượng -> thì mới mở nút Kết thúc lên để end chuyến đi
+        // mở nút Kết Thúc lên
+        // $('#btn-finish').prop("disabled", false); // chỉ khi ấn nút Yes của infoWindow thì mới mở lên
+
+    })
+
+    // khi click button Kết Thúc
+    $('#btn-finish').click(() => {
+        // tự disable chính mình
+        $('#btn-finish').prop("disabled", true);
+
+        // TODO: xử lý trạng thái: chuyển lại thành READY
+        // enable lại trạng thái
+        $("#navbarDropdown").prop("disabled", false);
+        // chuyển thành READY
+        changeStatus(DRIVER_STATUS_READY);
+
+    })
+})

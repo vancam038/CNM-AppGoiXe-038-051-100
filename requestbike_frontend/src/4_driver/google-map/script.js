@@ -156,7 +156,7 @@ function moveDriverMarkerMouseUp() {
         });
         // draw new path
     } else { // do nothing
-        
+
     }
 }
 
