@@ -43,8 +43,10 @@ $(function () {
   //=================================================================
   //click on table body
   $('#reqTable tbody').on('click', 'tr', function () {
+    // Thêm highlight cho dòng hiện tại
     $('#reqTable tbody tr').removeClass('selected');
     $(this).addClass('selected');
+
     var tableData = $(this).children("td").map(function () {
       return $(this).text();
     }).get();
@@ -56,11 +58,21 @@ $(function () {
     const lng = $(this).attr("data-lng");
     $('#lat').val(lat);
     $('#lng').val(lng);
+
+    // xét status: 
+    if (tableData[5] === REQ_STATUS_ACCEPTED) {
+      $('#btn-path').prop('hidden', false);
+      $('#btn-path').prop('disabled', false);
+    } else {
+      $('#btn-path').prop('hidden', true);
+      prevLatLng = new google.maps.LatLng(lat, lng);
+      // showIdentifiedReq(prevLatLng);
+    }
   });
 
-  $("#btn-path").click(function (e) {
+  $('#btn-path').click(function (e) {
     e.preventDefault();
-    //TODO
+    // TODO:
   });
 });
 

@@ -1,5 +1,6 @@
 var socket = io("http://localhost:3001");
 let infoWindow = null;
+let reqId_global;
 
 $(function () {
   $("#requestModalCenter").modal({
@@ -54,8 +55,8 @@ function changeStatus(status) {
   }
 }
 
-function updateReqStatus(reqId) {
-  const status = REQ_STATUS_ACCEPTED;
+function updateReqStatus(reqId, reqStatus) {
+  const status = reqStatus;
   const reqObject = {
     reqId,
     status
@@ -72,7 +73,7 @@ function updateReqStatus(reqId) {
     data: JSON.stringify(reqObject),
     dataType: "json"
   }).done(function () {
-    // emit cho 3 là đã có xe nhận -> reload lại table
+    // emit cho 3 là request này đã có xe nhận || đang di chuyển || kết thúc-> reload lại table
     socket.emit("4_to_3_reload-table");
     // emit cho 2 là đã có xe nhận -> reload lại table -> mất req identified bên #2
     socket.emit("4_to_2_reload-table");
@@ -121,6 +122,8 @@ $(function () {
 
 
     if (reqId === undefined || lat === undefined || lng === undefined) return;
+    // save lại thành biến toàn cục để dành xài
+    reqId_global = reqId;
 
     // start đồng hồ
     if (timer.isRunning() == false) {
@@ -140,9 +143,6 @@ $(function () {
             $("#btn-accept").click(() => {
               // stop đồng hồ lại
               timer.stop();
-
-              // update trạng thái của request dưới db
-              updateReqStatus(reqId);
 
               // TODO: GỌI ajax cập nhật tọa độ driver phụ trách request đó
 
@@ -169,6 +169,9 @@ $(function () {
         if (accepted) {
           // update lại map
           updateMap(lat, lng, addr);
+
+          // update trạng thái của request dưới db
+          updateReqStatus(reqId, REQ_STATUS_ACCEPTED);
         }
       });
 
@@ -266,6 +269,9 @@ $(function () {
     // reset Driver map
     resetDriverMap();
 
+    // cập nhật status của req thành MOVING
+    updateReqStatus(reqId_global, REQ_STATUS_MOVING);
+
   });
 
   // khi click button Kết Thúc
@@ -273,13 +279,16 @@ $(function () {
     // tự disable chính mình
     $("#btn-finish").prop("disabled", true);
 
-    // TODO: xử lý trạng thái: chuyển lại thành READY
+    // xử lý trạng thái của driver: chuyển lại thành READY
     // enable lại trạng thái
     $("#navbarDropdown").prop("disabled", false);
     // chuyển thành READY
     changeStatus(DRIVER_STATUS_READY);
     // reset map
     resetDriverMap(REQ_STATUS_FINISHED);
+
+    // cập nhật status thành Finish
+    updateReqStatus(reqId_global, REQ_STATUS_FINISHED);
   });
 });
 

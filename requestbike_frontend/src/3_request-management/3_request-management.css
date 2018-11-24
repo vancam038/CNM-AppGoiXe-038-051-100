@@ -67,6 +67,14 @@ body {
   color: blue;
 }
 
+.moving {
+  color: #e15f41;
+}
+
+.finished {
+  color: purple;
+}
+
 .selected {
   background: #ffeaa7 !important;
 }
@@ -98,4 +106,5 @@ body {
   width: auto;
   height: 100%;
 }
+
 /* icon end */
