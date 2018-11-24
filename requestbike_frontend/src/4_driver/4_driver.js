@@ -58,7 +58,7 @@ function changeStatus(status) {
         .removeClass("btn-outline-danger btn-outline-warning")
         .addClass("btn-outline-success");
       // ajax cập nhật status của tài xế thành ready
-      getDriverIdPromise().then(currentDriverIdid => {
+      getDriverIdPromise().then(currentDriverId => {
         updateDriverStatus(DRIVER_STATUS_READY, currentDriverId); // TESTING
       })
 
