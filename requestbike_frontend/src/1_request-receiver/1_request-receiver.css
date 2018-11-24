@@ -132,4 +132,8 @@ input[type="password"] {
     height: 100%;
 }
 
+.modal-backdrop {
+    opacity: 0.85;
+    display: none;
+}
 /* icon end */
