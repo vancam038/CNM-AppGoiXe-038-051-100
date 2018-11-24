@@ -31,6 +31,25 @@ function updateDriverStatus(status, driverId) {
   });
 }
 
+var getDriverIdPromise = () => {
+  return new Promise((resolve, reject) => {
+    $.ajax({
+      url: "http://localhost:3000/user/id",
+      type: "POST",
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json",
+        "x-access-token": `${localStorage.token}`
+      },
+      dataType: "json"
+    }).done(function (driverObject) {
+      console.log(driverObject.id);
+      resolve(driverObject.id);
+    });
+
+  })
+}
+
 function changeStatus(status) {
   switch (status) {
     case DRIVER_STATUS_READY:
@@ -39,7 +58,10 @@ function changeStatus(status) {
         .removeClass("btn-outline-danger btn-outline-warning")
         .addClass("btn-outline-success");
       // ajax cập nhật status của tài xế thành ready
-      // updateDriverStatus(DRIVER_STATUS_READY, "tAJ1PUTcaf"); // TESTING
+      getDriverIdPromise().then(currentDriverIdid => {
+        updateDriverStatus(DRIVER_STATUS_READY, currentDriverId); // TESTING
+      })
+
       break;
     case DRIVER_STATUS_STANDBY:
       $("#navbarDropdown").html(DRIVER_STATUS_STANDBY);
@@ -50,7 +72,9 @@ function changeStatus(status) {
       //socket end
 
       // ajax cập nhật status của tài xế thành standby
-      // updateDriverStatus(DRIVER_STATUS_STANDBY, "tAJ1PUTcaf"); // TESTING
+      getDriverIdPromise().then(currentDriverId => {
+        updateDriverStatus(DRIVER_STATUS_STANDBY, currentDriverId); // TESTING
+      })
       break;
   }
 }
