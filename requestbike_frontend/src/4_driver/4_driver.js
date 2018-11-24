@@ -51,17 +51,6 @@ function changeStatus(status) {
       // ajax cập nhật status của tài xế thành standby
       // updateDriverStatus(DRIVER_STATUS_STANDBY, "tAJ1PUTcaf"); // TESTING
       break;
-      //etc...
-    case DRIVER_STATUS_BUSY: // for testing
-      $("#navbarDropdown").html(DRIVER_STATUS_BUSY);
-      $("#navbarDropdown")
-        .removeClass("btn-outline-success btn-outline-warning")
-        .addClass("btn-outline-danger");
-      //socket start
-      //socket end
-
-      // ajax cập nhật status của tài xế thành ready
-      break;
   }
 }
 
@@ -301,7 +290,7 @@ $(function () {
     google.maps.event.clearListeners(driverMarker, "mousedown");
     // driverMarker sẽ ko thể drag nữa
     driverMarker.setDraggable(false);
-    
+
     // Nếu là yes -> đã tới địa điểm thương lượng -> thì mới mở nút Kết thúc lên để end chuyến đi
     // mở nút Kết Thúc lên
     $("#btn-finish").prop("disabled", false); // chỉ khi ấn nút Yes của infoWindow thì mới mở lên});

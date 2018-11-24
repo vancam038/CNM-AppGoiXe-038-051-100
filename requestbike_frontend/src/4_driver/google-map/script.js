@@ -161,7 +161,6 @@ function moveDriverMarkerMouseUp() {
       fillOpacity: 0.2,
       center: prevLatLng
     });
-    // draw new path
   } else {
     // do nothing
   }
