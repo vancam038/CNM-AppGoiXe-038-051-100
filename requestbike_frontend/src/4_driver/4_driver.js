@@ -127,6 +127,9 @@ $(function () {
 
     // start đồng hồ
     if (timer.isRunning() == false) {
+      // Khởi tạo
+      $("#countdownExample #timer-value").html('<div class="loader"></div>');
+
       timer.start({
         countdown: true,
         startValues: {
@@ -137,6 +140,7 @@ $(function () {
         // Promise start
         return new Promise((resolve, reject) => {
           timer.addEventListener("secondsUpdated", function (e) {
+
             // Cập nhật số giây
             $("#countdownExample #timer-value").html(timer.getTimeValues().seconds);
             // khi click button chấp nhận
@@ -157,7 +161,6 @@ $(function () {
             $("#btn-reject").click(() => {
               timer.stop();
               // timer.reset();
-              $("#requestModalCenter").modal("hide");
               resolve(false);
             });
           });
@@ -243,12 +246,12 @@ $(function () {
           infoWindow = new google.maps.InfoWindow({
             content: `
                 <div class="infowindow-container">
-                  <p id="infowindow-address">${
+                  <p style="font-weight: bold; color: red;" id="infowindow-address">${
                     data.status === "OK"
                       ? data.results[0].formatted_address
                       : ""
                   }</p>
-                  <p>Đây có phải là vị trí đã thương lượng với khách hay không?</p>
+                  <p style="font-weight: bold">Đây có phải là vị trí đã thương lượng với khách hay không?</p>
                   <div class="infowindow-btn btn-group">
                     <button class="btn btn-success" 
                       onClick="document.getElementById('acceptDestination').click()">
