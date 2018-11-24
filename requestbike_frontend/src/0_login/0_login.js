@@ -89,7 +89,7 @@ $(function () {
                 console.log(data);
                 if(data.auth) {
                     localStorage.setItem('token', data.access_token);
-                    localStorage.setItem('refToken',data.rfToken);
+                    localStorage.setItem('refToken',data.refresh_token);
                     $('#alert-success').show();
                     //chuyen huong trang theo loai tai khoan
 
