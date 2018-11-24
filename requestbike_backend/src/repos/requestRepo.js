@@ -63,3 +63,9 @@ exports.updateStatus = (newStatus, reqId) => {
   return db.save(sql);
 };
 // cam-sv end
+
+exports.updateDriverId = (driverId, reqId) => {
+  const sql =
+    "update request set driverId = " + `'${driverId}'` + " where id=" + `'${reqId}';`;
+  return db.save(sql);
+};

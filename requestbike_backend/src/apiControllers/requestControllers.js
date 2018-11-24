@@ -142,10 +142,6 @@ router.patch("/request/coords", (req, res) => {
     newLat,
     newLng
   } = req.body;
-  if (!reqId || !newLat || !newLng) {
-    res.statusCode = 500;
-    res.end();
-  }
 
   requestRepo
     .updateCoords(newLat, newLng, reqId)
@@ -165,15 +161,33 @@ router.patch("/request/coords", (req, res) => {
 
 router.patch("/request/status", (req, res) => {
   const reqId = req.body.reqId;
+  console.log(reqId);
+
   console.log(req.body.status);
   const newStatus = req.body.status;
-  if (!reqId || !newStatus) {
-    res.statusCode = 500;
-    res.end();
-  }
 
   requestRepo
     .updateStatus(newStatus, reqId)
+    .then(result => {
+      console.log(result);
+      res.statusCode = 201;
+      res.json({
+        status: "OK"
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      res.statusCode = 500;
+      res.end("View error log on console");
+    });
+});
+
+router.patch("/request/driverId", (req, res) => {
+  const reqId = req.body.reqId;
+  const driverId = req.body.driverId;
+
+  requestRepo
+    .updateDriverId(driverId, reqId)
     .then(result => {
       console.log(result);
       res.statusCode = 201;

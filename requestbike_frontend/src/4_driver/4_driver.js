@@ -10,12 +10,12 @@ $(function () {
   });
 });
 
+// ------------------------------------ driver ajax start
 function updateDriverStatus(status, driverId) {
   const driverObject = {
     driverId,
     status
   };
-  // Đầu tiên, cập nhật status của nó dưới db
   $.ajax({
     url: "http://localhost:3000/driver/status",
     type: "PATCH",
@@ -25,10 +25,44 @@ function updateDriverStatus(status, driverId) {
     },
     data: JSON.stringify(driverObject),
     dataType: "json"
-  }).done(function () {
-    // socket start
-    // socket end
-  });
+  })
+}
+
+function updateDriverReqId(reqId, driverId) {
+  const driverObject = {
+    driverId,
+    reqId
+  };
+
+  $.ajax({
+    url: "http://localhost:3000/driver/reqId",
+    type: "PATCH",
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json"
+    },
+    data: JSON.stringify(driverObject),
+    dataType: "json"
+  })
+}
+
+function updateDriverCoords(newLat, newLng, driverId) {
+  const driverObject = {
+    driverId,
+    newLat,
+    newLng
+  };
+
+  $.ajax({
+    url: "http://localhost:3000/driver/coords",
+    type: "PATCH",
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json"
+    },
+    data: JSON.stringify(driverObject),
+    dataType: "json"
+  })
 }
 
 var getDriverIdPromise = () => {
@@ -46,14 +80,12 @@ var getDriverIdPromise = () => {
       console.log(driverObject.id);
       resolve(driverObject.id);
     });
-
   })
 }
 
-function updateDriverLatLng() {
+// ------------------------------------ driver ajax end
 
-}
-
+// --------------------------------------------req ajax start
 function changeStatus(status) {
   switch (status) {
     case DRIVER_STATUS_READY:
@@ -74,7 +106,6 @@ function changeStatus(status) {
         .addClass("btn-outline-warning");
       //socket start
       //socket end
-
       // ajax cập nhật status của tài xế thành standby
       getDriverIdPromise().then(currentDriverId => {
         updateDriverStatus(DRIVER_STATUS_STANDBY, currentDriverId); // TESTING
@@ -113,6 +144,31 @@ function updateReqStatus(reqId, reqStatus) {
     socket.emit("4_to_2_reload-table");
   });
 }
+
+function updateReqDriverId(reqId, driverId) {
+  const reqObject = {
+    reqId,
+    driverId
+  };
+
+  $.ajax({
+    url: "http://localhost:3000/request/driverId",
+    type: "PATCH",
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json"
+    },
+    data: JSON.stringify(reqObject),
+    dataType: "json"
+  }).done(function () {
+    // emit cho 3 là request này đã có xe nhận || đang di chuyển || kết thúc-> reload lại table
+    socket.emit("4_to_3_reload-table");
+    // emit cho 2 là đã có xe nhận -> reload lại table -> mất req identified bên #2
+    socket.emit("4_to_2_reload-table");
+  });
+}
+// ------------------------------- req ajax end
+
 
 // lat:  reqLat, lng: reqLng, addr: reqAddr
 function updateMap(lat, lng, addr) {
@@ -207,7 +263,21 @@ $(function () {
           // update trạng thái của request dưới db
           updateReqStatus(reqId, REQ_STATUS_ACCEPTED);
 
+          //update ReqId cua driver phu trach
+          getDriverIdPromise().then(currentDriverId => {
+            updateDriverReqId(reqId, currentDriverId);
+          })
+
           // TODO: GỌI ajax cập nhật tọa độ driver phụ trách request đó
+          getDriverIdPromise().then(currentDriverId => {
+            updateDriverCoords(driverMarker.getPosition().lat(), driverMarker.getPosition().lng(), currentDriverId);
+          })
+
+          //update driverId của request
+          getDriverIdPromise().then(currentDriverId => {
+            updateReqDriverId(reqId, currentDriverId)
+          })
+
         }
       });
 

@@ -3,6 +3,9 @@ let map = null,
   userMarker = null,
   infoWindow = null,
   prevLatLng = null; // ! get this by selected row
+var passengerMarker = null,
+  driverMarker = null,
+  directionsDisplay = null;
 
 function drawUserMarker(latLng) {
   // remove map attached and listeners
@@ -15,7 +18,7 @@ function drawUserMarker(latLng) {
     position: latLng,
     map,
     draggable: true,
-    animation: google.maps.Animation.DROP
+    animation: google.maps.Animation.BOUNCE
   });
   // (re-)add event listeners
   userMarker.addListener("mouseup", moveUserMarkerMouseUp);
@@ -215,4 +218,60 @@ function showIdentifiedReq(coords) {
       infoWindow.open(map, userMarker);
     }
   );
+}
+
+function drawPathDriverToPassenger(driverLatLng, passengerLatLng) {
+
+  var directionsService = new google.maps.DirectionsService();
+  directionsDisplay = new google.maps.DirectionsRenderer({
+    suppressMarkers: true
+  });
+
+  const DirectionsRequest = {
+    origin: driverLatLng,
+    destination: passengerLatLng,
+    travelMode: "DRIVING"
+  };
+  directionsService.route(DirectionsRequest, function (result, status) {
+    if (status == "OK") {
+      directionsDisplay.setMap(map);
+      directionsDisplay.setDirections(result);
+    }
+  });
+}
+
+function drawPassengerMarker(latLng) {
+
+  passengerMarker = new google.maps.Marker({
+    position: latLng,
+    map,
+    icon: "../../assets/img/man.png",
+    animation: google.maps.Animation.BOUNCE,
+    draggable: false
+  });
+}
+
+function drawDriverMarker(latLng) {
+
+  driverMarker = new google.maps.Marker({
+    position: latLng,
+    map,
+    icon: "../../assets/img/driver.png",
+    animation: google.maps.Animation.BOUNCE,
+    draggable: false
+  });
+}
+
+function clearMap() {
+  // remove map attached
+  if (driverMarker) {
+    driverMarker.setMap(null);
+  }
+  // remove map attached
+  if (passengerMarker) {
+    passengerMarker.setMap(null);
+  }
+  if (directionsDisplay) {
+    directionsDisplay.setMap(null);
+  }
 }

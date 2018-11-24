@@ -6,4 +6,27 @@ exports.updateStatus = (newStatus, driverId) => {
     "update driver set status = " + `'${newStatus}'` + " where driverId=" + `'${driverId}';`;
   return db.save(sql);
 };
+
+exports.updateReqId = (reqId, driverId) => {
+  const sql =
+    "update driver set reqId = " + `'${reqId}'` + " where driverId=" + `'${driverId}';`;
+  return db.save(sql);
+};
+
+exports.updateCoords = (newLat, newLng, driverId) => {
+  const sql =
+    "update `driver` set `lat` = " +
+    `'${newLat}', ` +
+    "`lng` = " +
+    `'${newLng}' ` +
+    "where `driverId`=" +
+    `'${driverId}';`;
+  return db.save(sql);
+};
+
+exports.loadDriverByReqId = (reqId) => {
+  const sql =
+    "select * from driver where driver.reqId = " + `'${reqId}'`;
+  return db.save(sql);
+};
 // cam-sv end

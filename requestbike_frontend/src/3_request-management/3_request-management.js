@@ -1,4 +1,5 @@
 var socket = io("http://localhost:3001");
+var thisTr;
 
 // perfect scrollbar start
 $(function () {
@@ -45,7 +46,8 @@ $(function () {
   $('#reqTable tbody').on('click', 'tr', function () {
     // Thêm highlight cho dòng hiện tại
     $('#reqTable tbody tr').removeClass('selected');
-    $(this).addClass('selected');
+    thisTr = $(this);
+    thisTr.addClass('selected');
 
     var tableData = $(this).children("td").map(function () {
       return $(this).text();
@@ -64,8 +66,9 @@ $(function () {
     if (tableData[5] === REQ_STATUS_ACCEPTED) {
       $('#btn-path').prop('hidden', false);
       $('#btn-path').prop('disabled', false);
-      
+
       // TODO: Hiển thị đường đi ngắn nhất từ driver tới req
+
 
     } else { // nếu ko phải là có xe nhận -> các trường hợp còn lại
       $('#btn-path').prop('hidden', true);
@@ -77,7 +80,32 @@ $(function () {
 
   $('#btn-path').click(function (e) {
     e.preventDefault();
-    // TODO:
+    // TODO: Hiển thị đường đi từ driver đến khách + show thông tin driver
+    const reqLat = $('#lat').val();
+    const reqLng = $('#lng').val();
+    const reqId = $('#reqId').val();
+
+    // lấy tọa độ của driver lên
+    $.ajax({
+      url: "http://localhost:3000/driver/" + reqId,
+      type: "GET",
+      dataType: "json"
+    }).done(function (data) {
+      console.log(data);
+
+      if (data.length > 0) {
+        driverInfo = JSON.parse(JSON.stringify(data));
+        console.log(driverInfo);
+        const driverLat = driverInfo[0].lat;
+        const driverLng = driverInfo[0].lng;
+        passengerLatLng = new google.maps.LatLng(reqLat, reqLng);
+        driverLatLng = new google.maps.LatLng(driverLat, driverLng);
+        clearMap();
+        drawDriverMarker(driverLatLng);
+        drawPassengerMarker(passengerLatLng);
+        drawPathDriverToPassenger(driverLatLng, passengerLatLng);
+      }
+    });
   });
 });
 
