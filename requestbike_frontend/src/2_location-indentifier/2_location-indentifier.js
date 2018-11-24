@@ -97,11 +97,9 @@ $(function () {
     const lat = $('#lat').val();
     const lng = $('#lng').val();
     const addr = $('#addr').val();
-    if (!validateString(reqId) || !validateString(lat) || !validateString(lng)) {
-      alert('Hãy chọn một request để định vị');
-      return;
-    }
     // cam-sv start
+    // TODO: điều kiện để gửi req cho driver là ???
+    // Xe phải là ready, khoan tính có đường đi tới khách ngắn nhất -> Haversine min
     socket.emit(
       "2_to_4_send-req-to-driver",
       JSON.stringify({

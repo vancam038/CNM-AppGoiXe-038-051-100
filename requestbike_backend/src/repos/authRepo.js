@@ -30,13 +30,13 @@ exports.verifyAccessToken = (req, res, next) => {
         jwt.verify(token, SECRET, (err, payload) => {
             if (err) {
                 res.statusCode = 401;
-                if(err.name === 'TokenExpiredError'){
+                if (err.name === 'TokenExpiredError') {
                     res.json({
                         msg: 'TOKEN_EXPIRED'
                     })
-                }else{
+                } else {
                     res.json({
-                        msg:'INVALID_TOKEN'
+                        msg: 'INVALID_TOKEN'
                     })
                 }
             } else {
@@ -73,20 +73,20 @@ exports.updateRefreshToken = (userId, rfToken) => {
     });
 };
 exports.verifyRefreshToken = (userId, rfToken) => {
-  return new Promise((resolve, reject) =>{
-     var sql = `select * from userRefTokenExt where f_refToken = '${rfToken}'`;
-     db.load(sql)
-         .then(rows => {
-             if(rows.length > 0){
-                 console.log(rows[0]);
-             }else{
-                 console.log('No refToken was found!');
-             }
-         });
-  });
+    return new Promise((resolve, reject) => {
+        var sql = `select * from userRefTokenExt where f_refToken = '${rfToken}'`;
+        db.load(sql)
+            .then(rows => {
+                if (rows.length > 0) {
+                    console.log(rows[0]);
+                } else {
+                    console.log('No refToken was found!');
+                }
+            });
+    });
 };
 
-exports.add = userEntity => {
+exports.add = (userEntity,id) => {
     // userEntity = {
     //     Username: 1,
     //     Password: 'raw pwd',
@@ -94,10 +94,16 @@ exports.add = userEntity => {
     //     Phone: 01231412313
     //     Type: 0
     // }
-    var id = uid(10);
+    // var id = uid(10);
     var md5_pwd = md5(userEntity.Password);
     var sql = `insert into users(f_id, f_password, f_username, f_name , f_phone, f_type) values('${id}','${md5_pwd}', '${userEntity.Username}', '${userEntity.Name}', '${userEntity.Phone}',  ${userEntity.Type})`;
 
+    return db.save(sql);
+}
+
+
+exports.addDriver = driverEntity => {
+    var sql = `insert into driver(driverId, status, name, phone) values('${driverEntity.driverId}', '${driverEntity.driverStatus}','${driverEntity.driverName}', '${driverEntity.driverPhone}')`;
     return db.save(sql);
 }
 
