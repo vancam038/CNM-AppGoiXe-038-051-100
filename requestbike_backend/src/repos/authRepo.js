@@ -6,7 +6,7 @@ var uid = require('rand-token').uid;
 var db = require('../fn/mysql-db');
 
 const SECRET = 'ABCDEF';
-const AC_LIFETIME = 600; // seconds
+const AC_LIFETIME = 10; // seconds
 exports.LIFETIME = () => {
     return AC_LIFETIME;
 };
@@ -72,17 +72,45 @@ exports.updateRefreshToken = (userId, rfToken) => {
             .catch(err => reject(err));
     });
 };
-exports.verifyRefreshToken = (userId, rfToken) => {
+exports.getNewAccessToken = (rfToken) => {
   return new Promise((resolve, reject) =>{
-     var sql = `select * from userRefTokenExt where f_refToken = '${rfToken}'`;
+     var sql = `select f_userId from userRefTokenExt where f_refToken = '${rfToken}'`;
      db.load(sql)
          .then(rows => {
-             if(rows.length > 0){
-                 console.log(rows[0]);
-             }else{
-                 console.log('No refToken was found!');
+             console.log('userID ->');
+             if(rows.length !== 0){
+                 let userId = rows[0].f_userId;
+                 console.log(userId);
+                 let sql_user = `select * from users where f_id = '${userId}'`;
+                 db.load(sql_user)
+                     .then(rows_user => {
+                         console.log(`user at id = '${userId}'`);
+                         console.log(rows_user);
+                         if(rows_user.length !== 0) {
+                             let userEntity = rows_user[0];
+                             let access_token = this.generateAccessToken(userEntity);
+                             resolve(access_token);
+                         }else{
+                             reject({
+                                 errMsg:'NO_USER_EXISTED'
+                             });
+                         }
+                     })
+                     .catch(err => reject({
+                         err,
+                         errMsg:'DB_QUERY_ERROR'
+                     }));
+             }else {
+                 reject({
+                     errMsg:'NO_REFRESH_TOKEN'
+                 });
              }
-         });
+         })
+         .catch(err => reject({
+                err,
+             errMsg:'DB_QUERY_ERROR'
+            })
+         );
   });
 };
 
@@ -99,11 +127,11 @@ exports.add = userEntity => {
     var sql = `insert into users(f_id, f_password, f_username, f_name , f_phone, f_type) values('${id}','${md5_pwd}', '${userEntity.Username}', '${userEntity.Name}', '${userEntity.Phone}',  ${userEntity.Type})`;
 
     return db.save(sql);
-}
+};
 
 exports.login = loginEntity => {
     var md5_pwd = md5(loginEntity.pwd);
     console.log(md5_pwd);
     var sql = `select * from users where f_username = '${loginEntity.username}' and f_password = '${md5_pwd}' and f_type = '${loginEntity.type}'`;
     return db.load(sql);
-}
+};
