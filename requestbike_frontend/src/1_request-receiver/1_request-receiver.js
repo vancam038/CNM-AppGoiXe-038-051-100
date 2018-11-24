@@ -1,5 +1,9 @@
 var socket = io("http://localhost:3001");
 $(function(){
+    let showModal = () => {
+        $('#modalUnauthorized').modal('show');
+        $('.modal-backdrop').show();
+    };
   $.ajax({
       url:"http://localhost:3000/user/me",
       type:"POST",
@@ -13,7 +17,28 @@ $(function(){
         console.log(data);
       },
       error:function(e){
-        console.log(e);
+          //Handle auto login
+          $.ajax({
+              url:'http://localhost:3000/auth/token',
+              type:'POST',
+              headers:{
+                  "Access-Control-Allow-Origin": "*",
+                  "Content-Type": "application/json",
+                  "x-ref-token": localStorage.getItem('refToken')
+              },
+              dataType:'json',
+              success:function(data){
+                  console.log('GET new token success');
+                  //Update access-token
+                 localStorage.setItem('token',data.access_token);
+              },
+              error: function(jqXHR, txtStatus, err){
+                  console.log('Get new token failed');
+                  console.log(err);
+                  showModal();
+              }
+          });
+
       }
   })
 });
@@ -76,3 +101,4 @@ $(function () {
     // socket.emit("1_to_2_transfer-req", requestObject);
   });
 });
+
