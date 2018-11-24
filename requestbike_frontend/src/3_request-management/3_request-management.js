@@ -60,12 +60,17 @@ $(function () {
     $('#lng').val(lng);
 
     // xét status: 
+    // nếu đã có xe nhận
     if (tableData[5] === REQ_STATUS_ACCEPTED) {
       $('#btn-path').prop('hidden', false);
       $('#btn-path').prop('disabled', false);
-    } else {
+      
+      // TODO: Hiển thị đường đi ngắn nhất từ driver tới req
+
+    } else { // nếu ko phải là có xe nhận -> các trường hợp còn lại
       $('#btn-path').prop('hidden', true);
-      prevLatLng = new google.maps.LatLng(lat, lng);
+      // hiển thị lun địa chỉ gốc của req lên map????
+      // prevLatLng = new google.maps.LatLng(lat, lng);
       // showIdentifiedReq(prevLatLng);
     }
   });

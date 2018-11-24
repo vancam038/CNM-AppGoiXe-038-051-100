@@ -50,6 +50,10 @@ var getDriverIdPromise = () => {
   })
 }
 
+function updateDriverLatLng() {
+
+}
+
 function changeStatus(status) {
   switch (status) {
     case DRIVER_STATUS_READY:
@@ -75,6 +79,12 @@ function changeStatus(status) {
       getDriverIdPromise().then(currentDriverId => {
         updateDriverStatus(DRIVER_STATUS_STANDBY, currentDriverId); // TESTING
       })
+      break;
+    case DRIVER_STATUS_BUSY:
+      $("#navbarDropdown").html(DRIVER_STATUS_BUSY);
+      $("#navbarDropdown")
+        .removeClass("btn-outline-success btn-outline-warning")
+        .addClass("btn-outline-danger");
       break;
   }
 }
@@ -117,7 +127,6 @@ function updateMap(lat, lng, addr) {
   passengerLatLng = new google.maps.LatLng(lat, lng);
   drawPassengerMarker(passengerLatLng);
   drawPathDriverToPassenger(getNewDriverMarkerLatLng(), passengerLatLng);
-  console.log(passengerLatLng);
 
   // show thông tin hành khách
   infoWindow = new google.maps.InfoWindow({
@@ -172,8 +181,6 @@ $(function () {
               // stop đồng hồ lại
               timer.stop();
 
-              // TODO: GỌI ajax cập nhật tọa độ driver phụ trách request đó
-
               // Mở button Đón khách lên
               $("#btn-take").prop("disabled", false);
 
@@ -199,6 +206,8 @@ $(function () {
 
           // update trạng thái của request dưới db
           updateReqStatus(reqId, REQ_STATUS_ACCEPTED);
+
+          // TODO: GỌI ajax cập nhật tọa độ driver phụ trách request đó
         }
       });
 

@@ -177,3 +177,42 @@ function initMap() {
     center: new google.maps.LatLng(10.762622, 106.660172) // HCM
   });
 }
+
+function showIdentifiedReq(coords) {
+  // add marker indicating user position
+  drawUserMarker(coords, false);
+  google.maps.event.clearListeners(userMarker, "mouseup");
+  google.maps.event.clearListeners(userMarker, "mousedown");
+  // re-config the map
+  map.setZoom(DEFAULT_ZOOM_LEVEL);
+  map.panTo(coords);
+  // pop up confirm
+  $.get(
+    `https://maps.googleapis.com/maps/api/geocode/json?latlng=${coords.lat()},${coords.lng()}&location_type=ROOFTOP&result_type=street_address&key=AIzaSyDas6_Z8AZ6sdYJGOucYDWh-MCcoB9jjVE`,
+    function (data) {
+      // extract data
+      const {
+        results,
+        status
+      } = data;
+      // confirm the new position
+      let infoWindowContent = "";
+      if (status === "OK") {
+        infoWindowContent = `
+        <div class="infowindow-container">
+          <p style="font-weight:bold" id="infowindow-address">${results[0].formatted_address}</p>
+        </div>`;
+      } else if (status === "ZERO_RESULTS") {
+        infoWindowContent = `
+        <div class="infowindow-container">
+          <p style="font-weight:bold">Vị trí hành khách không tồn tại</p>
+        </div>`;
+      }
+
+      infoWindow = new google.maps.InfoWindow({
+        content: infoWindowContent
+      });
+      infoWindow.open(map, userMarker);
+    }
+  );
+}
