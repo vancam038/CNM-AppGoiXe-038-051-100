@@ -17,7 +17,7 @@ router.post('/user', (req, res) => {
             res.end('View error log on console');
         })
 });
-
+//handle login
 router.post('/login', (req, res) => {
     authRepo.login(req.body)
         .then(rows => {
@@ -51,6 +51,42 @@ router.post('/login', (req, res) => {
             res.statusCode = 500;
             res.end('View error log on console');
         })
+});
+//get new accessToken
+
+router.post('/token',(req, res)=>{
+    let refToken = req.headers['x-ref-token'];
+    console.log(refToken);
+    if(refToken !== '') {
+        authRepo.getNewAccessToken(refToken)
+            .then(value => {
+                console.log('then -> ');
+            console.log(value);
+            res.json({
+                'access_token':value
+            });
+        })
+            .catch(err => {
+                console.log('catch ->');
+               console.log(err);
+               if(err.errMsg === 'DB_QUERY_ERROR'){
+                   res.statusCode = 500;
+                   res.json({
+                       msg:'Server error'
+                   });
+               }else{
+                   res.statusCode = 401;
+                   res.json({
+                       msg: err.errMsg
+                   });
+               }
+            });
+    }else{
+        res.statusCode = 401;
+        res.json({
+            msg:'Unauthorized'
+        });
+    }
 });
 
 module.exports = router;
