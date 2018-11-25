@@ -66,7 +66,6 @@ function drawDriverCircle(opts) {
 }
 
 function drawPathDriverToPassenger(driverLatLng, passengerLatLng) {
-
   var directionsService = new google.maps.DirectionsService();
   directionsDisplay = new google.maps.DirectionsRenderer({
     suppressMarkers: true
@@ -77,7 +76,7 @@ function drawPathDriverToPassenger(driverLatLng, passengerLatLng) {
     destination: passengerLatLng,
     travelMode: "DRIVING"
   };
-  directionsService.route(DirectionsRequest, function (result, status) {
+  directionsService.route(DirectionsRequest, function(result, status) {
     if (status == "OK") {
       directionsDisplay.setMap(map);
       directionsDisplay.setDirections(result);
@@ -101,12 +100,9 @@ let timer = null;
 function moveDriverMarkerMouseDown() {
   let isOutCircle = false;
 
-  timer = setInterval(function () {
+  timer = setInterval(function() {
     const _newLagLng = getNewDriverMarkerLatLng(),
       _prevLatLng = getPrevDriverMarkerLatLng();
-    console.log(_prevLatLng);
-    console.log(_newLagLng);
-
 
     if (Haversine(_prevLatLng, _newLagLng) > 100) {
       if (isOutCircle === false) {
@@ -168,10 +164,7 @@ function moveDriverMarkerMouseUp() {
 
 function handleQueryGeolocationFinish(pos) {
   // extract position
-  const {
-    latitude,
-    longitude
-  } = pos.coords;
+  const { latitude, longitude } = pos.coords;
   const initialDriverPos = new google.maps.LatLng(latitude, longitude);
   // add marker indicating user position
   drawDriverMarker(initialDriverPos);
@@ -223,7 +216,7 @@ function drawPassengerMarker(latLng) {
   });
 }
 
-function resetDriverMap(reqStatus) {
+function resetDriverMap(reqStatus, driverId) {
   // xóa route
   directionsDisplay.setMap(null);
   // xóa circle
@@ -246,6 +239,11 @@ function resetDriverMap(reqStatus) {
 
     // Cập nhật lại preLatLng tới vị trí mới
     prevLatLng = new google.maps.LatLng(getNewDriverMarkerLatLng());
+
+    // cập nhật lại coords trên db
+    if (driverId && updateDriverCoords)
+      // kiểm tra tránh trường hợp 4_driver.js chưa load xong
+      updateDriverCoords(...getNewDriverMarkerLatLng(), driverId);
   }
 }
 

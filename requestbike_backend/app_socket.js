@@ -7,6 +7,10 @@ var express = require("express"),
 var requestRepo = require("./src/repos/requestRepo");
 // Repo END
 
+// fn START
+const Haversine = require("./src/fn/Haversine");
+// fn END
+
 // socket START
 
 io.on("connection", socket => {
@@ -37,9 +41,9 @@ io.on("connection", socket => {
   // duy-th end
 
   // cam-sv start
-  socket.on("2_to_4_send-req-to-driver", msg => {
-    io.sockets.emit("2_to_4_send-req-to-driver", msg);
-  });
+  // socket.on("2_to_4_send-req-to-driver", msg => {
+  //   io.sockets.emit("2_to_4_send-req-to-driver", msg);
+  // });
 
   socket.on("2_to_3_reload-table", () => {
     io.sockets.emit("2_to_3_reload-table");
@@ -60,6 +64,32 @@ io.on("connection", socket => {
     io.sockets.emit("4_to_2_reload-table");
   });
   // cam-sv end
+
+  // duy-th start
+  // thay thế luồn "2_to_4_send-req-to-driver" ở trên
+  socket.on("2_to_4_send-req-to-driver", msg => {
+    const { reqInfo, drivers } = JSON.parse(msg);
+    if (drivers.length < 1) return;
+    const reqLatLng = { lat: reqInfo.lat, lng: reqInfo.lng };
+    const distances = drivers.map(driver => {
+      const driverLatLng = { lat: driver.lat, lng: driver.lng };
+      if (
+        driverLatLng.lat === null ||
+        driverLatLng.lat === undefined ||
+        driverLatLng.lng === null ||
+        driverLatLng.lng === undefined
+      )
+        return Number.MAX_SAFE_INTEGER;
+      return Haversine(reqLatLng, driverLatLng);
+    });
+
+    const { driverId } = drivers[distances.indexOf(Math.min(...distances))];
+    io.sockets.emit(
+      "2_to_4_send-req-to-driver",
+      JSON.stringify({ ...reqInfo, driverId })
+    );
+  });
+  // duy-th end
 
   // socket END
 });

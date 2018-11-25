@@ -1,9 +1,10 @@
 var express = require("express");
 const request = require("request-promise");
 const shortid = require("shortid");
-var _ = require('lodash');
+var _ = require("lodash");
 
 var requestRepo = require("../repos/requestRepo");
+const driverRepo = require("../repos/driverRepo");
 var router = express.Router();
 
 router.get("/requests", (req, res) => {
@@ -12,9 +13,13 @@ router.get("/requests", (req, res) => {
     .then(rows => {
       res.statusCode = 200;
       // res.json(rows);
-      res.send(_.sortBy(JSON.parse(JSON.stringify(rows)), [function (o) {
-        return o.date_submitted;
-      }]).reverse());
+      res.send(
+        _.sortBy(JSON.parse(JSON.stringify(rows)), [
+          function(o) {
+            return o.date_submitted;
+          }
+        ]).reverse()
+      );
     })
     .catch(err => {
       console.log(err);
@@ -32,9 +37,13 @@ router.get("/requests/:status", (req, res) => {
         .loadUnidenAndIden()
         .then(rows => {
           res.statusCode = 200;
-          res.send(_.sortBy(JSON.parse(JSON.stringify(rows)), [function (o) {
-            return o.date_submitted;
-          }]).reverse());
+          res.send(
+            _.sortBy(JSON.parse(JSON.stringify(rows)), [
+              function(o) {
+                return o.date_submitted;
+              }
+            ]).reverse()
+          );
         })
         .catch(err => {
           console.log(err);
@@ -47,9 +56,13 @@ router.get("/requests/:status", (req, res) => {
         .loadReqByStatus(reqStatus)
         .then(rows => {
           res.statusCode = 200;
-          res.send(_.sortBy(JSON.parse(JSON.stringify(rows)), [function (o) {
-            return o.date_submitted;
-          }]).reverse());
+          res.send(
+            _.sortBy(JSON.parse(JSON.stringify(rows)), [
+              function(o) {
+                return o.date_submitted;
+              }
+            ]).reverse()
+          );
         })
         .catch(err => {
           console.log(err);
@@ -62,9 +75,7 @@ router.get("/requests/:status", (req, res) => {
 
 router.post("/request", (req, res) => {
   const _req = req.body;
-  const {
-    address
-  } = _req;
+  const { address } = _req;
   const trimmedAddress = encodeURI(address.replace(" ", "+").trim());
   const opt = {
     uri: `https://maps.googleapis.com/maps/api/geocode/json?address=${trimmedAddress}&key=AIzaSyDas6_Z8AZ6sdYJGOucYDWh-MCcoB9jjVE`,
@@ -75,12 +86,8 @@ router.post("/request", (req, res) => {
   };
 
   request(opt).then(resp => {
-    const {
-      lat,
-      lng
-    } = resp.results[0].geometry.location, {
-      status
-    } = resp;
+    const { lat, lng } = resp.results[0].geometry.location,
+      { status } = resp;
     if (status !== "OK") {
       console.log("STATUS: ", status);
       res.statusCode = 500;
@@ -137,11 +144,7 @@ router.get("/request/coords/:reqId", (req, res) => {
 });
 
 router.patch("/request/coords", (req, res) => {
-  const {
-    reqId,
-    newLat,
-    newLng
-  } = req.body;
+  const { reqId, newLat, newLng } = req.body;
 
   requestRepo
     .updateCoords(newLat, newLng, reqId)
@@ -194,6 +197,21 @@ router.patch("/request/driverId", (req, res) => {
       res.json({
         status: "OK"
       });
+    })
+    .catch(err => {
+      console.log(err);
+      res.statusCode = 500;
+      res.end("View error log on console");
+    });
+});
+
+router.get("/request/findDriver", (req, res) => {
+  driverRepo
+    .findDriver()
+    .then(value => {
+      if (value.length > 0)
+        res.status(200).json({ status: "OK", drivers: value });
+      else res.status(404).json({ status: "NOT_FOUND" });
     })
     .catch(err => {
       console.log(err);

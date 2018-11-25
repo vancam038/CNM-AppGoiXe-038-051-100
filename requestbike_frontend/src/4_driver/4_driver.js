@@ -2,7 +2,7 @@ var socket = io("http://localhost:3001");
 let infoWindow = null;
 let reqId_global;
 
-$(function () {
+$(function() {
   $("#requestModalCenter").modal({
     backdrop: "static",
     // mặc định khi init, sẽ show modal. Nếu ko mún show thì chỉnh thành false
@@ -25,7 +25,7 @@ function updateDriverStatus(status, driverId) {
     },
     data: JSON.stringify(driverObject),
     dataType: "json"
-  })
+  });
 }
 
 function updateDriverReqId(reqId, driverId) {
@@ -43,7 +43,7 @@ function updateDriverReqId(reqId, driverId) {
     },
     data: JSON.stringify(driverObject),
     dataType: "json"
-  })
+  });
 }
 
 function updateDriverCoords(newLat, newLng, driverId) {
@@ -62,7 +62,7 @@ function updateDriverCoords(newLat, newLng, driverId) {
     },
     data: JSON.stringify(driverObject),
     dataType: "json"
-  })
+  });
 }
 
 var getDriverIdPromise = () => {
@@ -76,12 +76,12 @@ var getDriverIdPromise = () => {
         "x-access-token": `${localStorage.token}`
       },
       dataType: "json"
-    }).done(function (driverObject) {
+    }).done(function(driverObject) {
       console.log(driverObject.id);
       resolve(driverObject.id);
     });
-  })
-}
+  });
+};
 
 // ------------------------------------ driver ajax end
 
@@ -93,11 +93,11 @@ function changeStatus(status) {
       $("#navbarDropdown")
         .removeClass("btn-outline-danger btn-outline-warning")
         .addClass("btn-outline-success");
-      // ajax cập nhật status của tài xế thành ready
+      // ajax cập nhật status của tài xế thành ready và latlng của tài xế
       getDriverIdPromise().then(currentDriverId => {
         updateDriverStatus(DRIVER_STATUS_READY, currentDriverId); // TESTING
-      })
-
+        updateDriverCoords(...getNewDriverMarkerLatLng(), currentDriverId);
+      });
       break;
     case DRIVER_STATUS_STANDBY:
       $("#navbarDropdown").html(DRIVER_STATUS_STANDBY);
@@ -109,7 +109,7 @@ function changeStatus(status) {
       // ajax cập nhật status của tài xế thành standby
       getDriverIdPromise().then(currentDriverId => {
         updateDriverStatus(DRIVER_STATUS_STANDBY, currentDriverId); // TESTING
-      })
+      });
       break;
     case DRIVER_STATUS_BUSY:
       $("#navbarDropdown").html(DRIVER_STATUS_BUSY);
@@ -137,7 +137,7 @@ function updateReqStatus(reqId, reqStatus) {
     },
     data: JSON.stringify(reqObject),
     dataType: "json"
-  }).done(function () {
+  }).done(function() {
     // emit cho 3 là request này đã có xe nhận || đang di chuyển || kết thúc-> reload lại table
     socket.emit("4_to_3_reload-table");
     // emit cho 2 là đã có xe nhận -> reload lại table -> mất req identified bên #2
@@ -160,7 +160,7 @@ function updateReqDriverId(reqId, driverId) {
     },
     data: JSON.stringify(reqObject),
     dataType: "json"
-  }).done(function () {
+  }).done(function() {
     // emit cho 3 là request này đã có xe nhận || đang di chuyển || kết thúc-> reload lại table
     socket.emit("4_to_3_reload-table");
     // emit cho 2 là đã có xe nhận -> reload lại table -> mất req identified bên #2
@@ -168,7 +168,6 @@ function updateReqDriverId(reqId, driverId) {
   });
 }
 // ------------------------------- req ajax end
-
 
 // lat:  reqLat, lng: reqLng, addr: reqAddr
 function updateMap(lat, lng, addr) {
@@ -194,111 +193,120 @@ function updateMap(lat, lng, addr) {
 //socket start
 
 //listen start
-$(function () {
+$(function() {
   // gửi trạng thái lên cho server
   // socket.emit("4_to_2_???", requestObject);
 
   // lắng nghe yêu cầu từ phía #2
   var timer = new Timer();
   socket.on("2_to_4_send-req-to-driver", msg => {
-    const {
-      reqId,
-      lat,
-      lng,
-      addr
-    } = JSON.parse(msg);
+    const { reqId, lat, lng, addr, driverId } = JSON.parse(msg);
     console.log(msg);
+    if (
+      reqId === undefined ||
+      lat === undefined ||
+      lng === undefined ||
+      driverId === undefined
+    )
+      return;
 
+    // nếu id driver không có trong list driver id thì thôi
+    // có thì hiện modal
+    getDriverIdPromise().then(_driverId => {
+      if (driverId !== _driverId) return;
+      // save lại thành biến toàn cục để dành xài
+      reqId_global = reqId;
 
-    if (reqId === undefined || lat === undefined || lng === undefined) return;
-    // save lại thành biến toàn cục để dành xài
-    reqId_global = reqId;
+      // start đồng hồ
+      if (timer.isRunning() == false) {
+        // Khởi tạo
+        $("#countdownExample #timer-value").html('<div class="loader"></div>');
 
-    // start đồng hồ
-    if (timer.isRunning() == false) {
-      // Khởi tạo
-      $("#countdownExample #timer-value").html('<div class="loader"></div>');
+        timer.start({
+          countdown: true,
+          startValues: {
+            seconds: 10
+          }
+        });
+        var acceptPromise = () => {
+          // Promise start
+          return new Promise((resolve, reject) => {
+            timer.addEventListener("secondsUpdated", function(e) {
+              // Cập nhật số giây
+              $("#countdownExample #timer-value").html(
+                timer.getTimeValues().seconds
+              );
+              // khi click button chấp nhận
+              $("#btn-accept").click(() => {
+                // stop đồng hồ lại
+                timer.stop();
 
-      timer.start({
-        countdown: true,
-        startValues: {
-          seconds: 10
-        }
-      });
-      var acceptPromise = () => {
-        // Promise start
-        return new Promise((resolve, reject) => {
-          timer.addEventListener("secondsUpdated", function (e) {
+                // Mở button Đón khách lên
+                $("#btn-take").prop("disabled", false);
 
-            // Cập nhật số giây
-            $("#countdownExample #timer-value").html(timer.getTimeValues().seconds);
-            // khi click button chấp nhận
-            $("#btn-accept").click(() => {
-              // stop đồng hồ lại
-              timer.stop();
+                // resolve cho promise bằng true
+                resolve(true);
+              });
 
-              // Mở button Đón khách lên
-              $("#btn-take").prop("disabled", false);
-
-              // resolve cho promise bằng true
-              resolve(true);
-            });
-
-            // Khi click button Từ Chối
-            $("#btn-reject").click(() => {
-              timer.stop();
-              // timer.reset();
-              resolve(false);
+              // Khi click button Từ Chối
+              $("#btn-reject").click(() => {
+                timer.stop();
+                // timer.reset();
+                resolve(false);
+              });
             });
           });
+          // Promise end
+        };
+
+        acceptPromise().then(accepted => {
+          if (accepted) {
+            // update lại map
+            updateMap(lat, lng, addr);
+
+            // update trạng thái của request dưới db
+            updateReqStatus(reqId, REQ_STATUS_ACCEPTED);
+
+            //update ReqId cua driver phu trach
+            getDriverIdPromise().then(currentDriverId => {
+              updateDriverReqId(reqId, currentDriverId);
+            });
+
+            // TODO: GỌI ajax cập nhật tọa độ driver phụ trách request đó
+            getDriverIdPromise().then(currentDriverId => {
+              updateDriverCoords(
+                driverMarker.getPosition().lat(),
+                driverMarker.getPosition().lng(),
+                currentDriverId
+              );
+            });
+
+            //update driverId của request
+            getDriverIdPromise().then(currentDriverId => {
+              updateReqDriverId(reqId, currentDriverId);
+            });
+          }
         });
-        // Promise end
+
+        timer.addEventListener("targetAchieved", function(e) {
+          $("#countdownExample #timer-value")
+            .html("Không phản hồi")
+            .addClass("timer-timeout");
+          setTimeout(function() {
+            $("#requestModalCenter").modal("hide");
+            $("#countdownExample #timer-value").removeClass("timer-timeout");
+          }, 500);
+        });
+
+        // hiện modal accept
+        $("#requestModalCenter").modal("show");
       }
-
-      acceptPromise().then(accepted => {
-        if (accepted) {
-          // update lại map
-          updateMap(lat, lng, addr);
-
-          // update trạng thái của request dưới db
-          updateReqStatus(reqId, REQ_STATUS_ACCEPTED);
-
-          //update ReqId cua driver phu trach
-          getDriverIdPromise().then(currentDriverId => {
-            updateDriverReqId(reqId, currentDriverId);
-          })
-
-          // TODO: GỌI ajax cập nhật tọa độ driver phụ trách request đó
-          getDriverIdPromise().then(currentDriverId => {
-            updateDriverCoords(driverMarker.getPosition().lat(), driverMarker.getPosition().lng(), currentDriverId);
-          })
-
-          //update driverId của request
-          getDriverIdPromise().then(currentDriverId => {
-            updateReqDriverId(reqId, currentDriverId)
-          })
-
-        }
-      });
-
-      timer.addEventListener("targetAchieved", function (e) {
-        $("#countdownExample #timer-value")
-          .html("Không phản hồi")
-          .addClass("timer-timeout");
-        setTimeout(function () {
-          $("#requestModalCenter").modal("hide");
-          $("#countdownExample #timer-value").removeClass("timer-timeout");
-        }, 500);
-      });
-
-      // hiện modal accept
-      $("#requestModalCenter").modal("show");
-    }
+    });
   });
 });
 //socket end
 
-$(function () {
+$(function() {
   // khi click button Đón Khách
   $("#btn-take").click(() => {
     // tự disable chính mình
@@ -339,13 +347,13 @@ $(function () {
       icon: "../../assets/img/moving.png",
       draggable: true
     });
-    driverMarker.addListener("mouseup", function () {
+    driverMarker.addListener("mouseup", function() {
       if (infoWindow) infoWindow.close();
       const desLat = driverMarker.getPosition().lat(),
         desLng = driverMarker.getPosition().lng();
       $.get(
         `https://maps.googleapis.com/maps/api/geocode/json?latlng=${desLat},${desLng}&location_type=ROOFTOP&result_type=street_address&key=AIzaSyDas6_Z8AZ6sdYJGOucYDWh-MCcoB9jjVE`,
-        function (data) {
+        function(data) {
           infoWindow = new google.maps.InfoWindow({
             content: `
                 <div class="infowindow-container">
@@ -377,7 +385,6 @@ $(function () {
 
     // cập nhật status của req thành MOVING
     updateReqStatus(reqId_global, REQ_STATUS_MOVING);
-
   });
 
   // khi click button Kết Thúc
@@ -398,8 +405,8 @@ $(function () {
   });
 });
 
-$(function () {
-  $("#acceptDestination").click(function () {
+$(function() {
+  $("#acceptDestination").click(function() {
     infoWindow.close();
     google.maps.event.clearListeners(driverMarker, "mouseup");
     google.maps.event.clearListeners(driverMarker, "mousedown");
@@ -411,7 +418,7 @@ $(function () {
     $("#btn-finish").prop("disabled", false); // chỉ khi ấn nút Yes của infoWindow thì mới mở lên});
   });
 
-  $("#declineDestination").click(function () {
+  $("#declineDestination").click(function() {
     infoWindow.close();
   });
 });
