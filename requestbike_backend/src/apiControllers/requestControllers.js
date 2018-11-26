@@ -86,15 +86,17 @@ router.post("/request", (req, res) => {
   };
 
   request(opt).then(resp => {
-    const { lat, lng } = resp.results[0].geometry.location,
-      { status } = resp;
+    const { status } = resp;
     if (status !== "OK") {
       console.log("STATUS: ", status);
       res.statusCode = 500;
       res.json({
         status: "ZERO_RESULTS"
       });
+      return;
     }
+
+    const { lat, lng } = resp.results[0].geometry.location;
     _req.id = shortid.generate();
     _req.lat = lat;
     _req.lng = lng;

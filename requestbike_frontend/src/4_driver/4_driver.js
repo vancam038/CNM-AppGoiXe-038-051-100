@@ -52,7 +52,7 @@ function updateDriverCoords(newLat, newLng, driverId) {
     newLat,
     newLng
   };
-
+  console.log(driverId, newLat, newLng);
   $.ajax({
     url: "http://localhost:3000/driver/coords",
     type: "PATCH",
@@ -96,7 +96,8 @@ function changeStatus(status) {
       // ajax cập nhật status của tài xế thành ready và latlng của tài xế
       getDriverIdPromise().then(currentDriverId => {
         updateDriverStatus(DRIVER_STATUS_READY, currentDriverId); // TESTING
-        updateDriverCoords(...getNewDriverMarkerLatLng(), currentDriverId);
+        const { lat, lng } = getNewDriverMarkerLatLng();
+        updateDriverCoords(lat, lng, currentDriverId);
       });
       break;
     case DRIVER_STATUS_STANDBY:
