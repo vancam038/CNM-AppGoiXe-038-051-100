@@ -50,7 +50,8 @@ $(function () {
         }
     };
     let openInNewTab = function(url) {
-        $("<a>").attr("href", url).attr("target", "_self")[0].click();
+//        $("<a>").attr("href", url).attr("target", "_self")[0].click();
+        window.location = url;
     };
     //handle effect
     $('.role-option').on('click', function(){
@@ -88,8 +89,8 @@ $(function () {
             success: function(data){
                 console.log(data);
                 if(data.auth) {
-                    localStorage.setItem('token', data.access_token);
-                    localStorage.setItem('refToken',data.refresh_token);
+                    localStorage.setItem(`token_${data.type}`, data.access_token);
+                    localStorage.setItem(`refToken_${data.type}`,data.refresh_token);
                     $('#alert-success').show();
                     //chuyen huong trang theo loai tai khoan
 

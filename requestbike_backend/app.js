@@ -33,10 +33,11 @@ app.use(cors());
 app.use('/auth',authCtrl);
 app.use("/user", verifyAccessToken, userCtrl);
 // for test purpose
-app.use("/", requestCtrl);
+//app.use("/", requestCtrl);
+app.use("/", verifyAccessToken,requestCtrl);
 
-app.use("/driver", driverCtrl);
-
+//app.use("/driver", driverCtrl);
+app.use("/driver",verifyAccessToken, driverCtrl);
 // JWT cho api
 // app.use("/", verifyAccessToken, requestCtrl);
 

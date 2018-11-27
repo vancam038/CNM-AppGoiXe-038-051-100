@@ -11,23 +11,85 @@ $(function () {
 });
 // perfect scrollbar end
 
-$(function () {
-  $.ajax({
-    url: "http://localhost:3000/requests",
-    type: "GET",
-    dataType: "json",
-    timeout: 10000
-  }).done(function (data) {
-    var source = document.getElementById("request-template").innerHTML;
-    var template = Handlebars.compile(source);
-    var html = template(data);
-    $("#requests").html(html);
-  });
+//For authorization
+$(function(){
 
+    let showModal = () => {
+        $('#modalUnauthorized').modal('show');
+        $('.modal-backdrop').show();
+    };
+    let getRequestList = function(){
+        $.ajax({
+            url: "http://localhost:3000/requests",
+            type: "GET",
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Content-Type": "application/json",
+                "x-access-token": localStorage.getItem('token_3')
+            },
+            dataType: "json",
+            timeout: 10000
+        }).done(function (data) {
+            var source = document.getElementById("request-template").innerHTML;
+            var template = Handlebars.compile(source);
+            var html = template(data);
+            $("#requests").html(html);
+        });
+    };
+    $.ajax({
+        url:"http://localhost:3000/user/me",
+        type:"POST",
+        headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json",
+            "x-access-token": localStorage.getItem('token_3')
+        },
+        dataType: 'json',
+        success:function(data, status, jqXHR){
+            console.log(data);
+            getRequestList();
+        },
+        error:function(e){
+            //Handle auto login
+            $.ajax({
+                url:'http://localhost:3000/auth/token',
+                type:'POST',
+                headers:{
+                    "Access-Control-Allow-Origin": "*",
+                    "Content-Type": "application/json",
+                    "x-ref-token": localStorage.getItem('refToken_3')
+                },
+                dataType:'json',
+                success:function(data){
+                    console.log('GET new token success');
+                    //Update access-token
+                    localStorage.setItem('token_3',data.access_token);
+                    //Get requests
+                    getRequestList();
+                },
+                error: function(jqXHR, txtStatus, err){
+                    console.log('Get new token failed');
+                    console.log(err);
+                    showModal();
+                }
+            });
+
+        }
+    })
+
+});
+
+//For sockets
+$(function () {
   socket.on("new_request_added", () => {
     $.ajax({
       url: "http://localhost:3000/requests",
       type: "GET",
+        headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json",
+            "x-access-token": localStorage.getItem('token_3')
+        },
       dataType: "json",
       timeout: 10000
     }).done(function (data) {
@@ -89,6 +151,11 @@ $(function () {
     $.ajax({
       url: "http://localhost:3000/driver/" + reqId,
       type: "GET",
+        headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json",
+            "x-access-token": localStorage.getItem('token_3')
+        },
       dataType: "json"
     }).done(function (data) {
       console.log(data);
@@ -114,6 +181,11 @@ $(function () {
     $.ajax({
       url: "http://localhost:3000/requests",
       type: "GET",
+        headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json",
+            "x-access-token": localStorage.getItem('token_3')
+        },
       dataType: "json"
     }).done(function (data) {
       var source = document.getElementById("request-template").innerHTML;
@@ -128,6 +200,11 @@ $(function () {
     $.ajax({
       url: "http://localhost:3000/requests",
       type: "GET",
+        headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json",
+            "x-access-token": localStorage.getItem('token_3')
+        },
       dataType: "json"
     }).done(function (data) {
       var source = document.getElementById("request-template").innerHTML;

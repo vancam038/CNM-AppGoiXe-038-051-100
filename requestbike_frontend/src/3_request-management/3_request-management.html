@@ -92,7 +92,21 @@
         <!-- google map end -->
       </div>
     </div>
+    <div class="modal-backdrop"></div>
+    <div class="modal" id="modalUnauthorized"  data-keyboard="false" data-backdrop="static">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Phiên đăng nhập hết hạn</h4>
+          </div>
 
+          <!-- Modal body -->
+          <div class="modal-body">
+            Vui lòng <a href="../0_login/0_login.html">Đăng nhập</a> lại!
+          </div>
+        </div>
+      </div>
+    </div>
     <script id="request-template" type="text/x-handlebars-template">
       {{#each this}}
                     <tr data-id="{{id}}" data-lat="{{lat}}" data-lng="{{lng}}">

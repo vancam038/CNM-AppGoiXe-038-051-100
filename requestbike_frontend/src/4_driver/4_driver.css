@@ -186,3 +186,9 @@
 }
 
 /* loader end */
+
+
+.modal-backdrop {
+  opacity: 0.85;
+  display: none;
+}
