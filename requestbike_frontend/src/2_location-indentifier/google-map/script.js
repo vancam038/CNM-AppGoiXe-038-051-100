@@ -151,7 +151,8 @@ if (document.getElementById("acceptChangeUserPosition"))
         type: "PATCH",
 	    headers: {
 		  "Access-Control-Allow-Origin": "*",
-		  "Content-Type": "application/json"
+		  "Content-Type": "application/json",
+            'x-access-token':localStorage.getItem('token_2')
 	    },
 	    data: JSON.stringify(reqObject),
 	    dataType: "json"
