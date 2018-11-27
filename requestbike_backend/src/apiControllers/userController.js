@@ -23,7 +23,7 @@ router.post('/id',(req, res)=>{
 	res.json({
 		id: payload.user.f_id
 	});
-})
+});
 
 
 module.exports = router;
