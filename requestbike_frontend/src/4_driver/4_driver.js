@@ -8,6 +8,48 @@ $(function() {
     // mặc định khi init, sẽ show modal. Nếu ko mún show thì chỉnh thành false
     show: false
   });
+  //First requests
+    let showModal = () => {
+        $('#modalUnauthorized').modal('show');
+        $('.modal-backdrop').show();
+    };
+    $.ajax({
+        url:"http://localhost:3000/user/me",
+        type:"POST",
+        headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json",
+            "x-access-token": localStorage.getItem('token_4')
+        },
+        dataType: 'json',
+        success:function(data, status, jqXHR){
+            console.log(data);
+        },
+        error:function(e){
+            //Handle auto login
+            $.ajax({
+                url:'http://localhost:3000/auth/token',
+                type:'POST',
+                headers:{
+                    "Access-Control-Allow-Origin": "*",
+                    "Content-Type": "application/json",
+                    "x-ref-token": localStorage.getItem('refToken_4')
+                },
+                dataType:'json',
+                success:function(data){
+                    console.log('GET new token success');
+                    //Update access-token
+                    localStorage.setItem('token_4',data.access_token);
+                },
+                error: function(jqXHR, txtStatus, err){
+                    console.log('Get new token failed');
+                    console.log(err);
+                    showModal();
+                }
+            });
+
+        }
+    })
 });
 
 // ------------------------------------ driver ajax start
@@ -76,7 +118,7 @@ var getDriverIdPromise = () => {
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Content-Type": "application/json",
-        "x-access-token": `${localStorage.token}`
+        "x-access-token": localStorage.getItem('token_4')
       },
       dataType: "json"
     }).done(function(driverObject) {
