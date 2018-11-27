@@ -50,7 +50,8 @@ $(function () {
         }
     };
     let openInNewTab = function(url) {
-        $("<a>").attr("href", url).attr("target", "_self")[0].click();
+//        $("<a>").attr("href", url).attr("target", "_self")[0].click();
+        window.location = url;
     };
     //handle effect
     $('.role-option').on('click', function(){
