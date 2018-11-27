@@ -139,8 +139,7 @@ function moveDriverMarkerMouseUp() {
   clearInterval(timer);
   const _newLagLng = getNewDriverMarkerLatLng(),
     _prevLatLng = getPrevDriverMarkerLatLng();
-  console.log(_prevLatLng);
-  console.log(_newLagLng);
+
   if (Haversine(_prevLatLng, _newLagLng) > 100) {
     // show alert
     showDialog("Vị trị mới không cách vị trí gốc quá 100m");
@@ -158,7 +157,11 @@ function moveDriverMarkerMouseUp() {
       center: prevLatLng
     });
   } else {
-    // do nothing
+    // update driver coords in db
+    getDriverIdPromise().then(driverId => {
+      const { lat, lng } = getNewDriverMarkerLatLng();
+      updateDriverCoords && updateDriverCoords(lat, lng, driverId);
+    });
   }
 }
 
@@ -241,9 +244,11 @@ function resetDriverMap(reqStatus, driverId) {
     prevLatLng = new google.maps.LatLng(getNewDriverMarkerLatLng());
 
     // cập nhật lại coords trên db
-    if (driverId && updateDriverCoords)
+    if (driverId && updateDriverCoords) {
       // kiểm tra tránh trường hợp 4_driver.js chưa load xong
-      updateDriverCoords(...getNewDriverMarkerLatLng(), driverId);
+      const { lat, lng } = getNewDriverMarkerLatLng();
+      updateDriverCoords(lat, lng, driverId);
+    }
   }
 }
 
