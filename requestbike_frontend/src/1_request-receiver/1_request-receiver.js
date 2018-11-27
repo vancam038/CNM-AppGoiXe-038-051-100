@@ -10,7 +10,7 @@ $(function(){
       headers: {
           "Access-Control-Allow-Origin": "*",
           "Content-Type": "application/json",
-          "x-access-token":`${localStorage.token}`
+          "x-access-token": localStorage.getItem('token_1')
       },
       dataType: 'json',
       success:function(data, status, jqXHR){
@@ -24,13 +24,13 @@ $(function(){
               headers:{
                   "Access-Control-Allow-Origin": "*",
                   "Content-Type": "application/json",
-                  "x-ref-token": localStorage.getItem('refToken')
+                  "x-ref-token": localStorage.getItem('refToken_1')
               },
               dataType:'json',
               success:function(data){
                   console.log('GET new token success');
                   //Update access-token
-                 localStorage.setItem('token',data.access_token);
+                 localStorage.setItem('token_1',data.access_token);
               },
               error: function(jqXHR, txtStatus, err){
                   console.log('Get new token failed');
@@ -67,7 +67,8 @@ $(function () {
       type: "POST",
       headers: {
         "Access-Control-Allow-Origin": "*",
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+          'x-access-token':localStorage.getItem('token_1')
       },
       data: JSON.stringify(requestObject),
       dataType: "json",

@@ -21,7 +21,8 @@ function updateDriverStatus(status, driverId) {
     type: "PATCH",
     headers: {
       "Access-Control-Allow-Origin": "*",
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+        "x-access-token": localStorage.getItem('token_4')
     },
     data: JSON.stringify(driverObject),
     dataType: "json"
@@ -39,7 +40,8 @@ function updateDriverReqId(reqId, driverId) {
     type: "PATCH",
     headers: {
       "Access-Control-Allow-Origin": "*",
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+        "x-access-token": localStorage.getItem('token_4')
     },
     data: JSON.stringify(driverObject),
     dataType: "json"
@@ -58,7 +60,8 @@ function updateDriverCoords(newLat, newLng, driverId) {
     type: "PATCH",
     headers: {
       "Access-Control-Allow-Origin": "*",
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+        "x-access-token": localStorage.getItem('token_4')
     },
     data: JSON.stringify(driverObject),
     dataType: "json"
@@ -134,7 +137,8 @@ function updateReqStatus(reqId, reqStatus) {
     type: "PATCH",
     headers: {
       "Access-Control-Allow-Origin": "*",
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+        "x-access-token": localStorage.getItem('token_4')
     },
     data: JSON.stringify(reqObject),
     dataType: "json"
@@ -157,7 +161,8 @@ function updateReqDriverId(reqId, driverId) {
     type: "PATCH",
     headers: {
       "Access-Control-Allow-Origin": "*",
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+        "x-access-token": localStorage.getItem('token_4')
     },
     data: JSON.stringify(reqObject),
     dataType: "json"
