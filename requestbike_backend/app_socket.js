@@ -2,7 +2,7 @@ var express = require("express"),
   app = express(),
   server = require("http").Server(app),
   io = require("socket.io").listen(server);
-
+var config = require('./src/config/config');
 // Repo START
 var requestRepo = require("./src/repos/requestRepo");
 // Repo END
@@ -10,7 +10,7 @@ var requestRepo = require("./src/repos/requestRepo");
 // fn START
 const Haversine = require("./src/fn/Haversine");
 // fn END
-
+var isRequestAccepted = false;
 // socket START
 
 io.on("connection", socket => {
@@ -68,6 +68,7 @@ io.on("connection", socket => {
   // duy-th start
   // thay thế luồn "2_to_4_send-req-to-driver" ở trên
   socket.on("2_to_4_send-req-to-driver", msg => {
+
     const { reqInfo, drivers } = JSON.parse(msg);
     if (drivers.length < 1) return;
     const reqLatLng = { lat: reqInfo.lat, lng: reqInfo.lng };
@@ -83,16 +84,58 @@ io.on("connection", socket => {
       return Haversine(reqLatLng, driverLatLng);
     });
 
-    const { driverId } = drivers[distances.indexOf(Math.min(...distances))];
-    io.sockets.emit(
-      "2_to_4_send-req-to-driver",
-      JSON.stringify({ ...reqInfo, driverId })
-    );
+    //const { driverId } = drivers[distances.indexOf(Math.min(...distances))];
+
+    var driverWithDistance = drivers;
+    for(let i=0;i<driverWithDistance.length;i++){
+      driverWithDistance[i]['distance'] = distances[i]
+    }
+    let sortedDrivers = driverWithDistance.sort((a,b) => {
+          return a.distance > b.distance;
+      });
+      console.log('Sorted drivers =====>');
+    console.log(sortedDrivers);
+    var attempt = config.SEND_REQUEST_ATTEMPT < sortedDrivers.length ? config.SEND_REQUEST_ATTEMPT : sortedDrivers.length;
+    // for ( let driver in sortedDrivers){
+       if(attempt > 0) {
+        let driver = sortedDrivers[0];
+        const driverId = driver.driverId;
+          console.log(`ID -> [${driverId}]`);
+          io.sockets.emit(
+              "2_to_4_send-req-to-driver",
+              JSON.stringify({...reqInfo, driverId})
+          );
+          let index = 1;
+          var handleInterval = setInterval(() => {
+              console.log(`Attempt -> [${attempt}]`);
+            if(--attempt < 1 || isRequestAccepted){
+              clearInterval(handleInterval);
+              isRequestAccepted = false;
+              handleInterval = 0;
+            }else{
+                driver = sortedDrivers[index++];
+                const driverId = driver.driverId;
+                io.sockets.emit(
+                    "2_to_4_send-req-to-driver",
+                    JSON.stringify({...reqInfo, driverId})
+                );
+            }
+          },config.REQUEST_DRIVER_RESPONSE_TIME);
+      }else{
+        //Do nothing, no driver available
+      }
   });
   // duy-th end
-
   // socket END
+    //cuong_start
+    socket.on('driver_accepted', () =>{
+        isRequestAccepted = true;
+        console.log('Driver accepted');
+        console.log(isRequestAccepted);
+    });
+    //cuong_end
 });
+
 
 const PORT1 = process.env.PORT || 3001;
 

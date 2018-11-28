@@ -24,6 +24,7 @@ $(function() {
         dataType: 'json',
         success:function(data, status, jqXHR){
             console.log(data);
+            changeStatus(DRIVER_STATUS_STANDBY);
         },
         error:function(e){
             //Handle auto login
@@ -40,6 +41,7 @@ $(function() {
                     console.log('GET new token success');
                     //Update access-token
                     localStorage.setItem('token_4',data.access_token);
+                    changeStatus(DRIVER_STATUS_STANDBY);
                 },
                 error: function(jqXHR, txtStatus, err){
                     console.log('Get new token failed');
@@ -333,6 +335,9 @@ $(function() {
             getDriverIdPromise().then(currentDriverId => {
               updateReqDriverId(reqId, currentDriverId);
             });
+            socket.emit('driver_accepted');
+          }else{
+            //Xu ly driver tu choi request
           }
         });
 

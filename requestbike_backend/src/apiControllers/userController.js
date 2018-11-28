@@ -19,7 +19,6 @@ router.post('/me',(req, res) => {
 
 router.post('/id',(req, res)=>{
 	let payload = req.token_payload;
-	console.log(payload);
 	res.json({
 		id: payload.user.f_id
 	});

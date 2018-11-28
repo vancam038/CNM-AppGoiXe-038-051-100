@@ -5,6 +5,7 @@ var _ = require("lodash");
 
 var requestRepo = require("../repos/requestRepo");
 const driverRepo = require("../repos/driverRepo");
+
 var router = express.Router();
 
 router.get("/requests", (req, res) => {
@@ -206,20 +207,38 @@ router.patch("/request/driverId", (req, res) => {
       res.end("View error log on console");
     });
 });
+//
+// router.get("/request/findDriver", (req, res) => {
+//   driverRepo
+//     .findDriver()
+//     .then(value => {
+//       if (value.length > 0)
+//         res.status(200).json({ status: "OK", drivers: value });
+//       else res.status(404).json({ status: "NOT_FOUND" });
+//     })
+//     .catch(err => {
+//       console.log(err);
+//       res.statusCode = 500;
+//       res.end("View error log on console");
+//     });
+// });
+router.post("/request/findDriver2", (req, res) => {
 
-router.get("/request/findDriver", (req, res) => {
-  driverRepo
-    .findDriver()
-    .then(value => {
-      if (value.length > 0)
-        res.status(200).json({ status: "OK", drivers: value });
-      else res.status(404).json({ status: "NOT_FOUND" });
-    })
-    .catch(err => {
-      console.log(err);
-      res.statusCode = 500;
-      res.end("View error log on console");
-    });
+    driverRepo
+        .findDriver()
+        .then(rows => {
+            if (rows.length > 0) {
+                console.log(rows);
+                res.status(200).json({status: "OK", drivers: rows});
+            }
+            else {
+                res.status(404).json({ status: "NOT_FOUND" });
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            res.statusCode = 500;
+            res.end("View error log on console");
+        });
 });
-
 module.exports = router;

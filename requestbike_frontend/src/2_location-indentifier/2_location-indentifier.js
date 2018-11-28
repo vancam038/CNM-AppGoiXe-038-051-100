@@ -177,8 +177,8 @@ $(function() {
      *    + driver id thoả Haversine lên app4, app4 nào có id trùng id đó thì hiện modal
      */
     $.ajax({
-      url: "http://localhost:3000/request/findDriver",
-      type: "GET",
+      url: "http://localhost:3000/request/findDriver2",
+      type: "POST",
       headers: {
           "Access-Control-Allow-Origin": "*",
           "Content-Type": "application/json",
@@ -200,6 +200,7 @@ $(function() {
     });
     // duy-th end
   });
+
 });
 
 function keepSelectedRow() {
