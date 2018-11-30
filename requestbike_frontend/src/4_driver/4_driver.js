@@ -142,7 +142,7 @@ function changeStatus(status) {
         .addClass("btn-outline-success");
       // ajax cập nhật status của tài xế thành ready và latlng của tài xế
       getDriverIdPromise().then(currentDriverId => {
-        updateDriverStatus(DRIVER_STATUS_READY, currentDriverId); // TESTING
+        updateDriverStatus(DRIVER_STATUS_READY, currentDriverId);
         const { lat, lng } = getNewDriverMarkerLatLng();
         updateDriverCoords(lat, lng, currentDriverId);
       });
@@ -156,7 +156,7 @@ function changeStatus(status) {
       //socket end
       // ajax cập nhật status của tài xế thành standby
       getDriverIdPromise().then(currentDriverId => {
-        updateDriverStatus(DRIVER_STATUS_STANDBY, currentDriverId); // TESTING
+        updateDriverStatus(DRIVER_STATUS_STANDBY, currentDriverId);
       });
       break;
     case DRIVER_STATUS_BUSY:
@@ -316,6 +316,9 @@ $(function() {
 
             // update trạng thái của request dưới db
             updateReqStatus(reqId, REQ_STATUS_ACCEPTED);
+
+            // Đổi trạng thái của driver thành BUSY
+            changeStatus(DRIVER_STATUS_BUSY);
 
             //update ReqId cua driver phu trach
             getDriverIdPromise().then(currentDriverId => {
