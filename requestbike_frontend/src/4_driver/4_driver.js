@@ -358,6 +358,10 @@ $(function () {
         });
 
         timer.addEventListener("targetAchieved", function (e) {
+          // tắt 2 nút chấp nhận và từ chối
+          $('#btn-accept').prop("disabled",true);
+          $('#btn-reject').prop("disabled",true);
+
           $("#countdownExample #timer-value")
             .html("Không phản hồi")
             .addClass("timer-timeout");
