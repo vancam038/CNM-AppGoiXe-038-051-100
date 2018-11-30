@@ -359,8 +359,8 @@ $(function () {
 
         timer.addEventListener("targetAchieved", function (e) {
           // tắt 2 nút chấp nhận và từ chối
-          $('#btn-accept').prop("disabled",true);
-          $('#btn-reject').prop("disabled",true);
+          $('#btn-accept').prop("disabled", true);
+          $('#btn-reject').prop("disabled", true);
 
           $("#countdownExample #timer-value")
             .html("Không phản hồi")
@@ -368,9 +368,11 @@ $(function () {
           setTimeout(function () {
             $("#requestModalCenter").modal("hide");
             $("#countdownExample #timer-value").removeClass("timer-timeout");
+            $('#btn-accept').prop("disabled", false);
+            $('#btn-reject').prop("disabled", false);
           }, 500);
-        });
 
+        });
         // hiện modal accept
         $("#requestModalCenter").modal("show");
       }
