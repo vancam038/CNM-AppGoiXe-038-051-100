@@ -1,5 +1,8 @@
 var socket = io("http://localhost:3001");
 
+const SEND_REQUEST_ATTEMPT = 10;
+const REQUEST_DRIVER_RESPONSE_TIME = 10000;
+
 // perfect scrollbar start
 $(function() {
   var ps = new PerfectScrollbar(".table-container", {
@@ -11,77 +14,77 @@ $(function() {
 // perfect scrollbar end
 
 $(function() {
-    let showModal = () => {
-        $('#modalUnauthorized').modal('show');
-        $('.modal-backdrop').show();
-    };
-  let getRequestList = function(){
-      $.ajax({
-          url: "http://localhost:3000/requests/unidentified+identified",
-          type: "GET",
-          headers: {
-              "Access-Control-Allow-Origin": "*",
-              "Content-Type": "application/json",
-              "x-access-token": localStorage.getItem('token_2')
-          },
-          dataType: "json",
-          timeout: 10000
-      }).done(function(data) {
-          var source = document.getElementById("request-template").innerHTML;
-          var template = Handlebars.compile(source);
-          var html = template(data);
-          $("#requests").html(html);
-      });
+  let showModal = () => {
+    $("#modalUnauthorized").modal("show");
+    $(".modal-backdrop").show();
   };
+  let getRequestList = function() {
     $.ajax({
-        url:"http://localhost:3000/user/me",
-        type:"POST",
-        headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Content-Type": "application/json",
-            "x-access-token": localStorage.getItem('token_2')
-        },
-        dataType: 'json',
-        success:function(data, status, jqXHR){
-            console.log(data);
-            getRequestList();
-        },
-        error:function(e){
-            //Handle auto login
-            $.ajax({
-                url:'http://localhost:3000/auth/token',
-                type:'POST',
-                headers:{
-                    "Access-Control-Allow-Origin": "*",
-                    "Content-Type": "application/json",
-                    "x-ref-token": localStorage.getItem('refToken_2')
-                },
-                dataType:'json',
-                success:function(data){
-                    console.log('GET new token success');
-                    //Update access-token
-                    localStorage.setItem('token_2',data.access_token);
-                    //Get request list
-                    getRequestList();
-                },
-                error: function(jqXHR, txtStatus, err){
-                    console.log('Get new token failed');
-                    console.log(err);
-                    showModal();
-                }
-            });
-
-        }
+      url: "http://localhost:3000/requests/unidentified+identified",
+      type: "GET",
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json",
+        "x-access-token": localStorage.getItem("token_2")
+      },
+      dataType: "json",
+      timeout: 10000
+    }).done(function(data) {
+      var source = document.getElementById("request-template").innerHTML;
+      var template = Handlebars.compile(source);
+      var html = template(data);
+      $("#requests").html(html);
     });
+  };
+  $.ajax({
+    url: "http://localhost:3000/user/me",
+    type: "POST",
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+      "x-access-token": localStorage.getItem("token_2")
+    },
+    dataType: "json",
+    success: function(data, status, jqXHR) {
+      console.log(data);
+      getRequestList();
+    },
+    error: function(e) {
+      //Handle auto login
+      $.ajax({
+        url: "http://localhost:3000/auth/token",
+        type: "POST",
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json",
+          "x-ref-token": localStorage.getItem("refToken_2")
+        },
+        dataType: "json",
+        success: function(data) {
+          console.log("GET new token success");
+          //Update access-token
+          localStorage.setItem("token_2", data.access_token);
+          //Get request list
+          getRequestList();
+        },
+        error: function(jqXHR, txtStatus, err) {
+          console.log("Get new token failed");
+          console.log(err);
+          showModal();
+        }
+      });
+    }
+  });
 
   socket.on("new_request_added", () => {
     $.ajax({
       url: "http://localhost:3000/requests/unidentified+identified",
-      type: "GET",headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Content-Type": "application/json",
-            "x-access-token": localStorage.getItem('token_2')
-        },
+      type: "GET",
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json",
+        "x-access-token": localStorage.getItem("token_2")
+      },
       dataType: "json",
       timeout: 10000
     }).done(function(data) {
@@ -136,6 +139,7 @@ $(function() {
     const lat = $("#lat").val();
     const lng = $("#lng").val();
     const status = $("#status").val();
+
     if (
       !validateString(reqId) ||
       !validateString(lat) ||
@@ -148,59 +152,140 @@ $(function() {
     handleQueryGeolocationFinish(prevLatLng);
   });
 
+  function driverFinder(reqId, lat, lng, addr) {
+    this.reqId = reqId;
+    const ajaxOpts = {
+      url: "http://localhost:3000/request/findDriver2",
+      type: "POST",
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json",
+        "x-access-token": localStorage.getItem("token_2")
+      },
+      timeout: 10000
+    };
+    const reqInfo = {
+      reqId,
+      lat,
+      lng,
+      addr
+    };
+    const reqLatLng = { lat, lng };
+    let handleInterval = null;
+
+    this.stop = function() {
+      handleInterval && clearInterval(handleInterval);
+    };
+
+    this.start = function() {
+      $.ajax(ajaxOpts).done(function(data) {
+        // first attempt
+        let { status } = data;
+        if (status === "OK") {
+          let { drivers } = data;
+          let distances = drivers.map(driver => {
+            const driverLatLng = { lat: driver.lat, lng: driver.lng };
+            if (
+              driverLatLng.lat === null ||
+              driverLatLng.lat === undefined ||
+              driverLatLng.lng === null ||
+              driverLatLng.lng === undefined
+            )
+              return Number.MAX_SAFE_INTEGER;
+            return Haversine(reqLatLng, driverLatLng);
+          });
+          let { driverId } = drivers[distances.indexOf(Math.min(...distances))];
+          socket.emit(
+            "2_to_4_send-req-to-driver",
+            JSON.stringify({ reqInfo, driverId })
+          );
+        }
+
+        // N - 1 attempts còn lại
+        let attempt = 1;
+        // tiếp tục tìm nếu chưa quá SEND_REQUEST_ATTEMPT lần
+        // và chưa có driver accept
+        handleInterval = setInterval(function() {
+          console.log("-> reqId: ", reqId, ", attempt: ", attempt);
+          $.ajax(ajaxOpts).done(function(data) {
+            status = data.status;
+            if (status === "OK") {
+              drivers = data.drivers;
+              distances = drivers.map(driver => {
+                const driverLatLng = { lat: driver.lat, lng: driver.lng };
+                return Haversine(reqLatLng, driverLatLng);
+              });
+              driverId =
+                drivers[distances.indexOf(Math.min(...distances))].driverId;
+              socket.emit(
+                "2_to_4_send-req-to-driver",
+                JSON.stringify({ reqInfo: reqInfo, driverId })
+              );
+            }
+
+            attempt++;
+            if (attempt >= SEND_REQUEST_ATTEMPT) {
+              console.log("table reloading");
+              handleInterval && clearInterval(handleInterval);
+              // emit request failed, ajax set req failed then reload table app2 & app3
+              const reqObject = {
+                reqId: reqId,
+                status: "NOT_FOUND"
+              };
+              $.ajax({
+                url: "http://localhost:3000/request/status",
+                type: "PATCH",
+                headers: {
+                  "Access-Control-Allow-Origin": "*",
+                  "Content-Type": "application/json",
+                  "x-access-token": localStorage.getItem("token_2")
+                },
+                data: JSON.stringify(reqObject),
+                dataType: "json"
+              }).done(() => {
+                // reload table app2 & app3
+                $.ajax({
+                  url: "http://localhost:3000/requests/unidentified+identified",
+                  type: "GET",
+                  headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    "Content-Type": "application/json",
+                    "x-access-token": localStorage.getItem("token_2")
+                  },
+                  dataType: "json"
+                }).done(function(data) {
+                  socket.emit("2_to_3_reload-table");
+                  socket.emit("2_to_2_reload-table");
+                });
+              });
+            }
+            // nếu status === "NOT_FOUND" hoặc lỗi thì lại tiếp tục vòng lặp và timeout
+          });
+        }, REQUEST_DRIVER_RESPONSE_TIME + 5000);
+      });
+    };
+  }
+  const driverFinderInstances = [];
   $("#btn-find").click(function(e) {
     e.preventDefault();
     const reqId = $("#reqId").val();
     const lat = $("#lat").val();
     const lng = $("#lng").val();
     const addr = $("#addr").val();
-    // cam-sv start
-    // TODO: điều kiện để gửi req cho driver là ???
-    // Xe phải là ready, khoan tính có đường đi tới khách ngắn nhất -> Haversine min
-    // socket.emit(
-    //   "2_to_4_send-req-to-driver",
-    //   JSON.stringify({
-    //     reqId,
-    //     lat,
-    //     lng,
-    //     addr
-    //   })
-    // );
-    // cam-sv end
-    // duy-th start
-    /*
-     * - app2 query tìm list driver ready
-     * - server gửi app2 list driver ready
-     * - app2 emit list driver ready lên socket
-     * - socket emit
-     *    + list driver id lên app4, app4 driver nào có id có trong list đó thì hiện modal <-- ! ĐANG LÀM HƯỚNG NÀY, SẼ LÀM HƯỚNG BÊN DƯỚI SAU KHI NHÓM THỐNG NHẤT
-     *    + driver id thoả Haversine lên app4, app4 nào có id trùng id đó thì hiện modal
-     */
-    $.ajax({
-      url: "http://localhost:3000/request/findDriver2",
-      type: "POST",
-      headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Content-Type": "application/json",
-          "x-access-token": localStorage.getItem('token_2')
-      },
-      dataType: "json",
-      timeout: 10000
-    }).done(function(data) {
-      const { status, drivers } = data;
-      if (status === "NOT_FOUND") return; // xử lý ntn nếu không có driver nào READY?
-      if (status === "OK") {
-        // TODO: tìm tài xế gần nhất bằng Haversine trên socket!
-        const reqInfo = { reqId, lat, lng, addr };
-        socket.emit(
-          "2_to_4_send-req-to-driver",
-          JSON.stringify({ reqInfo, drivers })
-        );
-      }
-    });
+    driverFinderInstances.push(new driverFinder(reqId, lat, lng, addr));
+    driverFinderInstances[driverFinderInstances.length - 1].start();
     // duy-th end
   });
 
+  socket.on("driver_accepted", function(reqId) {
+    for (let i = 0; i < driverFinderInstances.length; i++) {
+      const instance = driverFinderInstances[i];
+      if (instance.reqId === reqId) {
+        instance.stop();
+        break;
+      }
+    }
+  });
 });
 
 function keepSelectedRow() {
@@ -236,7 +321,7 @@ function setStatusByReqId(tableId, idReq, status) {
         headers: {
           "Access-Control-Allow-Origin": "*",
           "Content-Type": "application/json",
-          "x-access-token": localStorage.getItem('token_2')
+          "x-access-token": localStorage.getItem("token_2")
         },
         data: JSON.stringify(reqObject),
         dataType: "json"
@@ -247,9 +332,9 @@ function setStatusByReqId(tableId, idReq, status) {
           url: "http://localhost:3000/requests/unidentified+identified",
           type: "GET",
           headers: {
-              "Access-Control-Allow-Origin": "*",
-              "Content-Type": "application/json",
-              "x-access-token": localStorage.getItem('token_2')
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json",
+            "x-access-token": localStorage.getItem("token_2")
           },
           dataType: "json"
         }).done(function(data) {
@@ -277,11 +362,11 @@ $(function() {
     $.ajax({
       url: "http://localhost:3000/requests/unidentified+identified",
       type: "GET",
-        headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Content-Type": "application/json",
-            "x-access-token": localStorage.getItem('token_2')
-        },
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json",
+        "x-access-token": localStorage.getItem("token_2")
+      },
       dataType: "json"
     }).done(function(data) {
       var source = document.getElementById("request-template").innerHTML;
