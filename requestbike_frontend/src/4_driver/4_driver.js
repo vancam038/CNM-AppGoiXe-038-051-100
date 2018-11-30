@@ -2,56 +2,56 @@ var socket = io("http://localhost:3001");
 let infoWindow = null;
 let reqId_global;
 
-$(function() {
+$(function () {
   $("#requestModalCenter").modal({
     backdrop: "static",
     // mặc định khi init, sẽ show modal. Nếu ko mún show thì chỉnh thành false
     show: false
   });
   //First requests
-    let showModal = () => {
-        $('#modalUnauthorized').modal('show');
-        $('.modal-backdrop').show();
-    };
-    $.ajax({
-        url:"http://localhost:3000/user/me",
-        type:"POST",
+  let showModal = () => {
+    $('#modalUnauthorized').modal('show');
+    $('.modal-backdrop').show();
+  };
+  $.ajax({
+    url: "http://localhost:3000/user/me",
+    type: "POST",
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+      "x-access-token": localStorage.getItem('token_4')
+    },
+    dataType: 'json',
+    success: function (data, status, jqXHR) {
+      console.log(data);
+      changeStatus(DRIVER_STATUS_STANDBY);
+    },
+    error: function (e) {
+      //Handle auto login
+      $.ajax({
+        url: 'http://localhost:3000/auth/token',
+        type: 'POST',
         headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Content-Type": "application/json",
-            "x-access-token": localStorage.getItem('token_4')
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json",
+          "x-ref-token": localStorage.getItem('refToken_4')
         },
         dataType: 'json',
-        success:function(data, status, jqXHR){
-            console.log(data);
-            changeStatus(DRIVER_STATUS_STANDBY);
+        success: function (data) {
+          console.log('GET new token success');
+          //Update access-token
+          localStorage.setItem('token_4', data.access_token);
+          changeStatus(DRIVER_STATUS_STANDBY);
         },
-        error:function(e){
-            //Handle auto login
-            $.ajax({
-                url:'http://localhost:3000/auth/token',
-                type:'POST',
-                headers:{
-                    "Access-Control-Allow-Origin": "*",
-                    "Content-Type": "application/json",
-                    "x-ref-token": localStorage.getItem('refToken_4')
-                },
-                dataType:'json',
-                success:function(data){
-                    console.log('GET new token success');
-                    //Update access-token
-                    localStorage.setItem('token_4',data.access_token);
-                    changeStatus(DRIVER_STATUS_STANDBY);
-                },
-                error: function(jqXHR, txtStatus, err){
-                    console.log('Get new token failed');
-                    console.log(err);
-                    showModal();
-                }
-            });
-
+        error: function (jqXHR, txtStatus, err) {
+          console.log('Get new token failed');
+          console.log(err);
+          showModal();
         }
-    })
+      });
+
+    }
+  })
 });
 
 // ------------------------------------ driver ajax start
@@ -66,7 +66,7 @@ function updateDriverStatus(status, driverId) {
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Content-Type": "application/json",
-        "x-access-token": localStorage.getItem('token_4')
+      "x-access-token": localStorage.getItem('token_4')
     },
     data: JSON.stringify(driverObject),
     dataType: "json"
@@ -85,7 +85,7 @@ function updateDriverReqId(reqId, driverId) {
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Content-Type": "application/json",
-        "x-access-token": localStorage.getItem('token_4')
+      "x-access-token": localStorage.getItem('token_4')
     },
     data: JSON.stringify(driverObject),
     dataType: "json"
@@ -105,7 +105,7 @@ function updateDriverCoords(newLat, newLng, driverId) {
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Content-Type": "application/json",
-        "x-access-token": localStorage.getItem('token_4')
+      "x-access-token": localStorage.getItem('token_4')
     },
     data: JSON.stringify(driverObject),
     dataType: "json"
@@ -123,7 +123,7 @@ var getDriverIdPromise = () => {
         "x-access-token": localStorage.getItem('token_4')
       },
       dataType: "json"
-    }).done(function(driverObject) {
+    }).done(function (driverObject) {
       console.log(driverObject.id);
       resolve(driverObject.id);
     });
@@ -143,7 +143,10 @@ function changeStatus(status) {
       // ajax cập nhật status của tài xế thành ready và latlng của tài xế
       getDriverIdPromise().then(currentDriverId => {
         updateDriverStatus(DRIVER_STATUS_READY, currentDriverId);
-        const { lat, lng } = getNewDriverMarkerLatLng();
+        const {
+          lat,
+          lng
+        } = getNewDriverMarkerLatLng();
         updateDriverCoords(lat, lng, currentDriverId);
       });
       break;
@@ -164,6 +167,10 @@ function changeStatus(status) {
       $("#navbarDropdown")
         .removeClass("btn-outline-success btn-outline-warning")
         .addClass("btn-outline-danger");
+      // ajax cập nhật status của tài xế thành busy
+      getDriverIdPromise().then(currentDriverId => {
+        updateDriverStatus(DRIVER_STATUS_BUSY, currentDriverId);
+      });
       break;
   }
 }
@@ -182,11 +189,11 @@ function updateReqStatus(reqId, reqStatus) {
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Content-Type": "application/json",
-        "x-access-token": localStorage.getItem('token_4')
+      "x-access-token": localStorage.getItem('token_4')
     },
     data: JSON.stringify(reqObject),
     dataType: "json"
-  }).done(function() {
+  }).done(function () {
     // emit cho 3 là request này đã có xe nhận || đang di chuyển || kết thúc-> reload lại table
     socket.emit("4_to_3_reload-table");
     // emit cho 2 là đã có xe nhận -> reload lại table -> mất req identified bên #2
@@ -206,11 +213,11 @@ function updateReqDriverId(reqId, driverId) {
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Content-Type": "application/json",
-        "x-access-token": localStorage.getItem('token_4')
+      "x-access-token": localStorage.getItem('token_4')
     },
     data: JSON.stringify(reqObject),
     dataType: "json"
-  }).done(function() {
+  }).done(function () {
     // emit cho 3 là request này đã có xe nhận || đang di chuyển || kết thúc-> reload lại table
     socket.emit("4_to_3_reload-table");
     // emit cho 2 là đã có xe nhận -> reload lại table -> mất req identified bên #2
@@ -243,14 +250,20 @@ function updateMap(lat, lng, addr) {
 //socket start
 
 //listen start
-$(function() {
+$(function () {
   // gửi trạng thái lên cho server
   // socket.emit("4_to_2_???", requestObject);
 
   // lắng nghe yêu cầu từ phía #2
   var timer = new Timer();
   socket.on("2_to_4_send-req-to-driver", msg => {
-    const { reqId, lat, lng, addr, driverId } = JSON.parse(msg);
+    const {
+      reqId,
+      lat,
+      lng,
+      addr,
+      driverId
+    } = JSON.parse(msg);
     console.log(msg);
     if (
       reqId === undefined ||
@@ -281,7 +294,7 @@ $(function() {
         var acceptPromise = () => {
           // Promise start
           return new Promise((resolve, reject) => {
-            timer.addEventListener("secondsUpdated", function(e) {
+            timer.addEventListener("secondsUpdated", function (e) {
               // Cập nhật số giây
               $("#countdownExample #timer-value").html(
                 timer.getTimeValues().seconds
@@ -339,16 +352,16 @@ $(function() {
               updateReqDriverId(reqId, currentDriverId);
             });
             socket.emit('driver_accepted');
-          }else{
+          } else {
             //Xu ly driver tu choi request
           }
         });
 
-        timer.addEventListener("targetAchieved", function(e) {
+        timer.addEventListener("targetAchieved", function (e) {
           $("#countdownExample #timer-value")
             .html("Không phản hồi")
             .addClass("timer-timeout");
-          setTimeout(function() {
+          setTimeout(function () {
             $("#requestModalCenter").modal("hide");
             $("#countdownExample #timer-value").removeClass("timer-timeout");
           }, 500);
@@ -362,7 +375,7 @@ $(function() {
 });
 //socket end
 
-$(function() {
+$(function () {
   // khi click button Đón Khách
   $("#btn-take").click(() => {
     // tự disable chính mình
@@ -403,13 +416,13 @@ $(function() {
       icon: "../../assets/img/moving.png",
       draggable: true
     });
-    driverMarker.addListener("mouseup", function() {
+    driverMarker.addListener("mouseup", function () {
       if (infoWindow) infoWindow.close();
       const desLat = driverMarker.getPosition().lat(),
         desLng = driverMarker.getPosition().lng();
       $.get(
         `https://maps.googleapis.com/maps/api/geocode/json?latlng=${desLat},${desLng}&location_type=ROOFTOP&result_type=street_address&key=AIzaSyDas6_Z8AZ6sdYJGOucYDWh-MCcoB9jjVE`,
-        function(data) {
+        function (data) {
           infoWindow = new google.maps.InfoWindow({
             content: `
                 <div class="infowindow-container">
@@ -461,8 +474,8 @@ $(function() {
   });
 });
 
-$(function() {
-  $("#acceptDestination").click(function() {
+$(function () {
+  $("#acceptDestination").click(function () {
     infoWindow.close();
     google.maps.event.clearListeners(driverMarker, "mouseup");
     google.maps.event.clearListeners(driverMarker, "mousedown");
@@ -474,7 +487,7 @@ $(function() {
     $("#btn-finish").prop("disabled", false); // chỉ khi ấn nút Yes của infoWindow thì mới mở lên});
   });
 
-  $("#declineDestination").click(function() {
+  $("#declineDestination").click(function () {
     infoWindow.close();
   });
 });
