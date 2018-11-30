@@ -282,6 +282,7 @@ $(function() {
       const instance = driverFinderInstances[i];
       if (instance.reqId === reqId) {
         instance.stop();
+        driverFinderInstances.splice(i, 1);
         break;
       }
     }

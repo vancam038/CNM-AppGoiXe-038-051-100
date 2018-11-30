@@ -342,10 +342,11 @@ $(function() {
             //update driverId của request
             getDriverIdPromise().then(currentDriverId => {
               updateReqDriverId(reqId, currentDriverId);
-              socket.emit("driver_accepted", reqId);
             });
+            socket.emit("driver_accepted", reqId);
           } else {
             //Xu ly driver tu choi request
+            // ? xem như driver ko phản hồi
           }
         });
 
