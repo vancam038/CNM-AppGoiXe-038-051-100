@@ -96,6 +96,7 @@ $(function() {
       var template = Handlebars.compile(source);
       var html = template(data);
       $("#requests").html(html);
+      addDriverDetailsToTable();
       keepSelectedRow();
     });
   });
@@ -238,6 +239,7 @@ $(function() {
       var template = Handlebars.compile(source);
       var html = template(data);
       $("#requests").html(html);
+      addDriverDetailsToTable();
       keepSelectedRow();
     });
   });
@@ -257,6 +259,7 @@ $(function() {
       var template = Handlebars.compile(source);
       var html = template(data);
       $("#requests").html(html);
+      addDriverDetailsToTable();
       keepSelectedRow();
     });
   });

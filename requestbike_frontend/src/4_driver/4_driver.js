@@ -24,7 +24,7 @@ $(function() {
     dataType: "json",
     success: function(data, status, jqXHR) {
       console.log(data);
-      $('#driverName').text(data.info.name);
+      $("#driverName").text(data.info.name);
       changeStatus(DRIVER_STATUS_STANDBY);
     },
     error: function(e) {
@@ -160,7 +160,7 @@ function changeStatus(status) {
       break;
     case DRIVER_STATUS_BUSY:
       $("#navbarDropdown").html(DRIVER_STATUS_BUSY);
-      $("#navbarDropdown").prop("disabled",true);
+      $("#navbarDropdown").prop("disabled", true);
       $("#navbarDropdown")
         .removeClass("btn-outline-success btn-outline-warning")
         .addClass("btn-outline-danger");
@@ -265,6 +265,7 @@ $(function() {
     getDriverIdPromise().then(_driverId => {
       if (driverId !== _driverId) return;
       // save lại thành biến toàn cục để dành xài
+      changeStatus(DRIVER_STATUS_BUSY);
       reqId_global = reqId;
 
       // start đồng hồ
@@ -303,6 +304,8 @@ $(function() {
               // Khi click button Từ Chối
               $("#btn-reject").click(() => {
                 timer.stop();
+                changeStatus(DRIVER_STATUS_READY);
+                $("#navbarDropdown").prop("disabled", false);
                 // timer.reset();
                 resolve(false);
               });
@@ -354,17 +357,19 @@ $(function() {
 
         timer.addEventListener("targetAchieved", function(e) {
           // tắt 2 nút chấp nhận và từ chối
-          $('#btn-accept').prop("disabled", true);
-          $('#btn-reject').prop("disabled", true);
-          
+          $("#btn-accept").prop("disabled", true);
+          $("#btn-reject").prop("disabled", true);
+
           $("#countdownExample #timer-value")
             .html("Không phản hồi")
             .addClass("timer-timeout");
           setTimeout(function() {
             $("#requestModalCenter").modal("hide");
             $("#countdownExample #timer-value").removeClass("timer-timeout");
-            $('#btn-accept').prop("disabled", false);
-            $('#btn-reject').prop("disabled", false);
+            $("#btn-accept").prop("disabled", false);
+            $("#btn-reject").prop("disabled", false);
+            changeStatus(DRIVER_STATUS_READY);
+            $("#navbarDropdown").prop("disabled", false);
           }, 500);
 
           //Xu ly nhu driver tu choi request
@@ -372,7 +377,7 @@ $(function() {
             socket.emit("driver_declined", JSON.stringify({ reqId, driverId }));
           });
         });
-        
+
         // hiện modal accept
         $("#requestModalCenter").modal("show");
       }

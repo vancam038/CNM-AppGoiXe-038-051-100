@@ -269,10 +269,10 @@ $(function() {
             attempt++;
             // setTimeout cho lượt req send cuối cùng
             if (attempt >= SEND_REQUEST_ATTEMPT) {
-              // TODO: attempt 10 lần + 1
+              handleInterval && clearInterval(handleInterval);
+              // attempt N lần + 1
               setTimeout(function() {
                 console.log("table reloading");
-                handleInterval && clearInterval(handleInterval);
                 // emit request failed, ajax set req failed then reload table app2 & app3
                 const reqObject = {
                   reqId: reqId,
