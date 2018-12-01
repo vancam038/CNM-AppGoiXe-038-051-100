@@ -207,38 +207,37 @@ router.patch("/request/driverId", (req, res) => {
       res.end("View error log on console");
     });
 });
-//
-// router.get("/request/findDriver", (req, res) => {
-//   driverRepo
-//     .findDriver()
-//     .then(value => {
-//       if (value.length > 0)
-//         res.status(200).json({ status: "OK", drivers: value });
-//       else res.status(404).json({ status: "NOT_FOUND" });
-//     })
-//     .catch(err => {
-//       console.log(err);
-//       res.statusCode = 500;
-//       res.end("View error log on console");
-//     });
-// });
-router.post("/request/findDriver2", (req, res) => {
 
-    driverRepo
-        .findDriver()
-        .then(rows => {
-            if (rows.length > 0) {
-                console.log(rows);
-                res.status(200).json({status: "OK", drivers: rows});
-            }
-            else {
-                res.status(404).json({ status: "NOT_FOUND" });
-            }
-        })
-        .catch(err => {
-            console.log(err);
-            res.statusCode = 500;
-            res.end("View error log on console");
-        });
+router.get("/request/findDriver", (req, res) => {
+  driverRepo
+    .findDriver()
+    .then(value => {
+      if (value.length > 0)
+        res.status(200).json({ status: "OK", drivers: value });
+      else res.status(202).json({ status: "NOT_FOUND" });
+    })
+    .catch(err => {
+      console.log(err);
+      res.statusCode = 202;
+      res.end("View error log on console");
+    });
+});
+
+router.post("/request/findDriver2", (req, res) => {
+  driverRepo
+    .findDriver()
+    .then(rows => {
+      if (rows.length > 0) {
+        console.log(rows);
+        res.status(200).json({ status: "OK", drivers: rows });
+      } else {
+        res.status(202).json({ status: "NOT_FOUND" });
+      }
+    })
+    .catch(err => {
+      console.log(err);
+      res.statusCode = 202;
+      res.end("View error log on console");
+    });
 });
 module.exports = router;

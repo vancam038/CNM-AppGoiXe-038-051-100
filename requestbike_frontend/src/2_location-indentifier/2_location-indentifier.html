@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   <title>App #2</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="../../assets/css/perfect-scrollbar.css">
+  <link rel="stylesheet" href="../../assets/css/perfect-scrollbar.css" />
   <link rel="stylesheet" href="../../assets/css/alertify/alertify.min.css" />
   <link rel="stylesheet" href="../../assets/css/alertify/themes/default.min.css" />
   <link rel="stylesheet" type="text/css" href="./2_location-indentifier.css" />
@@ -23,26 +23,31 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-          <!-- <li class="nav-item active">
-            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Link</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link disabled" href="#">Disabled</a>
-          </li> -->
+          <!--
+              <li class="nav-item active">
+                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link disabled" href="#">Disabled</a>
+              </li>
+            -->
         </ul>
         <div class="circular--landscape">
           <img src="../../assets/img/girl.png" alt="logo" />
         </div>
+        <h5 id="driverName" class="text-white ml-3"></h5>
       </div>
     </nav>
 
     <div class="content-wrapper">
       <div class="content-wrapper-inner">
-        <!-- <div class="container-fluid">
-        <div class="row"> -->
+        <!--
+            <div class="container-fluid">
+            <div class="row">
+          -->
         <div class="table-container">
           <table id="reqTable" class="table table-hover table-striped table-bordered bg-light">
             <thead>
@@ -62,31 +67,36 @@
         <form class="form-inline custom-form" role="form">
           <div class="form-group">
             <label for="email2" class="mr-sm-2">Request ID:</label>
-            <input id="reqId" type="text" class="form-control mr-sm-2" id="email2" placeholder="" disabled>
+            <input id="reqId" type="text" class="form-control mr-sm-2" id="email2" placeholder="" disabled />
           </div>
           <div class="form-group">
             <label for="pwd2" class="mr-sm-2">Địa chỉ gốc:</label>
-            <input id="addr" type="text" class="form-control  mr-sm-2" id="pwd2" placeholder="" disabled>
+            <input id="addr" type="text" class="form-control  mr-sm-2" id="pwd2" placeholder="" disabled />
           </div>
           <div class="form-group">
             <label for="pwd2" class="mr-sm-2">Ghi chú:</label>
-            <input id="note" type="text" class="form-control  mr-sm-2" id="pwd2" placeholder="" disabled>
+            <input id="note" type="text" class="form-control  mr-sm-2" id="pwd2" placeholder="" disabled />
           </div>
           <div class="group-button">
-            <button id="btn-locate" class="btn btn-primary" disabled>Định vị</button>
-            <button id="btn-find" class="btn btn-danger" disabled>Tìm xe</button>
+            <button id="btn-locate" class="btn btn-primary" disabled>
+              Định vị
+            </button>
+            <button id="btn-find" class="btn btn-danger" disabled>
+              Tìm xe
+            </button>
           </div>
           <div class="form-group" hidden>
-            <input id="status" type="text" class="form-control mr-sm-2" id="pwd2" placeholder="" disabled>
-            <input id="lat" type="text" class="form-control  mr-sm-2" id="pwd2" placeholder="" disabled>
-            <input id="lng" type="text" class="form-control mr-sm-2" id="pwd2" placeholder="" disabled>
+            <input id="status" type="text" class="form-control mr-sm-2" id="pwd2" placeholder="" disabled />
+            <input id="lat" type="text" class="form-control  mr-sm-2" id="pwd2" placeholder="" disabled />
+            <input id="lng" type="text" class="form-control mr-sm-2" id="pwd2" placeholder="" disabled />
           </div>
         </form>
 
-
         <!-- google map start -->
-        <!-- <div id="map-container">
-        <div id="map-dialog"></div> -->
+        <!--
+            <div id="map-container">
+            <div id="map-dialog"></div>
+          -->
         <div id="map-container">
           <div id="map-dialog"></div>
           <div id="map"></div>
@@ -95,29 +105,30 @@
           <button id="revertChangeUserPosition" class="btn btn-hidden"></button>
         </div>
 
-
-        <!-- <button id="acceptChangeUserPosition" class="btn btn-hidden"></button>
-        <button id="declineChangeUserPosition" class="btn btn-hidden"></button>
-        <button id="revertChangeUserPosition" class="btn btn-hidden"></button>
-      </div>
-    </div> -->
+        <!--
+            <button id="acceptChangeUserPosition" class="btn btn-hidden"></button>
+                <button id="declineChangeUserPosition" class="btn btn-hidden"></button>
+                <button id="revertChangeUserPosition" class="btn btn-hidden"></button>
+              </div>
+            </div>
+          -->
         <!-- google map end -->
       </div>
     </div>
 
     <script id="request-template" type="text/x-handlebars-template">
       {{#each this}}
-                    <tr data-id="{{id}}" data-lat="{{lat}}" data-lng="{{lng}}">
-                        <td>{{id}}</td>
-                        <td>{{clientName}}</td>
-                        <td>{{phone}}</td>
-                        <td>{{address}}</td>
-                        <td>{{note}}</td>
-                        <td class={{status}}>{{status}}</td>
-                        <td>{{date_submitted}}</td>
-                    </tr>
-                {{/each}}
-    </script>
+                      <tr data-id="{{id}}" data-lat="{{lat}}" data-lng="{{lng}}">
+                          <td>{{id}}</td>
+                          <td>{{clientName}}</td>
+                          <td>{{phone}}</td>
+                          <td>{{address}}</td>
+                          <td>{{note}}</td>
+                          <td class={{status}}>{{status}}</td>
+                          <td>{{date_submitted}}</td>
+                      </tr>
+                  {{/each}}
+      </script>
 
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
@@ -128,13 +139,14 @@
     <script src="../../assets/js/alertify.min.js"></script>
     <script src="../../assets/js/common.js"></script>
     <script src="../../assets/js/constant.js"></script>
+    <script src="../../assets//js/Haversine.js"></script>
     <script src="./2_location-indentifier.js"></script>
     <script src="./google-map/script.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDas6_Z8AZ6sdYJGOucYDWh-MCcoB9jjVE&callback=initMap"
       async defer></script>
-    <!--Modal-->
+    <!-- Modal -->
     <!-- <div class="modal-backdrop"></div> -->
-    <div class="modal" id="modalUnauthorized"  data-keyboard="false" data-backdrop="static">
+    <div class="modal" id="modalUnauthorized" data-keyboard="false" data-backdrop="static">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">

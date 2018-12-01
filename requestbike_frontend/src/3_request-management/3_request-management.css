@@ -60,7 +60,7 @@ body {
 }
 
 .unidentified {
-  color: red;
+  color: yellow;
 }
 
 .accepted {
@@ -73,6 +73,15 @@ body {
 
 .finished {
   color: purple;
+}
+
+.not_found {
+  color: red;
+}
+
+.pending {
+  color: #c23616;
+  font-weight: bold;
 }
 
 .selected {
