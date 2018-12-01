@@ -154,6 +154,8 @@ $(function() {
 
   function driverFinder(reqId, lat, lng, addr) {
     this.reqId = reqId;
+    this.blackListedDriverIds = [];
+    let self = this;
     const ajaxOpts = {
       url: "http://localhost:3000/request/findDriver2",
       type: "POST",
@@ -183,22 +185,36 @@ $(function() {
         let { status } = data;
         if (status === "OK") {
           let { drivers } = data;
-          let distances = drivers.map(driver => {
-            const driverLatLng = { lat: driver.lat, lng: driver.lng };
-            if (
-              driverLatLng.lat === null ||
-              driverLatLng.lat === undefined ||
-              driverLatLng.lng === null ||
-              driverLatLng.lng === undefined
-            )
-              return Number.MAX_SAFE_INTEGER;
-            return Haversine(reqLatLng, driverLatLng);
-          });
-          let { driverId } = drivers[distances.indexOf(Math.min(...distances))];
-          socket.emit(
-            "2_to_4_send-req-to-driver",
-            JSON.stringify({ reqInfo, driverId })
-          );
+          // xử lý blacklist
+          for (let i = 0; i < drivers.length; i++) {
+            const driver = drivers[i];
+            if (-1 !== self.blackListedDriverIds.indexOf(driver.driverId)) {
+              drivers.splice(i, 1);
+              i--;
+            }
+          }
+          // exception ko có driver nào
+          if (drivers.length > 0) {
+            // tìm driver gần nhất
+            let distances = drivers.map(driver => {
+              let driverLatLng = { lat: driver.lat, lng: driver.lng };
+              if (
+                driverLatLng.lat === null ||
+                driverLatLng.lat === undefined ||
+                driverLatLng.lng === null ||
+                driverLatLng.lng === undefined
+              )
+                return Number.MAX_SAFE_INTEGER;
+              return Haversine(reqLatLng, driverLatLng);
+            });
+            let { driverId } = drivers[
+              distances.indexOf(Math.min(...distances))
+            ];
+            socket.emit(
+              "2_to_4_send-req-to-driver",
+              JSON.stringify({ reqInfo, driverId })
+            );
+          }
         }
 
         // N - 1 attempts còn lại
@@ -206,66 +222,83 @@ $(function() {
         // tiếp tục tìm nếu chưa quá SEND_REQUEST_ATTEMPT lần
         // và chưa có driver accept
         handleInterval = setInterval(function() {
-          console.log("-> reqId: ", reqId, ", attempt: ", attempt);
-          $.ajax(ajaxOpts).done(function(data) {
-            status = data.status;
-            if (status === "OK") {
-              drivers = data.drivers;
-              distances = drivers.map(driver => {
-                const driverLatLng = { lat: driver.lat, lng: driver.lng };
-                return Haversine(reqLatLng, driverLatLng);
-              });
-              driverId =
-                drivers[distances.indexOf(Math.min(...distances))].driverId;
-              socket.emit(
-                "2_to_4_send-req-to-driver",
-                JSON.stringify({ reqInfo: reqInfo, driverId })
-              );
-            }
+          if (attempt < SEND_REQUEST_ATTEMPT) {
+            console.log("-> reqId: ", reqId, ", attempt: ", attempt);
+            $.ajax(ajaxOpts).done(function(data) {
+              status = data.status;
+              if (status === "OK") {
+                drivers = data.drivers;
+                // xử lý blacklist
+                for (let i = 0; i < drivers.length; i++) {
+                  const driver = drivers[i];
+                  if (
+                    -1 !== self.blackListedDriverIds.indexOf(driver.driverId)
+                  ) {
+                    drivers.splice(i, 1);
+                    i--;
+                  }
+                }
 
-            attempt++;
-            // setTimeout cho lượt req send cuối cùng
-            setTimeout(function() {
+                // exception ko có driver nào
+                if (drivers.length > 0) {
+                  // tìm driver gần nhất
+                  distances = drivers.map(driver => {
+                    driverLatLng = { lat: driver.lat, lng: driver.lng };
+                    return Haversine(reqLatLng, driverLatLng);
+                  });
+                  driverId =
+                    drivers[distances.indexOf(Math.min(...distances))].driverId;
+                  socket.emit(
+                    "2_to_4_send-req-to-driver",
+                    JSON.stringify({ reqInfo: reqInfo, driverId })
+                  );
+                }
+              }
+
+              attempt++;
+              // setTimeout cho lượt req send cuối cùng
               if (attempt >= SEND_REQUEST_ATTEMPT) {
-                console.log("table reloading");
-                handleInterval && clearInterval(handleInterval);
-                // emit request failed, ajax set req failed then reload table app2 & app3
-                const reqObject = {
-                  reqId: reqId,
-                  status: "NOT_FOUND"
-                };
-                $.ajax({
-                  url: "http://localhost:3000/request/status",
-                  type: "PATCH",
-                  headers: {
-                    "Access-Control-Allow-Origin": "*",
-                    "Content-Type": "application/json",
-                    "x-access-token": localStorage.getItem("token_2")
-                  },
-                  data: JSON.stringify(reqObject),
-                  dataType: "json"
-                }).done(() => {
-                  // reload table app2 & app3
+                setTimeout(function() {
+                  console.log("table reloading");
+                  handleInterval && clearInterval(handleInterval);
+                  // emit request failed, ajax set req failed then reload table app2 & app3
+                  const reqObject = {
+                    reqId: reqId,
+                    status: "NOT_FOUND"
+                  };
                   $.ajax({
-                    url:
-                      "http://localhost:3000/requests/unidentified+identified",
-                    type: "GET",
+                    url: "http://localhost:3000/request/status",
+                    type: "PATCH",
                     headers: {
                       "Access-Control-Allow-Origin": "*",
                       "Content-Type": "application/json",
                       "x-access-token": localStorage.getItem("token_2")
                     },
+                    data: JSON.stringify(reqObject),
                     dataType: "json"
-                  }).done(function(data) {
-                    socket.emit("2_to_3_reload-table");
-                    socket.emit("2_to_2_reload-table", data);
+                  }).done(() => {
+                    // reload table app2 & app3
+                    $.ajax({
+                      url:
+                        "http://localhost:3000/requests/unidentified+identified",
+                      type: "GET",
+                      headers: {
+                        "Access-Control-Allow-Origin": "*",
+                        "Content-Type": "application/json",
+                        "x-access-token": localStorage.getItem("token_2")
+                      },
+                      dataType: "json"
+                    }).done(function(data) {
+                      socket.emit("2_to_3_reload-table");
+                      socket.emit("2_to_2_reload-table", data);
+                    });
                   });
-                });
+                }, REQUEST_DRIVER_RESPONSE_TIME + 500);
               }
-            }, REQUEST_DRIVER_RESPONSE_TIME + 5000);
-            // nếu status === "NOT_FOUND" hoặc lỗi thì lại tiếp tục vòng lặp và timeout
-          });
-        }, REQUEST_DRIVER_RESPONSE_TIME + 5000);
+              // nếu status === "NOT_FOUND" hoặc lỗi thì lại tiếp tục vòng lặp và timeout
+            });
+          }
+        }, REQUEST_DRIVER_RESPONSE_TIME + 500);
       });
     };
   }
@@ -288,6 +321,20 @@ $(function() {
         instance.stop();
         driverFinderInstances.splice(i, 1);
         instance = null;
+        break;
+      }
+    }
+  });
+
+  socket.on("driver_declined", function(data) {
+    const { reqId, driverId } = JSON.parse(data);
+    for (let i = 0; i < driverFinderInstances.length; i++) {
+      let instance = driverFinderInstances[i];
+      if (
+        instance.reqId === reqId &&
+        -1 === instance.blackListedDriverIds.indexOf(driverId)
+      ) {
+        instance.blackListedDriverIds.push(driverId);
         break;
       }
     }

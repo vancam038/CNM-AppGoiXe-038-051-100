@@ -63,6 +63,9 @@ io.on("connection", socket => {
     io.sockets.emit("driver_accepted", reqId);
   });
   //cuong_end
+  socket.on("driver_declined", msg => {
+    io.sockets.emit("driver_declined", msg);
+  });
 });
 
 const PORT1 = process.env.PORT || 3001;

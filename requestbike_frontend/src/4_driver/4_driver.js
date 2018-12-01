@@ -341,7 +341,12 @@ $(function() {
             socket.emit("driver_accepted", reqId);
           } else {
             //Xu ly driver tu choi request
-            // ? xem như driver ko phản hồi
+            getDriverIdPromise().then(driverId => {
+              socket.emit(
+                "driver_declined",
+                JSON.stringify({ reqId, driverId })
+              );
+            });
           }
         });
 
@@ -357,6 +362,11 @@ $(function() {
             $("#requestModalCenter").modal("hide");
             $("#countdownExample #timer-value").removeClass("timer-timeout");
           }, 500);
+
+          //Xu ly nhu driver tu choi request
+          getDriverIdPromise().then(driverId => {
+            socket.emit("driver_declined", JSON.stringify({ reqId, driverId }));
+          });
         });
 
         // hiện modal accept
