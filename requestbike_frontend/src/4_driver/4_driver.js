@@ -24,6 +24,7 @@ $(function() {
     dataType: "json",
     success: function(data, status, jqXHR) {
       console.log(data);
+      $('#driverName').text(data.info.name);
       changeStatus(DRIVER_STATUS_STANDBY);
     },
     error: function(e) {
@@ -159,6 +160,7 @@ function changeStatus(status) {
       break;
     case DRIVER_STATUS_BUSY:
       $("#navbarDropdown").html(DRIVER_STATUS_BUSY);
+      $("#navbarDropdown").prop("disabled",true);
       $("#navbarDropdown")
         .removeClass("btn-outline-success btn-outline-warning")
         .addClass("btn-outline-danger");

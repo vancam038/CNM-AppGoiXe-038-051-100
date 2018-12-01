@@ -1,45 +1,29 @@
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>App #2</title>
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-    />
-    <link rel="stylesheet" href="../../assets/css/perfect-scrollbar.css" />
-    <link rel="stylesheet" href="../../assets/css/alertify/alertify.min.css" />
-    <link
-      rel="stylesheet"
-      href="../../assets/css/alertify/themes/default.min.css"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="./2_location-indentifier.css"
-    />
-    <link rel="stylesheet" href="./google-map/style.css" />
-  </head>
 
-  <body>
-    <div class="wrapper">
-      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="#">App #2 - Location Identifier</a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbarTogglerDemo02"
-          aria-controls="navbarTogglerDemo02"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-          <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-            <!--
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>App #2</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="../../assets/css/perfect-scrollbar.css" />
+  <link rel="stylesheet" href="../../assets/css/alertify/alertify.min.css" />
+  <link rel="stylesheet" href="../../assets/css/alertify/themes/default.min.css" />
+  <link rel="stylesheet" type="text/css" href="./2_location-indentifier.css" />
+  <link rel="stylesheet" href="./google-map/style.css" />
+</head>
+
+<body>
+  <div class="wrapper">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand" href="#">App #2 - Location Identifier</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02"
+        aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+          <!--
               <li class="nav-item active">
                 <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
               </li>
@@ -50,143 +34,90 @@
                 <a class="nav-link disabled" href="#">Disabled</a>
               </li>
             -->
-          </ul>
-          <div class="circular--landscape">
-            <img src="../../assets/img/girl.png" alt="logo" />
-          </div>
+        </ul>
+        <div class="circular--landscape">
+          <img src="../../assets/img/girl.png" alt="logo" />
         </div>
-      </nav>
+        <h5 id="driverName" class="text-white ml-3"></h5>
+      </div>
+    </nav>
 
-      <div class="content-wrapper">
-        <div class="content-wrapper-inner">
-          <!--
+    <div class="content-wrapper">
+      <div class="content-wrapper-inner">
+        <!--
             <div class="container-fluid">
             <div class="row">
           -->
-          <div class="table-container">
-            <table
-              id="reqTable"
-              class="table table-hover table-striped table-bordered bg-light"
-            >
-              <thead>
-                <tr class="bg-dark" style="color: #fff; ">
-                  <th>ID</th>
-                  <th>Họ và tên</th>
-                  <th>Số điện thoại</th>
-                  <th>Địa chỉ</th>
-                  <th>Ghi chú</th>
-                  <th>Trạng thái</th>
-                  <th>Thời điểm đặt</th>
-                </tr>
-              </thead>
-              <tbody id="requests"></tbody>
-            </table>
+        <div class="table-container">
+          <table id="reqTable" class="table table-hover table-striped table-bordered bg-light">
+            <thead>
+              <tr class="bg-dark" style="color: #fff; ">
+                <th>ID</th>
+                <th>Họ và tên</th>
+                <th>Số điện thoại</th>
+                <th>Địa chỉ</th>
+                <th>Ghi chú</th>
+                <th>Trạng thái</th>
+                <th>Thời điểm đặt</th>
+              </tr>
+            </thead>
+            <tbody id="requests"></tbody>
+          </table>
+        </div>
+        <form class="form-inline custom-form" role="form">
+          <div class="form-group">
+            <label for="email2" class="mr-sm-2">Request ID:</label>
+            <input id="reqId" type="text" class="form-control mr-sm-2" id="email2" placeholder="" disabled />
           </div>
-          <form class="form-inline custom-form" role="form">
-            <div class="form-group">
-              <label for="email2" class="mr-sm-2">Request ID:</label>
-              <input
-                id="reqId"
-                type="text"
-                class="form-control mr-sm-2"
-                id="email2"
-                placeholder=""
-                disabled
-              />
-            </div>
-            <div class="form-group">
-              <label for="pwd2" class="mr-sm-2">Địa chỉ gốc:</label>
-              <input
-                id="addr"
-                type="text"
-                class="form-control  mr-sm-2"
-                id="pwd2"
-                placeholder=""
-                disabled
-              />
-            </div>
-            <div class="form-group">
-              <label for="pwd2" class="mr-sm-2">Ghi chú:</label>
-              <input
-                id="note"
-                type="text"
-                class="form-control  mr-sm-2"
-                id="pwd2"
-                placeholder=""
-                disabled
-              />
-            </div>
-            <div class="group-button">
-              <button id="btn-locate" class="btn btn-primary" disabled>
-                Định vị
-              </button>
-              <button id="btn-find" class="btn btn-danger" disabled>
-                Tìm xe
-              </button>
-            </div>
-            <div class="form-group" hidden>
-              <input
-                id="status"
-                type="text"
-                class="form-control mr-sm-2"
-                id="pwd2"
-                placeholder=""
-                disabled
-              />
-              <input
-                id="lat"
-                type="text"
-                class="form-control  mr-sm-2"
-                id="pwd2"
-                placeholder=""
-                disabled
-              />
-              <input
-                id="lng"
-                type="text"
-                class="form-control mr-sm-2"
-                id="pwd2"
-                placeholder=""
-                disabled
-              />
-            </div>
-          </form>
+          <div class="form-group">
+            <label for="pwd2" class="mr-sm-2">Địa chỉ gốc:</label>
+            <input id="addr" type="text" class="form-control  mr-sm-2" id="pwd2" placeholder="" disabled />
+          </div>
+          <div class="form-group">
+            <label for="pwd2" class="mr-sm-2">Ghi chú:</label>
+            <input id="note" type="text" class="form-control  mr-sm-2" id="pwd2" placeholder="" disabled />
+          </div>
+          <div class="group-button">
+            <button id="btn-locate" class="btn btn-primary" disabled>
+              Định vị
+            </button>
+            <button id="btn-find" class="btn btn-danger" disabled>
+              Tìm xe
+            </button>
+          </div>
+          <div class="form-group" hidden>
+            <input id="status" type="text" class="form-control mr-sm-2" id="pwd2" placeholder="" disabled />
+            <input id="lat" type="text" class="form-control  mr-sm-2" id="pwd2" placeholder="" disabled />
+            <input id="lng" type="text" class="form-control mr-sm-2" id="pwd2" placeholder="" disabled />
+          </div>
+        </form>
 
-          <!-- google map start -->
-          <!--
+        <!-- google map start -->
+        <!--
             <div id="map-container">
             <div id="map-dialog"></div>
           -->
-          <div id="map-container">
-            <div id="map-dialog"></div>
-            <div id="map"></div>
-            <button
-              id="acceptChangeUserPosition"
-              class="btn btn-hidden"
-            ></button>
-            <button
-              id="declineChangeUserPosition"
-              class="btn btn-hidden"
-            ></button>
-            <button
-              id="revertChangeUserPosition"
-              class="btn btn-hidden"
-            ></button>
-          </div>
+        <div id="map-container">
+          <div id="map-dialog"></div>
+          <div id="map"></div>
+          <button id="acceptChangeUserPosition" class="btn btn-hidden"></button>
+          <button id="declineChangeUserPosition" class="btn btn-hidden"></button>
+          <button id="revertChangeUserPosition" class="btn btn-hidden"></button>
+        </div>
 
-          <!--
+        <!--
             <button id="acceptChangeUserPosition" class="btn btn-hidden"></button>
                 <button id="declineChangeUserPosition" class="btn btn-hidden"></button>
                 <button id="revertChangeUserPosition" class="btn btn-hidden"></button>
               </div>
             </div>
           -->
-          <!-- google map end -->
-        </div>
+        <!-- google map end -->
       </div>
+    </div>
 
-      <script id="request-template" type="text/x-handlebars-template">
-        {{#each this}}
+    <script id="request-template" type="text/x-handlebars-template">
+      {{#each this}}
                       <tr data-id="{{id}}" data-lat="{{lat}}" data-lng="{{lng}}">
                           <td>{{id}}</td>
                           <td>{{clientName}}</td>
@@ -199,44 +130,37 @@
                   {{/each}}
       </script>
 
-      <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.12/handlebars.min.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
-      <script src="../../assets/js/perfect-scrollbar.min.js"></script>
-      <script src="../../assets/js/alertify.min.js"></script>
-      <script src="../../assets/js/common.js"></script>
-      <script src="../../assets/js/constant.js"></script>
-      <script src="../../assets//js/Haversine.js"></script>
-      <script src="./2_location-indentifier.js"></script>
-      <script src="./google-map/script.js"></script>
-      <script
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDas6_Z8AZ6sdYJGOucYDWh-MCcoB9jjVE&callback=initMap"
-        async
-        defer
-      ></script>
-      <!-- Modal -->
-      <!-- <div class="modal-backdrop"></div> -->
-      <div
-        class="modal"
-        id="modalUnauthorized"
-        data-keyboard="false"
-        data-backdrop="static"
-      >
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h4 class="modal-title">Phiên đăng nhập hết hạn</h4>
-            </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.12/handlebars.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+    <script src="../../assets/js/perfect-scrollbar.min.js"></script>
+    <script src="../../assets/js/alertify.min.js"></script>
+    <script src="../../assets/js/common.js"></script>
+    <script src="../../assets/js/constant.js"></script>
+    <script src="../../assets//js/Haversine.js"></script>
+    <script src="./2_location-indentifier.js"></script>
+    <script src="./google-map/script.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDas6_Z8AZ6sdYJGOucYDWh-MCcoB9jjVE&callback=initMap"
+      async defer></script>
+    <!-- Modal -->
+    <!-- <div class="modal-backdrop"></div> -->
+    <div class="modal" id="modalUnauthorized" data-keyboard="false" data-backdrop="static">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Phiên đăng nhập hết hạn</h4>
+          </div>
 
-            <!-- Modal body -->
-            <div class="modal-body">
-              Vui lòng <a href="../0_login/0_login.html">Đăng nhập</a> lại!
-            </div>
+          <!-- Modal body -->
+          <div class="modal-body">
+            Vui lòng <a href="../0_login/0_login.html">Đăng nhập</a> lại!
           </div>
         </div>
       </div>
     </div>
-  </body>
+  </div>
+</body>
+
 </html>
