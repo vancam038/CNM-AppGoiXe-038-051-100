@@ -2,8 +2,8 @@ var socket = io("http://localhost:3001");
 var thisTr;
 
 // perfect scrollbar start
-$(function () {
-  var ps = new PerfectScrollbar('.table-container', {
+$(function() {
+  var ps = new PerfectScrollbar(".table-container", {
     wheelSpeed: 1,
     wheelPropagation: false,
     minScrollbarLength: 20
@@ -12,28 +12,28 @@ $(function () {
 // perfect scrollbar end
 
 //For authorization
-$(function () {
-
+$(function() {
   let showModal = () => {
-    $('#modalUnauthorized').modal('show');
-    $('.modal-backdrop').show();
+    $("#modalUnauthorized").modal("show");
+    $(".modal-backdrop").show();
   };
-  let getRequestList = function () {
+  let getRequestList = function() {
     $.ajax({
       url: "http://localhost:3000/requests",
       type: "GET",
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Content-Type": "application/json",
-        "x-access-token": localStorage.getItem('token_3')
+        "x-access-token": localStorage.getItem("token_3")
       },
       dataType: "json",
       timeout: 10000
-    }).done(function (data) {
+    }).done(function(data) {
       var source = document.getElementById("request-template").innerHTML;
       var template = Handlebars.compile(source);
       var html = template(data);
       $("#requests").html(html);
+      addDriverDetailsToTable();
     });
   };
   $.ajax({
@@ -42,46 +42,44 @@ $(function () {
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Content-Type": "application/json",
-      "x-access-token": localStorage.getItem('token_3')
+      "x-access-token": localStorage.getItem("token_3")
     },
-    dataType: 'json',
-    success: function (data, status, jqXHR) {
+    dataType: "json",
+    success: function(data, status, jqXHR) {
       console.log(data);
-      $('#driverName').text(data.info.name);
+      $("#driverName").text(data.info.name);
       getRequestList();
     },
-    error: function (e) {
+    error: function(e) {
       //Handle auto login
       $.ajax({
-        url: 'http://localhost:3000/auth/token',
-        type: 'POST',
+        url: "http://localhost:3000/auth/token",
+        type: "POST",
         headers: {
           "Access-Control-Allow-Origin": "*",
           "Content-Type": "application/json",
-          "x-ref-token": localStorage.getItem('refToken_3')
+          "x-ref-token": localStorage.getItem("refToken_3")
         },
-        dataType: 'json',
-        success: function (data) {
-          console.log('GET new token success');
+        dataType: "json",
+        success: function(data) {
+          console.log("GET new token success");
           //Update access-token
-          localStorage.setItem('token_3', data.access_token);
+          localStorage.setItem("token_3", data.access_token);
           //Get requests
           getRequestList();
         },
-        error: function (jqXHR, txtStatus, err) {
-          console.log('Get new token failed');
+        error: function(jqXHR, txtStatus, err) {
+          console.log("Get new token failed");
           console.log(err);
           showModal();
         }
       });
-
     }
-  })
-
+  });
 });
 
 //For sockets
-$(function () {
+$(function() {
   socket.on("new_request_added", () => {
     $.ajax({
       url: "http://localhost:3000/requests",
@@ -89,11 +87,11 @@ $(function () {
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Content-Type": "application/json",
-        "x-access-token": localStorage.getItem('token_3')
+        "x-access-token": localStorage.getItem("token_3")
       },
       dataType: "json",
       timeout: 10000
-    }).done(function (data) {
+    }).done(function(data) {
       var source = document.getElementById("request-template").innerHTML;
       var template = Handlebars.compile(source);
       var html = template(data);
@@ -103,50 +101,52 @@ $(function () {
   });
 });
 
-$(function () {
+$(function() {
   //=================================================================
   //click on table body
-  $('#reqTable tbody').on('click', 'tr', function () {
+  $("#reqTable tbody").on("click", "tr", function() {
     // Thêm highlight cho dòng hiện tại
-    $('#reqTable tbody tr').removeClass('selected');
+    $("#reqTable tbody tr").removeClass("selected");
     thisTr = $(this);
-    thisTr.addClass('selected');
+    thisTr.addClass("selected");
 
-    var tableData = $(this).children("td").map(function () {
-      return $(this).text();
-    }).get();
-    $('#reqId').val(tableData[0]);
-    $('#addr').val(tableData[3]);
-    $('#note').val(tableData[4])
-    $('#status').val(tableData[5]);
+    var tableData = $(this)
+      .children("td")
+      .map(function() {
+        return $(this).text();
+      })
+      .get();
+    $("#reqId").val(tableData[0]);
+    $("#addr").val(tableData[3]);
+    $("#note").val(tableData[4]);
+    $("#status").val(tableData[5]);
     const lat = $(this).attr("data-lat");
     const lng = $(this).attr("data-lng");
-    $('#lat').val(lat);
-    $('#lng').val(lng);
+    $("#lat").val(lat);
+    $("#lng").val(lng);
 
-    // xét status: 
+    // xét status:
     // nếu đã có xe nhận
     if (tableData[5] === REQ_STATUS_ACCEPTED) {
-      $('#btn-path').prop('hidden', false);
-      $('#btn-path').prop('disabled', false);
+      $("#btn-path").prop("hidden", false);
+      $("#btn-path").prop("disabled", false);
 
       // TODO: Hiển thị đường đi ngắn nhất từ driver tới req
-
-
-    } else { // nếu ko phải là có xe nhận -> các trường hợp còn lại
-      $('#btn-path').prop('hidden', true);
+    } else {
+      // nếu ko phải là có xe nhận -> các trường hợp còn lại
+      $("#btn-path").prop("hidden", true);
       // hiển thị lun địa chỉ gốc của req lên map????
       // prevLatLng = new google.maps.LatLng(lat, lng);
       // showIdentifiedReq(prevLatLng);
     }
   });
 
-  $('#btn-path').click(function (e) {
+  $("#btn-path").click(function(e) {
     e.preventDefault();
     // TODO: Hiển thị đường đi từ driver đến khách + show thông tin driver
-    const reqLat = $('#lat').val();
-    const reqLng = $('#lng').val();
-    const reqId = $('#reqId').val();
+    const reqLat = $("#lat").val();
+    const reqLng = $("#lng").val();
+    const reqId = $("#reqId").val();
 
     // lấy tọa độ của driver lên
     $.ajax({
@@ -155,10 +155,10 @@ $(function () {
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Content-Type": "application/json",
-        "x-access-token": localStorage.getItem('token_3')
+        "x-access-token": localStorage.getItem("token_3")
       },
       dataType: "json"
-    }).done(function (data) {
+    }).done(function(data) {
       console.log(data);
 
       if (data.length > 0) {
@@ -172,13 +172,57 @@ $(function () {
         drawDriverMarker(driverLatLng);
         drawPassengerMarker(passengerLatLng);
         drawPathDriverToPassenger(driverLatLng, passengerLatLng);
-        // map.setZoom(DEFAULT_ZOOM_LEVEL);    
+        // map.setZoom(DEFAULT_ZOOM_LEVEL);
       }
     });
   });
 });
 
-$(function () {
+function addDriverDetailsToTable() {
+  const reqDriverIds = $("#requests tr td:last-of-type");
+  const reqReqIds = $("#requests tr td:first-of-type");
+  if (!reqDriverIds || !reqReqIds) return;
+
+  const addition = reqDriverIds.map((index, driver) => {
+    return {
+      driver,
+      reqId: reqReqIds[index].textContent
+    };
+  });
+
+  Array.from(addition).forEach(async element => {
+    const { driver, reqId } = element;
+    if (driver.textContent !== "" && reqId !== "")
+      try {
+        const wait = await fetch(
+          `http://localhost:3000/user/driver/${driver.textContent}`,
+          {
+            method: "GET",
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              "Content-Type": "application/json",
+              "x-access-token": localStorage.getItem("token_3")
+            },
+            dataType: "json"
+          }
+        );
+
+        const json = await wait.json();
+        const { name, phone } = json;
+        $(driver).html(`
+                      <ul class="driverDetail-container">
+                        <li>ID: ${driver.textContent}</li>
+                        <li>${name}</li>
+                        <li>SĐT: ${phone}</li>
+                      </ul>
+                      `);
+      } catch (err) {
+        console.log(err);
+      }
+  });
+}
+
+$(function() {
   socket.on("2_to_3_reload-table", () => {
     $.ajax({
       url: "http://localhost:3000/requests",
@@ -186,10 +230,10 @@ $(function () {
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Content-Type": "application/json",
-        "x-access-token": localStorage.getItem('token_3')
+        "x-access-token": localStorage.getItem("token_3")
       },
       dataType: "json"
-    }).done(function (data) {
+    }).done(function(data) {
       var source = document.getElementById("request-template").innerHTML;
       var template = Handlebars.compile(source);
       var html = template(data);
@@ -205,24 +249,28 @@ $(function () {
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Content-Type": "application/json",
-        "x-access-token": localStorage.getItem('token_3')
+        "x-access-token": localStorage.getItem("token_3")
       },
       dataType: "json"
-    }).done(function (data) {
+    }).done(function(data) {
       var source = document.getElementById("request-template").innerHTML;
       var template = Handlebars.compile(source);
       var html = template(data);
       $("#requests").html(html);
       keepSelectedRow();
     });
-  })
-})
+  });
+});
 
 function keepSelectedRow() {
-  $('#reqTable tr').each(function () {
-    if ($(this).children('td:first').html() === $('#reqId').val()) {
-      $('#reqTable tr').removeClass('selected');
-      $(this).addClass('selected');
+  $("#reqTable tr").each(function() {
+    if (
+      $(this)
+        .children("td:first")
+        .html() === $("#reqId").val()
+    ) {
+      $("#reqTable tr").removeClass("selected");
+      $(this).addClass("selected");
     }
-  })
+  });
 }

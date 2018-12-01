@@ -56,8 +56,12 @@ io.on("connection", socket => {
       JSON.stringify({ ...reqInfo, driverId })
     );
   });
+
+  socket.on("req_pending", reqId => {
+    io.sockets.emit("req_pending", reqId);
+  });
   // duy-th end
-  // socket END
+
   //cuong_start
   socket.on("driver_accepted", reqId => {
     io.sockets.emit("driver_accepted", reqId);
@@ -66,6 +70,7 @@ io.on("connection", socket => {
   socket.on("driver_declined", msg => {
     io.sockets.emit("driver_declined", msg);
   });
+  // socket END
 });
 
 const PORT1 = process.env.PORT || 3001;

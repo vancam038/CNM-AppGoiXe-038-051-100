@@ -1,7 +1,7 @@
 var socket = io("http://localhost:3001");
 
 // perfect scrollbar start
-$(function () {
+$(function() {
   var ps = new PerfectScrollbar(".table-container", {
     wheelSpeed: 1,
     wheelPropagation: false,
@@ -10,12 +10,12 @@ $(function () {
 });
 // perfect scrollbar end
 
-$(function () {
+$(function() {
   let showModal = () => {
     $("#modalUnauthorized").modal("show");
     $(".modal-backdrop").show();
   };
-  let getRequestList = function () {
+  let getRequestList = function() {
     $.ajax({
       url: "http://localhost:3000/requests/unidentified+identified",
       type: "GET",
@@ -26,7 +26,7 @@ $(function () {
       },
       dataType: "json",
       timeout: 10000
-    }).done(function (data) {
+    }).done(function(data) {
       var source = document.getElementById("request-template").innerHTML;
       var template = Handlebars.compile(source);
       var html = template(data);
@@ -42,12 +42,12 @@ $(function () {
       "x-access-token": localStorage.getItem("token_2")
     },
     dataType: "json",
-    success: function (data, status, jqXHR) {
+    success: function(data, status, jqXHR) {
       console.log(data);
-      $('#driverName').text(data.info.name);
+      $("#driverName").text(data.info.name);
       getRequestList();
     },
-    error: function (e) {
+    error: function(e) {
       //Handle auto login
       $.ajax({
         url: "http://localhost:3000/auth/token",
@@ -58,14 +58,14 @@ $(function () {
           "x-ref-token": localStorage.getItem("refToken_2")
         },
         dataType: "json",
-        success: function (data) {
+        success: function(data) {
           console.log("GET new token success");
           //Update access-token
           localStorage.setItem("token_2", data.access_token);
           //Get request list
           getRequestList();
         },
-        error: function (jqXHR, txtStatus, err) {
+        error: function(jqXHR, txtStatus, err) {
           console.log("Get new token failed");
           console.log(err);
           showModal();
@@ -85,7 +85,7 @@ $(function () {
       },
       dataType: "json",
       timeout: 10000
-    }).done(function (data) {
+    }).done(function(data) {
       var source = document.getElementById("request-template").innerHTML;
       var template = Handlebars.compile(source);
       var html = template(data);
@@ -95,15 +95,15 @@ $(function () {
   });
 });
 
-$(function () {
+$(function() {
   //=================================================================
   //click on table body
-  $("#reqTable tbody").on("click", "tr", function () {
+  $("#reqTable tbody").on("click", "tr", function() {
     $("#reqTable tbody tr").removeClass("selected");
     $(this).addClass("selected");
     var tableData = $(this)
       .children("td")
-      .map(function () {
+      .map(function() {
         return $(this).text();
       })
       .get();
@@ -131,7 +131,7 @@ $(function () {
     }
   });
 
-  $("#btn-locate").click(function (e) {
+  $("#btn-locate").click(function(e) {
     e.preventDefault();
     const reqId = $("#reqId").val();
     const lat = $("#lat").val();
@@ -176,20 +176,16 @@ $(function () {
     };
     let handleInterval = null;
 
-    this.stop = function () {
+    this.stop = function() {
       handleInterval && clearInterval(handleInterval);
     };
 
-    this.start = function () {
-      $.ajax(ajaxOpts).done(function (data) {
+    this.start = function() {
+      $.ajax(ajaxOpts).done(function(data) {
         // first attempt
-        let {
-          status
-        } = data;
+        let { status } = data;
         if (status === "OK") {
-          let {
-            drivers
-          } = data;
+          let { drivers } = data;
           // xử lý blacklist
           for (let i = 0; i < drivers.length; i++) {
             const driver = drivers[i];
@@ -215,9 +211,7 @@ $(function () {
                 return Number.MAX_SAFE_INTEGER;
               return Haversine(reqLatLng, driverLatLng);
             });
-            let {
-              driverId
-            } = drivers[
+            let { driverId } = drivers[
               distances.indexOf(Math.min(...distances))
             ];
             socket.emit(
@@ -234,19 +228,17 @@ $(function () {
         let attempt = 1;
         // tiếp tục tìm nếu chưa quá SEND_REQUEST_ATTEMPT lần
         // và chưa có driver accept
-        handleInterval = setInterval(function () {
+        handleInterval = setInterval(function() {
           // if (attempt < SEND_REQUEST_ATTEMPT) {
           console.log("-> reqId: ", reqId, ", attempt: ", attempt);
-          $.ajax(ajaxOpts).done(function (data) {
+          $.ajax(ajaxOpts).done(function(data) {
             status = data.status;
             if (status === "OK") {
               drivers = data.drivers;
               // xử lý blacklist
               for (let i = 0; i < drivers.length; i++) {
                 const driver = drivers[i];
-                if (
-                  -1 !== self.blackListedDriverIds.indexOf(driver.driverId)
-                ) {
+                if (-1 !== self.blackListedDriverIds.indexOf(driver.driverId)) {
                   drivers.splice(i, 1);
                   i--;
                 }
@@ -276,8 +268,9 @@ $(function () {
 
             attempt++;
             // setTimeout cho lượt req send cuối cùng
-            if (attempt >= SEND_REQUEST_ATTEMPT) { // TODO: attempt 10 lần + 1
-              setTimeout(function () {
+            if (attempt >= SEND_REQUEST_ATTEMPT) {
+              // TODO: attempt 10 lần + 1
+              setTimeout(function() {
                 console.log("table reloading");
                 handleInterval && clearInterval(handleInterval);
                 // emit request failed, ajax set req failed then reload table app2 & app3
@@ -298,7 +291,8 @@ $(function () {
                 }).done(() => {
                   // reload table app2 & app3
                   $.ajax({
-                    url: "http://localhost:3000/requests/unidentified+identified",
+                    url:
+                      "http://localhost:3000/requests/unidentified+identified",
                     type: "GET",
                     headers: {
                       "Access-Control-Allow-Origin": "*",
@@ -306,7 +300,7 @@ $(function () {
                       "x-access-token": localStorage.getItem("token_2")
                     },
                     dataType: "json"
-                  }).done(function (data) {
+                  }).done(function(data) {
                     socket.emit("2_to_3_reload-table");
                     socket.emit("2_to_2_reload-table", data);
                   });
@@ -321,15 +315,17 @@ $(function () {
     };
   }
   const driverFinderInstances = [];
-  $("#btn-find").click(function (e) {
+  $("#btn-find").click(function(e) {
     // disable chính nó
     $("#btn-find").prop("disabled", true);
     // resetInput();
     e.preventDefault();
+    // emit các app2 khác để disable nút tìm xe
+    socket.emit("req_pending", $("#reqId").val());
 
     // đổi trạng thái của req thành Pending
     const reqObject = {
-      reqId: $('#reqId').val(),
+      reqId: $("#reqId").val(),
       status: REQ_STATUS_PENDING
     };
     $.ajax({
@@ -353,7 +349,7 @@ $(function () {
           "x-access-token": localStorage.getItem("token_2")
         },
         dataType: "json"
-      }).done(function (data) {
+      }).done(function(data) {
         socket.emit("2_to_3_reload-table");
         socket.emit("2_to_2_reload-table", data);
       });
@@ -368,7 +364,7 @@ $(function () {
     // duy-th end
   });
 
-  socket.on("driver_accepted", function (reqId) {
+  socket.on("driver_accepted", function(reqId) {
     for (let i = 0; i < driverFinderInstances.length; i++) {
       let instance = driverFinderInstances[i];
       if (instance.reqId === reqId) {
@@ -380,11 +376,8 @@ $(function () {
     }
   });
 
-  socket.on("driver_declined", function (data) {
-    const {
-      reqId,
-      driverId
-    } = JSON.parse(data);
+  socket.on("driver_declined", function(data) {
+    const { reqId, driverId } = JSON.parse(data);
     for (let i = 0; i < driverFinderInstances.length; i++) {
       let instance = driverFinderInstances[i];
       if (
@@ -396,14 +389,21 @@ $(function () {
       }
     }
   });
+
+  socket.on("req_pending", reqId => {
+    // diable nút tìm xe nếu trùng reqId
+    if (reqId === $("#reqId").val()) {
+      $("#btn-find").prop("disabled", true);
+    }
+  });
 });
 
 function keepSelectedRow() {
-  $("#reqTable tr").each(function () {
+  $("#reqTable tr").each(function() {
     if (
       $(this)
-      .children("td:first")
-      .html() === $("#reqId").val()
+        .children("td:first")
+        .html() === $("#reqId").val()
     ) {
       $("#reqTable tr").removeClass("selected");
       $(this).addClass("selected");
@@ -414,7 +414,7 @@ function keepSelectedRow() {
 function setStatusByReqId(tableId, idReq, status) {
   const tableId_string = "#" + tableId;
   const reqId_string = "#" + idReq;
-  $(tableId_string + " tr").each(function () {
+  $(tableId_string + " tr").each(function() {
     const reqId = $(reqId_string).val();
     const reqId_table = $(this)
       .find("td:first")
@@ -435,7 +435,7 @@ function setStatusByReqId(tableId, idReq, status) {
         },
         data: JSON.stringify(reqObject),
         dataType: "json"
-      }).done(function () {
+      }).done(function() {
         // sau khi cập nhật thành công thì reload lại table (query db để ghi đè lên lại)
         // App#2 cũng phải tự realtime vs chính nó (nhiều app#2)
         $.ajax({
@@ -447,7 +447,7 @@ function setStatusByReqId(tableId, idReq, status) {
             "x-access-token": localStorage.getItem("token_2")
           },
           dataType: "json"
-        }).done(function (data) {
+        }).done(function(data) {
           // đồng thời emit cho app#3 biết, để cùng realtime
           socket.emit("2_to_3_reload-table");
           // reload app#2
@@ -458,7 +458,7 @@ function setStatusByReqId(tableId, idReq, status) {
   });
 }
 
-$(function () {
+$(function() {
   // lắng nghe realtime của app#2
   socket.on("2_to_2_reload-table", data => {
     var source = document.getElementById("request-template").innerHTML;
@@ -478,7 +478,7 @@ $(function () {
         "x-access-token": localStorage.getItem("token_2")
       },
       dataType: "json"
-    }).done(function (data) {
+    }).done(function(data) {
       var source = document.getElementById("request-template").innerHTML;
       var template = Handlebars.compile(source);
       var html = template(data);

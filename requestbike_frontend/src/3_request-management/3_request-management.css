@@ -8,7 +8,7 @@ body {
 
 .wrapper {
   height: max-content;
-  background-color: #F5F6F7;
+  background-color: #f5f6f7;
 }
 
 .content-wrapper-inner {
@@ -101,6 +101,10 @@ body {
   margin-bottom: 0;
 }
 
+#requests tr {
+  height: 4.5em !important;
+}
+
 /* icon start */
 .circular--landscape {
   display: inline-block;
@@ -118,8 +122,42 @@ body {
 
 /* icon end */
 
-
 .modal-backdrop {
   opacity: 0.85;
   display: none;
 }
+
+/* driver details start */
+
+/* .driverDetail-td {
+  padding-left: 15px !important;
+  overflow: hidden;
+} */
+
+.driverDetail-container {
+  /* display: none; */
+  width: 100%;
+  height: 100%;
+  line-height: 100%;
+  margin-left: 15px;
+  margin-bottom: 0;
+  /* position: relative; */
+  /* list-style-type: none; */
+  /* top: 0; */
+}
+
+/* .driverDetail-td:hover .driverDetail-container {
+  display: block;
+  z-index: 999;
+}
+
+.driverDetail-container > div {
+  display: block;
+  height: 1.5em;
+  line-height: 1.5em;
+  position: absolute;
+  top: 1.5em;
+  overflow: hidden;
+}  */
+
+/* driver details end */
