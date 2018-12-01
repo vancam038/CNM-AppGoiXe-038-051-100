@@ -262,7 +262,7 @@ $(function() {
                   });
                 });
               }
-            }, SEND_REQUEST_ATTEMPT + 5000);
+            }, REQUEST_DRIVER_RESPONSE_TIME + 5000);
             // nếu status === "NOT_FOUND" hoặc lỗi thì lại tiếp tục vòng lặp và timeout
           });
         }, REQUEST_DRIVER_RESPONSE_TIME + 5000);
