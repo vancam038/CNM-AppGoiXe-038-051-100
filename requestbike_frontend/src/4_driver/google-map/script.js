@@ -243,6 +243,10 @@ function resetDriverMap(reqStatus, driverId) {
     // Cập nhật lại preLatLng tới vị trí mới
     prevLatLng = new google.maps.LatLng(getNewDriverMarkerLatLng());
 
+    // setZoom lại
+    map.setZoom(DEFAULT_ZOOM_LEVEL);
+    map.panTo(prevLatLng);
+
     // cập nhật lại coords trên db
     if (driverId && updateDriverCoords) {
       // kiểm tra tránh trường hợp 4_driver.js chưa load xong

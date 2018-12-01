@@ -123,7 +123,6 @@ var getDriverIdPromise = () => {
       },
       dataType: "json"
     }).done(function(driverObject) {
-      console.log(driverObject.id);
       resolve(driverObject.id);
     });
   });
@@ -247,14 +246,10 @@ function updateMap(lat, lng, addr) {
 
 //listen start
 $(function() {
-  // gửi trạng thái lên cho server
-  // socket.emit("4_to_2_???", requestObject);
-
   // lắng nghe yêu cầu từ phía #2
   var timer = new Timer();
   socket.on("req_send_to_driver", msg => {
     const { reqId, lat, lng, addr, driverId } = JSON.parse(msg);
-    console.log(msg);
     if (
       reqId === undefined ||
       lat === undefined ||
@@ -330,7 +325,7 @@ $(function() {
               updateDriverReqId(reqId, currentDriverId);
             });
 
-            // TODO: GỌI ajax cập nhật tọa độ driver phụ trách request đó
+            // Gọi ajax cập nhật tọa độ driver phụ trách request đó
             getDriverIdPromise().then(currentDriverId => {
               updateDriverCoords(
                 driverMarker.getPosition().lat(),
@@ -384,10 +379,10 @@ $(function() {
     // disable lun trạng thái, ko cho sửa
     $("#navbarDropdown").prop("disabled", true);
 
-    // TODO: xử lý marker driver nhảy vị trí tới marker khách
+    // xử lý marker driver nhảy vị trí tới marker khách
     passengerMarker.setMap(null);
     driverMarker.setMap(null);
-    // TODO: lúc này số lượng marker giảm còn 1 marker -> đổi marker thành chiếc xe đèo khách -> moving.png
+    // lúc này số lượng marker giảm còn 1 marker -> đổi marker thành chiếc xe đèo khách -> moving.png
     driverMarker = new google.maps.Marker({
       position: passengerLatLng,
       map,
@@ -402,8 +397,7 @@ $(function() {
     // tự disable chính mình
     $("#btn-start").prop("disabled", true);
 
-    // Ấn bắt đầu thì sẽ làm gì????
-    // TODO: chọn địa điểm tới tùy ý
+    // chọn địa điểm tới tùy ý
     // -> bằng cách kéo thả marker trên map rồi confirm yes/no bằng infoWindow -> giống App#2
     // driverMarker draggable
     driverMarker.setMap(null);

@@ -224,41 +224,45 @@ $(function() {
             }
 
             attempt++;
-            if (attempt >= SEND_REQUEST_ATTEMPT) {
-              console.log("table reloading");
-              handleInterval && clearInterval(handleInterval);
-              // emit request failed, ajax set req failed then reload table app2 & app3
-              const reqObject = {
-                reqId: reqId,
-                status: "NOT_FOUND"
-              };
-              $.ajax({
-                url: "http://localhost:3000/request/status",
-                type: "PATCH",
-                headers: {
-                  "Access-Control-Allow-Origin": "*",
-                  "Content-Type": "application/json",
-                  "x-access-token": localStorage.getItem("token_2")
-                },
-                data: JSON.stringify(reqObject),
-                dataType: "json"
-              }).done(() => {
-                // reload table app2 & app3
+            // setTimeout cho lượt req send cuối cùng
+            setTimeout(function() {
+              if (attempt >= SEND_REQUEST_ATTEMPT) {
+                console.log("table reloading");
+                handleInterval && clearInterval(handleInterval);
+                // emit request failed, ajax set req failed then reload table app2 & app3
+                const reqObject = {
+                  reqId: reqId,
+                  status: "NOT_FOUND"
+                };
                 $.ajax({
-                  url: "http://localhost:3000/requests/unidentified+identified",
-                  type: "GET",
+                  url: "http://localhost:3000/request/status",
+                  type: "PATCH",
                   headers: {
                     "Access-Control-Allow-Origin": "*",
                     "Content-Type": "application/json",
                     "x-access-token": localStorage.getItem("token_2")
                   },
+                  data: JSON.stringify(reqObject),
                   dataType: "json"
-                }).done(function(data) {
-                  socket.emit("2_to_3_reload-table");
-                  socket.emit("2_to_2_reload-table");
+                }).done(() => {
+                  // reload table app2 & app3
+                  $.ajax({
+                    url:
+                      "http://localhost:3000/requests/unidentified+identified",
+                    type: "GET",
+                    headers: {
+                      "Access-Control-Allow-Origin": "*",
+                      "Content-Type": "application/json",
+                      "x-access-token": localStorage.getItem("token_2")
+                    },
+                    dataType: "json"
+                  }).done(function(data) {
+                    socket.emit("2_to_3_reload-table");
+                    socket.emit("2_to_2_reload-table", data);
+                  });
                 });
-              });
-            }
+              }
+            }, SEND_REQUEST_ATTEMPT + 5000);
             // nếu status === "NOT_FOUND" hoặc lỗi thì lại tiếp tục vòng lặp và timeout
           });
         }, REQUEST_DRIVER_RESPONSE_TIME + 5000);
@@ -279,10 +283,11 @@ $(function() {
 
   socket.on("driver_accepted", function(reqId) {
     for (let i = 0; i < driverFinderInstances.length; i++) {
-      const instance = driverFinderInstances[i];
+      let instance = driverFinderInstances[i];
       if (instance.reqId === reqId) {
         instance.stop();
         driverFinderInstances.splice(i, 1);
+        instance = null;
         break;
       }
     }
