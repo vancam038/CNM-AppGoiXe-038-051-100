@@ -57,10 +57,12 @@ body {
 /* status color start */
 .identified {
   color: green;
+  font-weight: bold;
 }
 
 .unidentified {
-  color: red;
+  color: #f53b57;
+  font-weight: bold;
 }
 
 .selected {

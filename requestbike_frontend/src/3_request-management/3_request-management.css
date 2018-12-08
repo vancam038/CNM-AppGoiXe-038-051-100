@@ -57,26 +57,32 @@ body {
 /* status color start */
 .identified {
   color: green;
+  font-weight: bold;
 }
 
 .unidentified {
-  color: yellow;
+  color: #f53b57;
+  font-weight: bold;
 }
 
 .accepted {
   color: blue;
+  font-weight: bold;
 }
 
 .moving {
   color: #e15f41;
+  font-weight: bold;
 }
 
 .finished {
   color: purple;
+  font-weight: bold;
 }
 
 .not_found {
   color: red;
+  font-weight: bold;
 }
 
 .pending {
