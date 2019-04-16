@@ -23,23 +23,23 @@ https://drive.google.com/open?id=1tM4EG3RiJbbTdIsqPw4SRbUXkcGU_qMs
 
 Login account:
 1. REQUEST RECEIVER
-Username: dienthoaivien
-Pass: 123
+* Username: dienthoaivien
+* Pass: 123
 
 2. LOCATION IDENTIFER
-Username: dinhvivien
-Pass: 123
+* Username: dinhvivien
+* Pass: 123
 
-Username: dinhvivien1
-Pass: 123
+* Username: dinhvivien1
+* Pass: 123
 
 3. REQUEST MANAGEMENT
-Username: quanly
-Pass: 123
+* Username: quanly
+* Pass: 123
 
 4. DRIVER
-Username: camtaixe1
-Pass: 123
+* Username: camtaixe1
+* Pass: 123
 
-Username: camtaixe2
-Pass: 123
+* Username: camtaixe2
+* Pass: 123
