@@ -1,4 +1,5 @@
 # SUBJECT: Web Development 2
+Project's mark: 9/10 pts
 # Project name: CNM-AppGoiXe-038-051-100
 This is a school project for a simple demo full-stack request bike website, using NodeJS as back-end server and Jquery Ajax as front end to request API. 
 
