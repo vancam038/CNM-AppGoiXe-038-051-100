@@ -1,10 +1,22 @@
 # SUBJECT: Web Development 2
 # Project name: CNM-AppGoiXe-038-051-100
-This is a school project for a simple demno full-stack request bike website, using NodeJS as back-end server and Jquery Ajax as front end to request API.
-## TECHNIQUES
+This is a school project for a simple demo full-stack request bike website, using NodeJS as back-end server and Jquery Ajax as front end to request API. 
+
+# TECHNIQUES
 * SOA RESTful API
 * Realtime Web Application using Socket.IO
 * Google Maps API
+* Bootrstrap 4.0
+
+# Core features
+* Receive requests from clients
+* Identify locations of requests on google map
+* Manage requests
+* Redirect requests to drivers
+* Drivers take requests and take over clients
+
+# Demo playlist
+* https://www.youtube.com/playlist?list=PLHmuGVMn2_f6PgblxEEMu7Vdekp0zdT6v
 
 # Script SQL: 
 https://drive.google.com/open?id=1tM4EG3RiJbbTdIsqPw4SRbUXkcGU_qMs
